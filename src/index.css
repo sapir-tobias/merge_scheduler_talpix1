@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: #fafaf9;   /* stone-50 */
+  color: #1c1917;        /* stone-900 */
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 3px; }  /* stone-300 */
+::-webkit-scrollbar-thumb:hover { background: #a8a29e; }                  /* stone-400 */
