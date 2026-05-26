@@ -1,0 +1,112 @@
+[
+  {
+    "courseId": "math-calculus1",
+    "semesterId": 1,
+    "lectureOptionId": "a",
+    "recitationOptionId": "r1",
+    "locked": false
+  },
+  {
+    "courseId": "math-linear",
+    "semesterId": 1,
+    "lectureOptionId": "b",
+    "recitationOptionId": "r1",
+    "locked": false
+  },
+  {
+    "courseId": "cs-intro",
+    "semesterId": 1,
+    "lectureOptionId": "a",
+    "recitationOptionId": "r1",
+    "locked": false
+  },
+  {
+    "courseId": "math-discrete",
+    "semesterId": 1,
+    "lectureOptionId": "a",
+    "locked": false
+  },
+  {
+    "courseId": "math-calculus2",
+    "semesterId": 2,
+    "lectureOptionId": "a",
+    "recitationOptionId": "r1",
+    "locked": false
+  },
+  {
+    "courseId": "cs-data-structures",
+    "semesterId": 2,
+    "lectureOptionId": "a",
+    "recitationOptionId": "r1",
+    "locked": false
+  },
+  {
+    "courseId": "phys-mechanics",
+    "semesterId": 2,
+    "lectureOptionId": "a",
+    "recitationOptionId": "r1",
+    "locked": false
+  },
+  {
+    "courseId": "math-probability",
+    "semesterId": 2,
+    "lectureOptionId": "a",
+    "recitationOptionId": "r1",
+    "locked": false
+  },
+  {
+    "courseId": "cs-algorithms",
+    "semesterId": 3,
+    "lectureOptionId": "a",
+    "recitationOptionId": "r1",
+    "locked": false
+  },
+  {
+    "courseId": "cs-os",
+    "semesterId": 3,
+    "lectureOptionId": "b",
+    "recitationOptionId": "r1",
+    "locked": false
+  },
+  {
+    "courseId": "phys-electro",
+    "semesterId": 3,
+    "lectureOptionId": "a",
+    "recitationOptionId": "r1",
+    "locked": false
+  },
+  {
+    "courseId": "cs-networks",
+    "semesterId": 4,
+    "lectureOptionId": "a",
+    "locked": false
+  },
+  {
+    "courseId": "elec-db",
+    "semesterId": 4,
+    "lectureOptionId": "a",
+    "recitationOptionId": "r1",
+    "locked": false
+  },
+  {
+    "courseId": "elec-ml",
+    "semesterId": 4,
+    "lectureOptionId": "a",
+    "recitationOptionId": "r1",
+    "locked": false
+  },
+  {
+    "courseId": "phys-quantum",
+    "semesterId": 5,
+    "lectureOptionId": "a",
+    "recitationOptionId": "r1",
+    "locked": false
+  },
+  {
+    "courseId": "elec-graphics",
+    "semesterId": 5,
+    "lectureOptionId": "a",
+    "recitationOptionId": "r1",
+    "locked": false
+  }
+]

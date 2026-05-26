@@ -1,0 +1,2143 @@
+[
+  {
+    "id": "cs-intro",
+    "code": "20441",
+    "name": "Introduction to Computer Science",
+    "faculty": "cs",
+    "credits": 4,
+    "examDate": "2026-07-02",
+    "prerequisites": [],
+    "description": "Foundations of programming using Java. Algorithms, data structures, OOP principles.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 9,
+            "endHour": 11
+          },
+          {
+            "day": "wed",
+            "startHour": 9,
+            "endHour": 10
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 11,
+            "endHour": 13
+          },
+          {
+            "day": "thu",
+            "startHour": 11,
+            "endHour": 12
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 10,
+            "endHour": 11
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 10,
+            "endHour": 11
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cs-data-structures",
+    "code": "20407",
+    "name": "Data Structures",
+    "faculty": "cs",
+    "credits": 4,
+    "examDate": "2026-07-09",
+    "prerequisites": [
+      "cs-intro"
+    ],
+    "description": "Lists, trees, heaps, hash tables, graphs. Algorithm complexity analysis.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 9,
+            "endHour": 11
+          },
+          {
+            "day": "wed",
+            "startHour": 10,
+            "endHour": 11
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 13,
+            "endHour": 15
+          },
+          {
+            "day": "thu",
+            "startHour": 13,
+            "endHour": 14
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 12,
+            "endHour": 13
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 11,
+            "endHour": 12
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cs-algorithms",
+    "code": "20417",
+    "name": "Algorithms",
+    "faculty": "cs",
+    "credits": 4,
+    "examDate": "2026-07-16",
+    "prerequisites": [
+      "cs-data-structures"
+    ],
+    "description": "Sorting, graph algorithms, dynamic programming, NP-completeness.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 11,
+            "endHour": 13
+          },
+          {
+            "day": "tue",
+            "startHour": 11,
+            "endHour": 12
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 14,
+            "endHour": 16
+          },
+          {
+            "day": "thu",
+            "startHour": 10,
+            "endHour": 11
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 12,
+            "endHour": 13
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 12,
+            "endHour": 13
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cs-os",
+    "code": "20594",
+    "name": "Operating Systems",
+    "faculty": "cs",
+    "credits": 4,
+    "examDate": "2026-07-23",
+    "prerequisites": [
+      "cs-data-structures"
+    ],
+    "description": "Processes, threads, scheduling, memory management, file systems.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 14,
+            "endHour": 16
+          },
+          {
+            "day": "wed",
+            "startHour": 14,
+            "endHour": 15
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 9,
+            "endHour": 11
+          },
+          {
+            "day": "thu",
+            "startHour": 9,
+            "endHour": 10
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 13,
+            "endHour": 14
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 13,
+            "endHour": 14
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cs-networks",
+    "code": "20588",
+    "name": "Computer Networks",
+    "faculty": "cs",
+    "credits": 3,
+    "examDate": "2026-08-02",
+    "prerequisites": [
+      "cs-os"
+    ],
+    "description": "TCP/IP stack, routing protocols, socket programming, network security.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 14,
+            "endHour": 16
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 14,
+            "endHour": 16
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cs-arch",
+    "code": "20471",
+    "name": "Computer Architecture",
+    "faculty": "cs",
+    "credits": 4,
+    "examDate": "2026-07-30",
+    "prerequisites": [
+      "cs-os"
+    ],
+    "description": "ISA design, pipelining, memory hierarchy, caches, I/O, multi-core processors.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 13,
+            "endHour": 15
+          },
+          {
+            "day": "thu",
+            "startHour": 13,
+            "endHour": 14
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 13,
+            "endHour": 15
+          },
+          {
+            "day": "sun",
+            "startHour": 12,
+            "endHour": 13
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 15,
+            "endHour": 16
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 15,
+            "endHour": 16
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cs-se",
+    "code": "20463",
+    "name": "Software Engineering",
+    "faculty": "cs",
+    "credits": 3,
+    "examDate": "2026-08-03",
+    "prerequisites": [
+      "cs-data-structures"
+    ],
+    "description": "Software lifecycle, design patterns, testing, version control, agile methodologies.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 9,
+            "endHour": 11
+          },
+          {
+            "day": "thu",
+            "startHour": 9,
+            "endHour": 10
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 11,
+            "endHour": 13
+          },
+          {
+            "day": "mon",
+            "startHour": 11,
+            "endHour": 12
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 9,
+            "endHour": 10
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 9,
+            "endHour": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cs-toc",
+    "code": "20433",
+    "name": "Theory of Computation",
+    "faculty": "cs",
+    "credits": 3,
+    "examDate": "2026-08-06",
+    "prerequisites": [
+      "cs-algorithms",
+      "math-discrete"
+    ],
+    "description": "Automata, formal languages, Turing machines, decidability, complexity classes.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 14,
+            "endHour": 16
+          },
+          {
+            "day": "wed",
+            "startHour": 13,
+            "endHour": 14
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 15,
+            "endHour": 17
+          },
+          {
+            "day": "mon",
+            "startHour": 15,
+            "endHour": 16
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 12,
+            "endHour": 13
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cs-pl",
+    "code": "20455",
+    "name": "Programming Languages",
+    "faculty": "cs",
+    "credits": 3,
+    "examDate": "2026-07-27",
+    "prerequisites": [
+      "cs-data-structures"
+    ],
+    "description": "Language paradigms, type systems, lambda calculus, functional and logic programming.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 8,
+            "endHour": 10
+          },
+          {
+            "day": "thu",
+            "startHour": 8,
+            "endHour": 9
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 8,
+            "endHour": 10
+          },
+          {
+            "day": "wed",
+            "startHour": 8,
+            "endHour": 9
+          }
+        ]
+      },
+      {
+        "id": "c",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 10,
+            "endHour": 12
+          },
+          {
+            "day": "thu",
+            "startHour": 10,
+            "endHour": 11
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cs-compilers",
+    "code": "20474",
+    "name": "Compilers",
+    "faculty": "cs",
+    "credits": 4,
+    "examDate": "2026-08-12",
+    "prerequisites": [
+      "cs-algorithms",
+      "cs-arch"
+    ],
+    "description": "Lexing, parsing, semantic analysis, intermediate code, optimization, code generation.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 15,
+            "endHour": 17
+          },
+          {
+            "day": "mon",
+            "startHour": 15,
+            "endHour": 16
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 15,
+            "endHour": 17
+          },
+          {
+            "day": "tue",
+            "startHour": 15,
+            "endHour": 16
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 11,
+            "endHour": 12
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 11,
+            "endHour": 12
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cs-ai",
+    "code": "20557",
+    "name": "Artificial Intelligence",
+    "faculty": "cs",
+    "credits": 3,
+    "examDate": "2026-08-15",
+    "prerequisites": [
+      "cs-algorithms",
+      "math-probability"
+    ],
+    "description": "Search, constraint satisfaction, Bayesian networks, reinforcement learning, planning.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 16,
+            "endHour": 17
+          },
+          {
+            "day": "wed",
+            "startHour": 16,
+            "endHour": 17
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 17,
+            "endHour": 18
+          },
+          {
+            "day": "thu",
+            "startHour": 16,
+            "endHour": 17
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cs-dist",
+    "code": "20597",
+    "name": "Distributed Systems",
+    "faculty": "cs",
+    "credits": 3,
+    "examDate": "2026-08-18",
+    "prerequisites": [
+      "cs-networks",
+      "cs-os"
+    ],
+    "description": "Consistency models, consensus algorithms, fault tolerance, MapReduce, distributed storage.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 8,
+            "endHour": 10
+          },
+          {
+            "day": "thu",
+            "startHour": 8,
+            "endHour": 9
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 11,
+            "endHour": 13
+          },
+          {
+            "day": "sun",
+            "startHour": 11,
+            "endHour": 12
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 8,
+            "endHour": 9
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "math-calculus1",
+    "code": "20106",
+    "name": "Calculus I",
+    "faculty": "math",
+    "credits": 5,
+    "examDate": "2026-07-05",
+    "prerequisites": [],
+    "description": "Limits, derivatives, integrals of single-variable functions. Sequences and series.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 8,
+            "endHour": 10
+          },
+          {
+            "day": "tue",
+            "startHour": 8,
+            "endHour": 9
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 8,
+            "endHour": 10
+          },
+          {
+            "day": "wed",
+            "startHour": 8,
+            "endHour": 9
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 10,
+            "endHour": 11
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 9,
+            "endHour": 10
+          }
+        ]
+      },
+      {
+        "id": "r3",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 10,
+            "endHour": 11
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "math-calculus2",
+    "code": "20107",
+    "name": "Calculus II",
+    "faculty": "math",
+    "credits": 5,
+    "examDate": "2026-07-12",
+    "prerequisites": [
+      "math-calculus1"
+    ],
+    "description": "Multivariable calculus, partial derivatives, multiple integrals, vector fields.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 10,
+            "endHour": 12
+          },
+          {
+            "day": "wed",
+            "startHour": 10,
+            "endHour": 11
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 10,
+            "endHour": 12
+          },
+          {
+            "day": "thu",
+            "startHour": 10,
+            "endHour": 11
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 12,
+            "endHour": 13
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 11,
+            "endHour": 12
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "math-linear",
+    "code": "20109",
+    "name": "Linear Algebra",
+    "faculty": "math",
+    "credits": 4,
+    "examDate": "2026-07-19",
+    "prerequisites": [],
+    "description": "Vector spaces, matrices, eigenvalues, linear transformations, applications.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 10,
+            "endHour": 12
+          },
+          {
+            "day": "thu",
+            "startHour": 10,
+            "endHour": 11
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 13,
+            "endHour": 15
+          },
+          {
+            "day": "wed",
+            "startHour": 13,
+            "endHour": 14
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 15,
+            "endHour": 16
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 15,
+            "endHour": 16
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "math-probability",
+    "code": "20425",
+    "name": "Probability Theory",
+    "faculty": "math",
+    "credits": 4,
+    "examDate": "2026-07-26",
+    "prerequisites": [
+      "math-calculus1"
+    ],
+    "description": "Sample spaces, random variables, distributions, limit theorems, Markov chains.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 13,
+            "endHour": 15
+          },
+          {
+            "day": "wed",
+            "startHour": 13,
+            "endHour": 14
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 15,
+            "endHour": 17
+          },
+          {
+            "day": "thu",
+            "startHour": 15,
+            "endHour": 16
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 14,
+            "endHour": 15
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 14,
+            "endHour": 15
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "math-discrete",
+    "code": "20476",
+    "name": "Discrete Mathematics",
+    "faculty": "math",
+    "credits": 3,
+    "examDate": "2026-08-05",
+    "prerequisites": [],
+    "description": "Logic, sets, combinatorics, graph theory, proofs, recursion.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 16,
+            "endHour": 18
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 16,
+            "endHour": 18
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "math-ode",
+    "code": "20222",
+    "name": "Ordinary Differential Equations",
+    "faculty": "math",
+    "credits": 4,
+    "examDate": "2026-07-08",
+    "prerequisites": [
+      "math-calculus2"
+    ],
+    "description": "First and higher-order ODEs, systems of equations, Laplace transforms, series solutions.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 8,
+            "endHour": 10
+          },
+          {
+            "day": "thu",
+            "startHour": 8,
+            "endHour": 9
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 10,
+            "endHour": 12
+          },
+          {
+            "day": "tue",
+            "startHour": 10,
+            "endHour": 11
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 8,
+            "endHour": 9
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 10,
+            "endHour": 11
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "math-analysis",
+    "code": "20277",
+    "name": "Real Analysis",
+    "faculty": "math",
+    "credits": 4,
+    "examDate": "2026-07-15",
+    "prerequisites": [
+      "math-calculus2"
+    ],
+    "description": "Rigorous foundations: metric spaces, sequences, continuity, differentiation, Lebesgue integration.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 15,
+            "endHour": 17
+          },
+          {
+            "day": "sun",
+            "startHour": 15,
+            "endHour": 16
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 15,
+            "endHour": 17
+          },
+          {
+            "day": "mon",
+            "startHour": 15,
+            "endHour": 16
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 13,
+            "endHour": 14
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 13,
+            "endHour": 14
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "math-algebra",
+    "code": "20316",
+    "name": "Abstract Algebra",
+    "faculty": "math",
+    "credits": 4,
+    "examDate": "2026-07-22",
+    "prerequisites": [
+      "math-linear",
+      "math-discrete"
+    ],
+    "description": "Groups, rings, fields, homomorphisms, quotient structures, Galois theory introduction.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 13,
+            "endHour": 15
+          },
+          {
+            "day": "wed",
+            "startHour": 13,
+            "endHour": 14
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 13,
+            "endHour": 15
+          },
+          {
+            "day": "tue",
+            "startHour": 13,
+            "endHour": 14
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 14,
+            "endHour": 15
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 14,
+            "endHour": 15
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "math-numerical",
+    "code": "20230",
+    "name": "Numerical Analysis",
+    "faculty": "math",
+    "credits": 3,
+    "examDate": "2026-07-29",
+    "prerequisites": [
+      "math-calculus2",
+      "math-linear"
+    ],
+    "description": "Root finding, interpolation, numerical integration, linear systems, eigenvalue algorithms.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 11,
+            "endHour": 13
+          },
+          {
+            "day": "mon",
+            "startHour": 11,
+            "endHour": 12
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 11,
+            "endHour": 13
+          },
+          {
+            "day": "sun",
+            "startHour": 12,
+            "endHour": 13
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 12,
+            "endHour": 13
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "phys-mechanics",
+    "code": "20130",
+    "name": "Classical Mechanics",
+    "faculty": "physics",
+    "credits": 4,
+    "examDate": "2026-07-07",
+    "prerequisites": [
+      "math-calculus1"
+    ],
+    "description": "Newtonian mechanics, Lagrangian formulation, oscillations, rigid body dynamics.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 15,
+            "endHour": 17
+          },
+          {
+            "day": "tue",
+            "startHour": 14,
+            "endHour": 15
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 15,
+            "endHour": 17
+          },
+          {
+            "day": "wed",
+            "startHour": 15,
+            "endHour": 16
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 14,
+            "endHour": 15
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 15,
+            "endHour": 16
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "phys-electro",
+    "code": "20131",
+    "name": "Electromagnetism",
+    "faculty": "physics",
+    "credits": 4,
+    "examDate": "2026-07-14",
+    "prerequisites": [
+      "phys-mechanics",
+      "math-calculus2"
+    ],
+    "description": "Electric and magnetic fields, Maxwell equations, electromagnetic waves.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 17,
+            "endHour": 19
+          },
+          {
+            "day": "thu",
+            "startHour": 16,
+            "endHour": 17
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 17,
+            "endHour": 19
+          },
+          {
+            "day": "wed",
+            "startHour": 16,
+            "endHour": 17
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 16,
+            "endHour": 17
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 16,
+            "endHour": 17
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "phys-quantum",
+    "code": "20132",
+    "name": "Quantum Mechanics",
+    "faculty": "physics",
+    "credits": 4,
+    "examDate": "2026-08-07",
+    "prerequisites": [
+      "phys-electro",
+      "math-linear"
+    ],
+    "description": "Wave functions, Schr\u00f6dinger equation, operators, angular momentum, spin.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 17,
+            "endHour": 19
+          },
+          {
+            "day": "thu",
+            "startHour": 17,
+            "endHour": 18
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 17,
+            "endHour": 19
+          },
+          {
+            "day": "thu",
+            "startHour": 17,
+            "endHour": 18
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 19,
+            "endHour": 20
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 19,
+            "endHour": 20
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "phys-thermo",
+    "code": "20133",
+    "name": "Thermodynamics",
+    "faculty": "physics",
+    "credits": 4,
+    "examDate": "2026-07-10",
+    "prerequisites": [
+      "phys-mechanics",
+      "math-calculus2"
+    ],
+    "description": "Laws of thermodynamics, entropy, thermodynamic potentials, phase transitions.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 8,
+            "endHour": 10
+          },
+          {
+            "day": "wed",
+            "startHour": 8,
+            "endHour": 9
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 8,
+            "endHour": 10
+          },
+          {
+            "day": "thu",
+            "startHour": 8,
+            "endHour": 9
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 8,
+            "endHour": 9
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 9,
+            "endHour": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "phys-stat",
+    "code": "20134",
+    "name": "Statistical Mechanics",
+    "faculty": "physics",
+    "credits": 4,
+    "examDate": "2026-07-17",
+    "prerequisites": [
+      "phys-thermo",
+      "math-probability"
+    ],
+    "description": "Ensemble theory, partition functions, phase transitions, Bose-Einstein and Fermi-Dirac statistics.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 16,
+            "endHour": 18
+          },
+          {
+            "day": "mon",
+            "startHour": 16,
+            "endHour": 17
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 16,
+            "endHour": 18
+          },
+          {
+            "day": "tue",
+            "startHour": 16,
+            "endHour": 17
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 16,
+            "endHour": 17
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 18,
+            "endHour": 19
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "phys-optics",
+    "code": "20135",
+    "name": "Optics and Waves",
+    "faculty": "physics",
+    "credits": 3,
+    "examDate": "2026-07-24",
+    "prerequisites": [
+      "phys-electro"
+    ],
+    "description": "Wave optics, interference, diffraction, lasers, fiber optics, Fourier optics.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 18,
+            "endHour": 20
+          },
+          {
+            "day": "thu",
+            "startHour": 18,
+            "endHour": 19
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 18,
+            "endHour": 19
+          },
+          {
+            "day": "wed",
+            "startHour": 18,
+            "endHour": 19
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 18,
+            "endHour": 19
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "elec-ml",
+    "code": "36350",
+    "name": "Machine Learning",
+    "faculty": "misc",
+    "credits": 4,
+    "examDate": "2026-07-21",
+    "prerequisites": [
+      "math-linear",
+      "math-probability"
+    ],
+    "description": "Supervised and unsupervised learning, neural networks, model evaluation.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 11,
+            "endHour": 13
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 11,
+            "endHour": 13
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 11,
+            "endHour": 12
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 15,
+            "endHour": 16
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "elec-db",
+    "code": "36201",
+    "name": "Databases",
+    "faculty": "misc",
+    "credits": 3,
+    "examDate": "2026-07-28",
+    "prerequisites": [
+      "cs-data-structures"
+    ],
+    "description": "Relational model, SQL, normalization, transactions, query optimization.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 16,
+            "endHour": 18
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 11,
+            "endHour": 13
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 16,
+            "endHour": 17
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "elec-graphics",
+    "code": "36301",
+    "name": "Computer Graphics",
+    "faculty": "misc",
+    "credits": 3,
+    "examDate": "2026-08-10",
+    "prerequisites": [
+      "math-linear"
+    ],
+    "description": "Rasterization, ray tracing, shaders, 3D transforms, OpenGL pipeline.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 12,
+            "endHour": 14
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 12,
+            "endHour": 14
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 11,
+            "endHour": 12
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 11,
+            "endHour": 12
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "misc-econ",
+    "code": "10142",
+    "name": "Introduction to Economics",
+    "faculty": "misc",
+    "credits": 3,
+    "examDate": "2026-08-01",
+    "prerequisites": [],
+    "description": "Microeconomics and macroeconomics fundamentals. Supply, demand, market equilibrium, GDP, inflation.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 9,
+            "endHour": 11
+          },
+          {
+            "day": "thu",
+            "startHour": 9,
+            "endHour": 10
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 9,
+            "endHour": 10
+          },
+          {
+            "day": "sun",
+            "startHour": 16,
+            "endHour": 17
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "misc-game",
+    "code": "10236",
+    "name": "Game Theory",
+    "faculty": "misc",
+    "credits": 3,
+    "examDate": "2026-08-04",
+    "prerequisites": [
+      "math-probability"
+    ],
+    "description": "Nash equilibria, cooperative and non-cooperative games, mechanism design, auctions.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 11,
+            "endHour": 13
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 11,
+            "endHour": 13
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "misc-bioinfo",
+    "code": "36520",
+    "name": "Bioinformatics",
+    "faculty": "misc",
+    "credits": 3,
+    "examDate": "2026-08-08",
+    "prerequisites": [
+      "math-probability"
+    ],
+    "description": "Sequence alignment, phylogenetics, protein structure prediction, genomic data analysis.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 18,
+            "endHour": 19
+          },
+          {
+            "day": "thu",
+            "startHour": 18,
+            "endHour": 19
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 17,
+            "endHour": 18
+          },
+          {
+            "day": "sun",
+            "startHour": 17,
+            "endHour": 18
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 17,
+            "endHour": 18
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "misc-or",
+    "code": "36400",
+    "name": "Operations Research",
+    "faculty": "misc",
+    "credits": 3,
+    "examDate": "2026-08-11",
+    "prerequisites": [
+      "math-linear",
+      "math-probability"
+    ],
+    "description": "Linear programming, simplex method, network flows, integer programming, queuing theory.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 17,
+            "endHour": 19
+          },
+          {
+            "day": "wed",
+            "startHour": 17,
+            "endHour": 18
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 17,
+            "endHour": 19
+          },
+          {
+            "day": "thu",
+            "startHour": 17,
+            "endHour": 18
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 17,
+            "endHour": 18
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "misc-cogsci",
+    "code": "10252",
+    "name": "Cognitive Science",
+    "faculty": "misc",
+    "credits": 3,
+    "examDate": "2026-08-14",
+    "prerequisites": [],
+    "description": "Perception, memory, language, decision-making. Interdisciplinary: psychology, neuroscience, AI.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "wed",
+            "startHour": 9,
+            "endHour": 11
+          },
+          {
+            "day": "sun",
+            "startHour": 9,
+            "endHour": 10
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 9,
+            "endHour": 11
+          },
+          {
+            "day": "mon",
+            "startHour": 9,
+            "endHour": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "misc-datalab",
+    "code": "36210",
+    "name": "Data Analysis Lab",
+    "faculty": "misc",
+    "credits": 2,
+    "examDate": "2026-08-17",
+    "prerequisites": [],
+    "description": "Hands-on data analysis using Python and R. Data cleaning, visualization, basic statistics.",
+    "lectureOptions": [],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "mon",
+            "startHour": 16,
+            "endHour": 18
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 16,
+            "endHour": 18
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "misc-scicomp",
+    "code": "36410",
+    "name": "Scientific Computing",
+    "faculty": "misc",
+    "credits": 3,
+    "examDate": "2026-08-20",
+    "prerequisites": [
+      "math-numerical",
+      "cs-intro"
+    ],
+    "description": "High-performance scientific computation, parallel algorithms, simulation techniques, HPC tools.",
+    "lectureOptions": [
+      {
+        "id": "a",
+        "slots": [
+          {
+            "day": "tue",
+            "startHour": 14,
+            "endHour": 16
+          },
+          {
+            "day": "wed",
+            "startHour": 14,
+            "endHour": 15
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "slots": [
+          {
+            "day": "sun",
+            "startHour": 14,
+            "endHour": 15
+          },
+          {
+            "day": "mon",
+            "startHour": 14,
+            "endHour": 15
+          }
+        ]
+      }
+    ],
+    "recitationOptions": [
+      {
+        "id": "r1",
+        "slots": [
+          {
+            "day": "thu",
+            "startHour": 12,
+            "endHour": 13
+          }
+        ]
+      }
+    ]
+  }
+]
