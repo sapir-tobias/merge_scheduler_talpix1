@@ -100,7 +100,7 @@ export default function SchedulerPage() {
                 key={y}
                 data-testid={`${TEST_IDS.NAV.YEAR_OPTION}-${y}`}
                 onClick={() => setYear(y)}
-                className={cn(styles.yearBtn, year === y && styles.tabActive)}
+                className={cn(styles.yearBtn, year === y && styles.yearBtnActive)}
               >
                 {y}
               </button>

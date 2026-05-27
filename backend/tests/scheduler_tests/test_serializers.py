@@ -17,6 +17,7 @@ WIRE_KEYS = {
     "hasExam",
     "mandatoryAttendance",
     "prerequisites",
+    "prerequisiteNames",
     "description",
 }
 
@@ -32,6 +33,22 @@ def test_serialize_course_shape_matches_frontend_contract():
     assert wire["term"] in {"a", "b", "either", "yearly", "summer", ""}
     assert isinstance(wire["hasExam"], bool)
     assert isinstance(wire["mandatoryAttendance"], bool)
+
+
+def test_prerequisite_names_resolved_from_source():
+    # A prereq carrying a name_he must surface as a {course_number: name} entry,
+    # so the UI never dead-ends on a bare numeric id.
+    course = {
+        "course_number": "1", "name_he": "x", "groups": [],
+        "prerequisites": [
+            {"course_number": "76639", "name_he": "מבנה המחשב"},
+            {"course_number": "00000"},  # no name -> excluded from the map, still in ids
+        ],
+    }
+    wire = serializers.serialize_course(course)
+    assert wire["prerequisites"] == ["76639", "00000"]
+    assert wire["prerequisiteNames"]["76639"] == "מבנה המחשב"
+    assert "00000" not in wire["prerequisiteNames"]
 
 
 def test_term_mapping():

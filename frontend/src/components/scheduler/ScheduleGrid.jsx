@@ -112,11 +112,12 @@ export default function ScheduleGrid({
         />
       ))}
 
-      {/* Course-course collision overlays */}
+      {/* Course-course collision overlays (red diagonal stripe = time clash) */}
       {collisionZones.map((zone, i) => (
         <div
           key={`col-${i}`}
           className={styles.collisionZone}
+          title="Time conflict: two courses overlap in this slot"
           style={{ ...blockStyle(zone.startHour, zone.endHour, zone.dayIndex), ...COLLISION_STRIPE }}
         />
       ))}
@@ -126,6 +127,7 @@ export default function ScheduleGrid({
         <div
           key={`bcol-${i}`}
           className={styles.collisionZone}
+          title="Conflict: this course overlaps a time you blocked off"
           style={{ ...blockStyle(zone.startHour, zone.endHour, zone.dayIndex), ...COLLISION_STRIPE }}
         />
       ))}

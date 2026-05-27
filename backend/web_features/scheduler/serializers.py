@@ -162,6 +162,13 @@ def serialize_course(course: Dict[str, Any]) -> Dict[str, Any]:
             for p in (course.get("prerequisites") or [])
             if p.get("course_number")
         ],
+        # course_number -> Hebrew name, so the UI can label a prerequisite even
+        # when that course is not itself in the catalogue (avoids bare-ID dead-ends).
+        "prerequisiteNames": {
+            str(p["course_number"]): (p.get("name_he") or p.get("name_en") or "")
+            for p in (course.get("prerequisites") or [])
+            if p.get("course_number") and (p.get("name_he") or p.get("name_en"))
+        },
         "description": course.get("name_en") or course.get("remark") or "",
     }
 

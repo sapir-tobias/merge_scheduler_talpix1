@@ -15,6 +15,7 @@ const TID = {
     CONTAINER: 'scheduler-nav',
     TAB_PLAN: 'nav-tab-plan',
     TAB_SEM_A: 'nav-tab-sem-a',
+    YEAR_OPTION: 'nav-year-option',
     EXPORT_BUTTON: 'nav-export-button',
     IMPORT_INPUT: 'nav-import-input',
   },
@@ -97,4 +98,53 @@ test('export downloads the plan as JSON', async ({ page }) => {
   ]);
   expect(download.suggestedFilename()).toContain('degree-plan');
   await expect(page.getByTestId(TID.NAV.IMPORT_INPUT)).toHaveCount(1);
+});
+
+// #1 — state survives a browser refresh (localStorage hydration)
+test('user changes persist across a page reload', async ({ page }) => {
+  await page.getByTestId(TID.NAV.TAB_SEM_A).click();
+  const chips = page.locator('[data-testid^="semester-course-chip-"]');
+  await expect(chips.first()).toBeVisible();
+  const before = await chips.count();
+  expect(before).toBeGreaterThan(0);
+
+  await page.locator('[data-testid^="semester-course-remove-"]').first().click();
+  await expect(chips).toHaveCount(before - 1);
+
+  await page.reload();
+  await expect(page.getByTestId(TID.NAV.CONTAINER)).toBeVisible({ timeout: 15000 });
+  await expect(page.getByTestId(TID.APP_LOADING)).toHaveCount(0);
+  await page.getByTestId(TID.NAV.TAB_SEM_A).click();
+  await expect(page.locator('[data-testid^="semester-course-chip-"]')).toHaveCount(before - 1);
+});
+
+// #2 — credit filter actually narrows the Plan-page (noScoring) catalogue
+test('credit filter narrows the Plan-page catalogue', async ({ page }) => {
+  const rows = page.getByTestId(TID.CATALOGUE.COURSE_LIST).locator('[data-testid^="course-item-"]');
+  await expect(rows.first()).toBeVisible({ timeout: 15000 });
+  const before = await rows.count();
+  await page.getByTestId(TID.CATALOGUE.FILTER_TOGGLE).click();
+  // Set the range value via the native setter so React's onChange fires.
+  await page.getByTestId(TID.CATALOGUE.CREDITS_MAX).evaluate(el => {
+    const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+    setter.call(el, '0');
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await expect.poll(async () => rows.count()).toBeLessThan(before);
+});
+
+// #4 — a placed course can be toggled mandatory (amber when active)
+test('a placed course can be toggled mandatory', async ({ page }) => {
+  await page.getByTestId(TID.NAV.TAB_SEM_A).click();
+  const btn = page.locator('[data-testid^="semester-course-mandatory-"]').first();
+  await expect(btn).toBeAttached();
+  await btn.click();
+  await expect(btn).toHaveCSS('color', 'rgb(245, 158, 11)');
+});
+
+// #6 — year selector toggles a visible active state
+test('year selector shows an active state when clicked', async ({ page }) => {
+  const y2 = page.getByTestId(`${TID.NAV.YEAR_OPTION}-2`);
+  await y2.click();
+  await expect(y2).toHaveCSS('background-color', 'rgb(255, 255, 255)');
 });

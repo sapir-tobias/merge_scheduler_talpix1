@@ -18,7 +18,11 @@ const FACULTY_BADGE = {
 export default function CourseItem({ course, scoreInfo, added, addedToCurrentSem, onAdd, draggable }) {
   const { courseMap } = useCoursesStore()
   const [expanded, setExpanded] = useState(false)
-  const prereqNames = course.prerequisites.map(id => courseMap.get(id)?.name ?? id)
+  // Prefer the catalogue course name; fall back to the serializer-provided
+  // prerequisite name; only then to the bare course number.
+  const prereqNames = course.prerequisites.map(
+    id => courseMap.get(id)?.name ?? course.prerequisiteNames?.[id] ?? id
+  )
 
   return (
     <div

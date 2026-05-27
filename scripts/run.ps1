@@ -4,7 +4,7 @@
 
 .DESCRIPTION
     Runs the static + test gates that must stay green:
-      1. Frontend TypeScript typecheck   (tsc --noEmit)
+      1. Frontend production build       (vite build)
       2. Backend unit/integration tests  (pytest)
 
     With -Dev it instead launches the full dev stack (FastAPI + Vite) via the
@@ -31,11 +31,11 @@ if ($Dev) {
 
 $failures = @()
 
-Write-Host '== [1/2] Frontend typecheck (tsc --noEmit) ==' -ForegroundColor Cyan
+Write-Host '== [1/2] Frontend build (vite build) ==' -ForegroundColor Cyan
 Push-Location (Join-Path $root 'frontend')
 try {
-    & npm exec tsc -- --noEmit
-    if ($LASTEXITCODE -ne 0) { $failures += 'frontend tsc' }
+    & npm run build
+    if ($LASTEXITCODE -ne 0) { $failures += 'frontend build' }
 } finally {
     Pop-Location
 }

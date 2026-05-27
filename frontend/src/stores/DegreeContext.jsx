@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from 'react'
+import { createContext, useContext, useEffect, useReducer } from 'react'
 
 // Credit bounds span the real dataset (0–20 cr); a narrower default would
 // silently hide ~45 of 353 courses (0-credit seminars, 7–20-credit projects).
@@ -12,8 +12,49 @@ const DEFAULT_FILTERS = {
   searchQuery: '',
 }
 
+const STORAGE_KEY = 'degree-planner-state'
+
+// Read the user's saved board from localStorage (faculties array -> Set).
+// Returns null when nothing is stored or the payload is unreadable.
+function loadPersisted() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) return null
+    const s = JSON.parse(raw)
+    return {
+      placed: s.placed ?? [],
+      exemptions: s.exemptions ?? [],
+      blockers: s.blockers ?? [],
+      activeSemester: s.activeSemester ?? 1,
+      filters: {
+        ...DEFAULT_FILTERS,
+        ...(s.filters ?? {}),
+        faculties: new Set(s.filters?.faculties ?? ['cs', 'math', 'physics', 'misc']),
+      },
+    }
+  } catch {
+    return null
+  }
+}
+
+// Persist immediately on every change (faculties Set -> array for JSON).
+function persist(state) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      placed: state.placed,
+      exemptions: state.exemptions,
+      blockers: state.blockers,
+      activeSemester: state.activeSemester,
+      filters: { ...state.filters, faculties: [...state.filters.faculties] },
+    }))
+  } catch {
+    // storage unavailable (private mode / quota) — non-fatal
+  }
+}
+
 function makeInitialState(initialPlaced) {
-  return {
+  // Prefer the user's saved board; fall back to the backend starter placement.
+  return loadPersisted() ?? {
     placed: initialPlaced,
     exemptions: [],
     filters: DEFAULT_FILTERS,
@@ -54,34 +95,18 @@ function reducer(state, action) {
     }
 
     case 'TOGGLE_LOCK':
-      return {
-        ...state,
-        placed: state.placed.map(p =>
-          p.courseId === action.courseId && p.semesterId === action.semesterId
-            ? { ...p, locked: !p.locked }
-            : p
-        ),
-      }
+      return { ...state, placed: mapEntry(state.placed, action, p => ({ ...p, locked: !p.locked })) }
+
+    case 'TOGGLE_MANDATORY':
+      // User-controlled "must take" flag on a placed course (distinct from the
+      // derived mandatoryAttendance metadata). Writable via the timetable UI.
+      return { ...state, placed: mapEntry(state.placed, action, p => ({ ...p, mandatory: !p.mandatory })) }
 
     case 'SET_LECTURE_OPTION':
-      return {
-        ...state,
-        placed: state.placed.map(p =>
-          p.courseId === action.courseId && p.semesterId === action.semesterId
-            ? { ...p, lectureOptionId: action.optionId }
-            : p
-        ),
-      }
+      return { ...state, placed: mapEntry(state.placed, action, p => ({ ...p, lectureOptionId: action.optionId })) }
 
     case 'SET_RECITATION_OPTION':
-      return {
-        ...state,
-        placed: state.placed.map(p =>
-          p.courseId === action.courseId && p.semesterId === action.semesterId
-            ? { ...p, recitationOptionId: action.optionId }
-            : p
-        ),
-      }
+      return { ...state, placed: mapEntry(state.placed, action, p => ({ ...p, recitationOptionId: action.optionId })) }
 
     case 'SET_FILTERS':
       return { ...state, filters: { ...state.filters, ...action.filters } }
@@ -116,10 +141,18 @@ function reducer(state, action) {
   }
 }
 
+// Apply `fn` to the placed entry matching action.courseId + action.semesterId.
+function mapEntry(placed, action, fn) {
+  return placed.map(p =>
+    p.courseId === action.courseId && p.semesterId === action.semesterId ? fn(p) : p
+  )
+}
+
 const DegreeContext = createContext(null)
 
 export function DegreeProvider({ children, initialPlaced }) {
   const [state, dispatch] = useReducer(reducer, initialPlaced, makeInitialState)
+  useEffect(() => { persist(state) }, [state])
   return <DegreeContext.Provider value={{ state, dispatch }}>{children}</DegreeContext.Provider>
 }
 

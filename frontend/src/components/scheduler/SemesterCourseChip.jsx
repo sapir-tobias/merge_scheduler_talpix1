@@ -1,5 +1,5 @@
 import { createPortal } from 'react-dom'
-import { X, ChevronDown, CheckCircle2, AlertTriangle, AlertCircle } from 'lucide-react'
+import { X, ChevronDown, CheckCircle2, AlertTriangle, AlertCircle, Flag } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import Tooltip from '../Tooltip'
 import styles from '../SemesterCourseList.module.css'
@@ -83,6 +83,16 @@ export default function SemesterCourseChip({
           <ChevronDown size={11} className={cn(styles.chevron, !isExpanded && styles.chevronCollapsed)} />
         </button>
       )}
+
+      <Tooltip text={placed.mandatory ? 'Mandatory — click to unmark' : 'Mark as mandatory'} side="top">
+        <button
+          data-testid={`${TEST_IDS.SEMESTER_COURSE_LIST.MANDATORY_BUTTON}-${placed.courseId}`}
+          onClick={() => dispatch({ type: 'TOGGLE_MANDATORY', courseId: placed.courseId, semesterId })}
+          className={cn(styles.mandatoryBtn, placed.mandatory && styles.mandatoryBtnActive)}
+        >
+          <Flag size={11} />
+        </button>
+      </Tooltip>
 
       <button
         data-testid={`${TEST_IDS.SEMESTER_COURSE_LIST.REMOVE_BUTTON}-${placed.courseId}`}

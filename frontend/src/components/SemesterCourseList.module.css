@@ -130,6 +130,23 @@
   opacity: 1;
 }
 
+/* Mandatory ("must take") toggle — amber flag, stays visible once set */
+.mandatoryBtn {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: #d6d3d1;
+  transition: color 0.15s ease, opacity 0.15s ease;
+  opacity: 0;
+  flex-shrink: 0;
+}
+.mandatoryBtn:hover { color: #f59e0b; }
+.chip:hover .mandatoryBtn { opacity: 1; }
+.mandatoryBtnActive {
+  color: #f59e0b;
+  opacity: 1;
+}
+
 .combosTooltip {
   flex-shrink: 0;
   display: flex;

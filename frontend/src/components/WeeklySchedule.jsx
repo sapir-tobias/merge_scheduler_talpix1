@@ -73,9 +73,10 @@ export default function WeeklySchedule({ semesterId }) {
           <div
             key={day.key}
             className={cn(styles.dayHeader, day.key === todayKey && styles.dayHeaderToday)}
+            title={day.key === todayKey ? 'Today' : undefined}
           >
             <span className={cn(styles.dayLabel, day.key === todayKey && styles.dayLabelToday)}>
-              {day.label}
+              {day.label}{day.key === todayKey ? ' •' : ''}
             </span>
           </div>
         ))}

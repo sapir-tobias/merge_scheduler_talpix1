@@ -90,6 +90,7 @@ export const TEST_IDS = {
     BAR: 'semester-course-list',
     CHIP: 'semester-course-chip',             // suffix with -{courseId}
     EXPAND_BUTTON: 'semester-course-expand',  // suffix with -{courseId}
+    MANDATORY_BUTTON: 'semester-course-mandatory', // suffix with -{courseId}
     REMOVE_BUTTON: 'semester-course-remove',  // suffix with -{courseId}
     COMBINATIONS_BUTTON: 'semester-combinations-button',
   },

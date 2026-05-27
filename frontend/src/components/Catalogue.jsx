@@ -32,6 +32,7 @@ export default function Catalogue({ semesterId: propSemId, showSemesterSelector,
     ? courses
         .filter(c =>
           filters.faculties.has(c.faculty) &&
+          c.credits >= filters.minCredits && c.credits <= filters.maxCredits &&
           (!filters.searchQuery ||
             c.name.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
             c.code.toLowerCase().includes(filters.searchQuery.toLowerCase()))
