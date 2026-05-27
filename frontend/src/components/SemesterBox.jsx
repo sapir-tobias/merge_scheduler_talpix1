@@ -3,9 +3,8 @@ import { useDegree } from '../stores/DegreeContext'
 import { useCoursesStore } from '../stores/CoursesStore'
 import { pickBestOption, pickFirstRecitationOption } from '../lib/scoring'
 import { cn } from '../lib/utils'
-import { X, GripVertical, AlertTriangle, AlertCircle, CheckCircle2, ChevronDown } from 'lucide-react'
 import MiniExamCalendar from './MiniExamCalendar'
-import Tooltip from './Tooltip'
+import SemesterBoxBody, { SemesterHealthBadge } from './scheduler/SemesterBoxBody'
 import { TEST_IDS } from '../testIds'
 import styles from './SemesterBox.module.css'
 
@@ -106,92 +105,20 @@ export default function SemesterBox({ semesterId, showCalendar, onDragOver, onDr
   const semStatus = (collisions > 0 || prereqViolations > 0) ? 'critical' : closeExamPairs > 0 ? 'warning' : 'ok'
 
   const courseList = (
-    <>
-      {placed.map(p => {
-        const course = courseMap.get(p.courseId)
-        if (!course) return null
-        const isExpanded = expandedCourseId === p.courseId
-        const satisfied = new Set([
-          ...state.placed.filter(pl => pl.semesterId < semesterId).map(pl => pl.courseId),
-          ...state.exemptions,
-        ])
-
-        return (
-          <div key={p.courseId}>
-            {/* Chip row */}
-            <div
-              draggable
-              data-testid={`${TEST_IDS.SEMESTER_BOX.COURSE_CHIP}-${p.courseId}`}
-              onDragStart={e => {
-                e.dataTransfer.setData('courseId', p.courseId)
-                e.dataTransfer.setData('fromSem', String(semesterId))
-                e.dataTransfer.setData('source', 'semester')
-              }}
-              className={cn(styles.chip, isExpanded && styles.chipExpanded)}
-            >
-              <GripVertical size={10} className={styles.grip} />
-              <span className={cn(styles.pill, FACULTY_PILL[course.faculty])}>
-                {course.code}
-              </span>
-              <span
-                className={styles.chipName}
-                onClick={e => { e.stopPropagation(); setExpandedCourseId(isExpanded ? null : p.courseId) }}
-              >
-                {course.name}
-              </span>
-              <ChevronDown
-                size={10}
-                data-testid={`${TEST_IDS.SEMESTER_BOX.EXPAND_BUTTON}-${p.courseId}`}
-                className={cn(styles.chevron, isExpanded && styles.chevronExpanded)}
-                onClick={e => { e.stopPropagation(); setExpandedCourseId(isExpanded ? null : p.courseId) }}
-              />
-              <button
-                data-testid={`${TEST_IDS.SEMESTER_BOX.REMOVE_BUTTON}-${p.courseId}`}
-                onClick={() => dispatch({ type: 'REMOVE_COURSE', courseId: p.courseId, semesterId })}
-                className={styles.removeBtn}
-              >
-                <X size={10} />
-              </button>
-            </div>
-
-            {/* Expansion panel */}
-            {isExpanded && (
-              <div className={styles.expansion}>
-                <p className={styles.creditsLine}>
-                  <span className={styles.creditsValue}>{course.credits}</span> credit{course.credits !== 1 ? 's' : ''}
-                </p>
-                {course.prerequisites.length > 0 ? (
-                  <div>
-                    <p className={styles.prereqLabel}>Prerequisites</p>
-                    <div className={styles.prereqList}>
-                      {course.prerequisites.map(reqId => {
-                        const reqCourse = courseMap.get(reqId)
-                        const isMet = satisfied.has(reqId)
-                        return (
-                          <div
-                            key={reqId}
-                            className={cn(styles.prereqItem, isMet ? styles.prereqMet : styles.prereqUnmet)}
-                            onClick={isMet ? undefined : () => handleAddPrereq(reqId)}
-                          >
-                            <span className={styles.prereqName}>{reqCourse?.name ?? reqId}</span>
-                            {!isMet && <span className={styles.prereqAdd}>+ add</span>}
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-                ) : (
-                  <p className={styles.noPrereq}>No prerequisites</p>
-                )}
-              </div>
-            )}
-          </div>
-        )
-      })}
-      {placed.length === 0 && (
-        <p className={styles.emptyDrop}>Drop courses here</p>
-      )}
-    </>
+    <SemesterBoxBody
+      placed={placed}
+      courseMap={courseMap}
+      semesterId={semesterId}
+      allPlaced={state.placed}
+      exemptions={state.exemptions}
+      expandedCourseId={expandedCourseId}
+      setExpandedCourseId={setExpandedCourseId}
+      onAddPrereq={handleAddPrereq}
+      dispatch={dispatch}
+      styles={styles}
+      facultyPill={FACULTY_PILL}
+      TEST_IDS={TEST_IDS}
+    />
   )
 
   return (
@@ -206,14 +133,7 @@ export default function SemesterBox({ semesterId, showCalendar, onDragOver, onDr
       <div className={styles.header}>
         <div className={styles.headerLeft}>
           {placed.length > 0 && (
-            <Tooltip text={semIssues.length > 0 ? semIssues.join(' · ') : 'No issues'} side="top">
-              {semStatus === 'critical'
-                ? <AlertCircle size={11} className={cn(styles.statusIcon, styles.statusCritical)} />
-                : semStatus === 'warning'
-                  ? <AlertTriangle size={11} className={cn(styles.statusIcon, styles.statusWarning)} />
-                  : <CheckCircle2 size={11} className={cn(styles.statusIcon, styles.statusOk)} />
-              }
-            </Tooltip>
+            <SemesterHealthBadge semStatus={semStatus} semIssues={semIssues} styles={styles} />
           )}
           <span className={styles.title}>
             Semester {semesterId}

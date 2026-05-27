@@ -4,6 +4,8 @@ import { cn } from '../lib/utils'
 import Tooltip from './Tooltip'
 import { useCoursesStore } from '../stores/CoursesStore'
 import { TEST_IDS } from '../testIds'
+import { FACULTY_LABEL, TERM_LABEL } from '../constants'
+import CourseItemDetail from './scheduler/CourseItemDetail'
 import styles from './CourseItem.module.css'
 
 const FACULTY_BADGE = {
@@ -11,29 +13,6 @@ const FACULTY_BADGE = {
   math:    styles.badgeMath,
   physics: styles.badgePhysics,
   misc:    styles.badgeMisc,
-}
-const FACULTY_LABEL = {
-  cs: 'CS', math: 'Math', physics: 'Phys', misc: 'Misc',
-}
-const DAY_LABEL = {
-  sun: 'Sun', mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu',
-}
-const TERM_LABEL = {
-  a: 'Sem A', b: 'Sem B', either: 'A / B', yearly: 'Yearly', summer: 'Summer',
-}
-
-function formatTime(h) {
-  const hour = Math.floor(h)
-  const min = h % 1 === 0.5 ? '30' : '00'
-  const suffix = hour >= 12 ? 'PM' : 'AM'
-  const display = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour
-  return `${display}:${min}${suffix}`
-}
-
-function formatExamDate(dateStr) {
-  if (!dateStr) return 'No exam'
-  const d = new Date(dateStr)
-  return isNaN(d.getTime()) ? 'No exam' : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
 export default function CourseItem({ course, scoreInfo, added, addedToCurrentSem, onAdd, draggable }) {
@@ -121,86 +100,11 @@ export default function CourseItem({ course, scoreInfo, added, addedToCurrentSem
 
       {/* Expanded detail */}
       {expanded && (
-        <div className={styles.detail}>
-          <p className={styles.description}>{course.description}</p>
-
-          {course.lectureOptions.length > 0 && (
-            <div>
-              <p className={styles.sectionLabel}>Lecture times</p>
-              {course.lectureOptions.map(opt => (
-                <div key={opt.id} className={styles.optionRow}>
-                  <span className={styles.optionId}>{opt.id.toUpperCase()}:</span>
-                  {opt.slots.map((slot, si) => (
-                    <span key={si} className={styles.lectureSlot}>
-                      {DAY_LABEL[slot.day]} {formatTime(slot.startHour)}–{formatTime(slot.endHour)}
-                    </span>
-                  ))}
-                </div>
-              ))}
-            </div>
-          )}
-          {course.lectureOptions.length === 0 && (
-            <p className={styles.labOnly}>Lab / recitation only — no fixed lectures</p>
-          )}
-          {course.recitationOptions && course.recitationOptions.length > 0 && (
-            <div>
-              <p className={styles.sectionLabel}>Recitation times</p>
-              {course.recitationOptions.map(opt => (
-                <div key={opt.id} className={styles.optionRow}>
-                  <span className={styles.optionId}>{opt.id.toUpperCase()}:</span>
-                  {opt.slots.map((slot, si) => (
-                    <span key={si} className={styles.recitationSlot}>
-                      {DAY_LABEL[slot.day]} {formatTime(slot.startHour)}–{formatTime(slot.endHour)}
-                    </span>
-                  ))}
-                </div>
-              ))}
-            </div>
-          )}
-
-          <div className={styles.statRow}>
-            <div>
-              <p className={styles.sectionLabel}>Exam</p>
-              <p className={styles.statValue}>{formatExamDate(course.examDate)}</p>
-            </div>
-            {course.mandatoryAttendance && (
-              <div>
-                <p className={styles.sectionLabel}>Attendance</p>
-                <p className={styles.statValue}>Required</p>
-              </div>
-            )}
-            {scoreInfo.examSeparationMin >= 0 && (
-              <div>
-                <p className={styles.sectionLabel}>Gap</p>
-                <p className={scoreInfo.critical ? styles.statValueCritical : styles.statValue}>
-                  {scoreInfo.examSeparationMin}d
-                </p>
-              </div>
-            )}
-            {scoreInfo.collisions > 0 && (
-              <div>
-                <p className={styles.sectionLabel}>Collisions</p>
-                <p className={styles.statValueWarning}>{scoreInfo.collisions}</p>
-              </div>
-            )}
-          </div>
-
-          {prereqNames.length > 0 && (
-            <div>
-              <p className={styles.sectionLabel}>Prerequisites</p>
-              <div className={styles.prereqRow}>
-                {prereqNames.map(name => (
-                  <span key={name} className={cn(
-                    styles.prereqTag,
-                    scoreInfo.prerequisitesMet ? styles.prereqMet : styles.prereqUnmet
-                  )}>
-                    {name}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+        <CourseItemDetail
+          course={course}
+          scoreInfo={scoreInfo}
+          prereqNames={prereqNames}
+        />
       )}
     </div>
   )
