@@ -1,0 +1,130 @@
+import { createContext, useContext, useReducer } from 'react'
+
+// Credit bounds span the real dataset (0–20 cr); a narrower default would
+// silently hide ~45 of 353 courses (0-credit seminars, 7–20-credit projects).
+const DEFAULT_FILTERS = {
+  minCredits: 0,
+  maxCredits: 20,
+  maxCollisions: 0,
+  minExamSeparationDays: 3,
+  ignorePrerequisites: false,
+  faculties: new Set(['cs', 'math', 'physics', 'misc']),
+  searchQuery: '',
+}
+
+function makeInitialState(initialPlaced) {
+  return {
+    placed: initialPlaced,
+    exemptions: [],
+    filters: DEFAULT_FILTERS,
+    activeSemester: 1,
+    blockers: [],
+  }
+}
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'ADD_COURSE': {
+      // Single instance: remove from any existing semester, and remove from exemptions
+      const deduplicated = state.placed.filter(p => p.courseId !== action.payload.courseId)
+      const exemptions = state.exemptions.filter(id => id !== action.payload.courseId)
+      return { ...state, placed: [...deduplicated, action.payload], exemptions }
+    }
+
+    case 'REMOVE_COURSE':
+      return {
+        ...state,
+        placed: state.placed.filter(
+          p => !(p.courseId === action.courseId && p.semesterId === action.semesterId)
+        ),
+      }
+
+    case 'MOVE_COURSE': {
+      const withoutTarget = state.placed.filter(
+        p => !(p.courseId === action.courseId && p.semesterId === action.toSem)
+      )
+      return {
+        ...state,
+        placed: withoutTarget.map(p =>
+          p.courseId === action.courseId && p.semesterId === action.fromSem
+            ? { ...p, semesterId: action.toSem }
+            : p
+        ),
+      }
+    }
+
+    case 'TOGGLE_LOCK':
+      return {
+        ...state,
+        placed: state.placed.map(p =>
+          p.courseId === action.courseId && p.semesterId === action.semesterId
+            ? { ...p, locked: !p.locked }
+            : p
+        ),
+      }
+
+    case 'SET_LECTURE_OPTION':
+      return {
+        ...state,
+        placed: state.placed.map(p =>
+          p.courseId === action.courseId && p.semesterId === action.semesterId
+            ? { ...p, lectureOptionId: action.optionId }
+            : p
+        ),
+      }
+
+    case 'SET_RECITATION_OPTION':
+      return {
+        ...state,
+        placed: state.placed.map(p =>
+          p.courseId === action.courseId && p.semesterId === action.semesterId
+            ? { ...p, recitationOptionId: action.optionId }
+            : p
+        ),
+      }
+
+    case 'SET_FILTERS':
+      return { ...state, filters: { ...state.filters, ...action.filters } }
+
+    case 'SET_ACTIVE_SEMESTER':
+      return { ...state, activeSemester: action.semesterId }
+
+    case 'ADD_BLOCKER':
+      return { ...state, blockers: [...state.blockers, action.payload] }
+
+    case 'REMOVE_BLOCKER':
+      return { ...state, blockers: state.blockers.filter(b => b.id !== action.id) }
+
+    case 'UPDATE_BLOCKER':
+      return { ...state, blockers: state.blockers.map(b => b.id === action.id ? { ...b, ...action.updates } : b) }
+
+    case 'ADD_EXEMPTION': {
+      if (state.exemptions.includes(action.courseId)) return state
+      // Remove from placed semesters, add to exemptions
+      const placed = state.placed.filter(p => p.courseId !== action.courseId)
+      return { ...state, placed, exemptions: [...state.exemptions, action.courseId] }
+    }
+
+    case 'REMOVE_EXEMPTION':
+      return { ...state, exemptions: state.exemptions.filter(id => id !== action.courseId) }
+
+    case 'LOAD_PLAN':
+      return { ...state, placed: action.placed }
+
+    default:
+      return state
+  }
+}
+
+const DegreeContext = createContext(null)
+
+export function DegreeProvider({ children, initialPlaced }) {
+  const [state, dispatch] = useReducer(reducer, initialPlaced, makeInitialState)
+  return <DegreeContext.Provider value={{ state, dispatch }}>{children}</DegreeContext.Provider>
+}
+
+export function useDegree() {
+  const ctx = useContext(DegreeContext)
+  if (!ctx) throw new Error('useDegree must be used within DegreeProvider')
+  return ctx
+}
