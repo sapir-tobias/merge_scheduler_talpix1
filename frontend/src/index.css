@@ -1,16 +1,50 @@
 @import "tailwindcss";
 
+/*
+ * Talpix-style global design tokens.
+ * Component CSS Modules reference these custom properties (see Template 2).
+ */
+:root {
+  --color-primary: #3b82f6;
+  --color-primary-dark: #2563eb;
+  --color-primary-hover: #1d4ed8;
+
+  --color-surface: #ffffff;
+  --color-background: #fafaf9;            /* stone-50 */
+  --color-background-secondary: #f5f5f4;  /* stone-100 */
+
+  --color-border: #e7e5e4;                /* stone-200 */
+  --color-border-strong: #d6d3d1;         /* stone-300 */
+
+  --color-text-primary: #1c1917;          /* stone-900 */
+  --color-text-secondary: #57534e;        /* stone-600 */
+  --color-text-muted: #a8a29e;            /* stone-400 */
+  --color-text-inverse: #ffffff;
+
+  --cell-background: #1c1917;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+
+  /* Faculty palette */
+  --faculty-cs: #3b82f6;
+  --faculty-math: #8b5cf6;
+  --faculty-physics: #f59e0b;
+  --faculty-misc: #78716c;
+}
+
 *, *::before, *::after { box-sizing: border-box; }
 
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
-  background: #fafaf9;   /* stone-50 */
-  color: #1c1917;        /* stone-900 */
+  background: var(--color-background);
+  color: var(--color-text-primary);
 }
 
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 3px; }  /* stone-300 */
-::-webkit-scrollbar-thumb:hover { background: #a8a29e; }                  /* stone-400 */
+::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-muted); }

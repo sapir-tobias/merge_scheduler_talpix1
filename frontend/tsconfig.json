@@ -9,6 +9,8 @@
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": false,
     "noEmit": true
   },
   "include": ["src"]
