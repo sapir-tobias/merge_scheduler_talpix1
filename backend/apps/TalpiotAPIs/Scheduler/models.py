@@ -20,12 +20,14 @@ from __future__ import annotations
 
 from mongoengine import (
     BooleanField,
+    DateTimeField,
     Document,
     EmbeddedDocument,
     EmbeddedDocumentListField,
     FloatField,
     IntField,
     ListField,
+    ReferenceField,
     StringField,
 )
 
@@ -148,3 +150,34 @@ class PlanTrack(Document):
 
     def __str__(self) -> str:
         return f"track:{self.track_id} ({len(self.entries)} entries)"
+
+
+class SavedBlocker(EmbeddedDocument):
+    """A personal unavailable time block on a saved schedule."""
+
+    label = StringField()
+    day = StringField()          # sun..thu
+    start_hour = FloatField()
+    end_hour = FloatField()
+    semester_id = IntField()
+
+
+class SavedSchedule(Document):
+    """A student's saved board (collection: ``scheduler_saved_schedules``).
+
+    Bound to the authenticated user via ``ReferenceField(User)`` so each saved
+    schedule ties directly to ``request.user``. ``User`` lives in
+    ``apps.TalpiotAPIs`` and is referenced lazily by name, so this module
+    imports cleanly without the Talpix user model present locally.
+    """
+
+    student = ReferenceField("User", required=True, unique=True)
+    placed = EmbeddedDocumentListField(PlanEntry)
+    exemptions = ListField(StringField())
+    blockers = EmbeddedDocumentListField(SavedBlocker)
+    updated_at = DateTimeField()
+
+    meta = {"collection": "scheduler_saved_schedules"}
+
+    def __str__(self) -> str:
+        return f"SavedSchedule(student={self.student}, {len(self.placed)} placed)"

@@ -1,0 +1,4 @@
+{
+  "scheduler_data_dir": "web_features/scheduler/data",
+  "scheduler_use_mock": true
+}

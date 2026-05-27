@@ -23,6 +23,9 @@ __pycache__/
 venv/
 .pytest_cache/
 
+# Local-only settings (Talpix convention: env > secret_settings.json > settings.json)
+secret_settings.json
+
 # Playwright (e2e)
 test-results/
 playwright-report/

@@ -14,6 +14,8 @@ try:  # pragma: no cover - exercised only in production w/ mongoengine present
         PlanEntry,
         PlanTrack,
         PrerequisiteRef,
+        SavedBlocker,
+        SavedSchedule,
         ScheduleMeeting,
         TestDate,
     )
@@ -25,6 +27,8 @@ try:  # pragma: no cover - exercised only in production w/ mongoengine present
         "PlanEntry",
         "PlanTrack",
         "PrerequisiteRef",
+        "SavedBlocker",
+        "SavedSchedule",
         "ScheduleMeeting",
         "TestDate",
     ]

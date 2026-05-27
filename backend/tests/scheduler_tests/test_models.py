@@ -9,7 +9,12 @@ import pytest
 
 pytest.importorskip("mongoengine")
 
-from apps.TalpiotAPIs.Scheduler.models import Course, PlacedCourse, PlanTrack  # noqa: E402
+from apps.TalpiotAPIs.Scheduler.models import (  # noqa: E402
+    Course,
+    PlacedCourse,
+    PlanTrack,
+    SavedSchedule,
+)
 
 
 def test_course_collection_and_primary_key():
@@ -26,3 +31,10 @@ def test_other_documents_bind_collections():
     assert PlacedCourse._meta["collection"] == "scheduler_placed"
     assert PlanTrack._meta["collection"] == "scheduler_plans"
     assert PlanTrack._fields["track_id"].primary_key is True
+
+
+def test_saved_schedule_references_user():
+    assert SavedSchedule._meta["collection"] == "scheduler_saved_schedules"
+    student = SavedSchedule._fields["student"]
+    assert student.__class__.__name__ == "ReferenceField"
+    assert student.required is True

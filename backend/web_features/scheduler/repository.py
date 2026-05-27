@@ -22,7 +22,16 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-DATA_DIR = Path(__file__).resolve().parent / "data"
+from apps.settings import load_settings
+
+# Resolve the data directory + mock flag through the unified settings chain
+# (env -> secret_settings.json -> settings.json) rather than hardcoding paths.
+# ``scheduler_use_mock`` is the switch a production deploy flips to route these
+# functions at the live Mongo cluster instead of the JSON fixtures.
+_settings = load_settings()
+_BACKEND_ROOT = Path(__file__).resolve().parents[2]  # …/backend
+DATA_DIR = (_BACKEND_ROOT / _settings.get("scheduler_data_dir", "web_features/scheduler/data")).resolve()
+USE_MOCK = bool(_settings.get("scheduler_use_mock", True))
 
 COURSES_FILE = DATA_DIR / "courses.json"
 INITIAL_PLACED_FILE = DATA_DIR / "initial_placed.json"
