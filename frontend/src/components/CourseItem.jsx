@@ -18,11 +18,12 @@ const FACULTY_BADGE = {
 export default function CourseItem({ course, scoreInfo, added, addedToCurrentSem, onAdd, draggable }) {
   const { courseMap } = useCoursesStore()
   const [expanded, setExpanded] = useState(false)
-  // Prefer the catalogue course name; fall back to the serializer-provided
-  // prerequisite name; only then to the bare course number.
-  const prereqNames = course.prerequisites.map(
-    id => courseMap.get(id)?.name ?? course.prerequisiteNames?.[id] ?? id
-  )
+  // Resolve each prereq's name (catalogue -> serializer map -> bare id) and
+  // whether it's actually offered this year (so we can flag the un-takeable ones).
+  const prereqInfo = course.prerequisites.map(id => ({
+    name: courseMap.get(id)?.name ?? course.prerequisiteNames?.[id] ?? id,
+    offered: courseMap.has(id),
+  }))
 
   return (
     <div
@@ -107,7 +108,7 @@ export default function CourseItem({ course, scoreInfo, added, addedToCurrentSem
         <CourseItemDetail
           course={course}
           scoreInfo={scoreInfo}
-          prereqNames={prereqNames}
+          prereqInfo={prereqInfo}
         />
       )}
     </div>

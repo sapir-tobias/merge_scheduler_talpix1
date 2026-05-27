@@ -53,12 +53,17 @@ function minExamSeparation(candidate, placed, semesterId, courseMap) {
   return min === Infinity ? 999 : min
 }
 
-function prerequisitesMet(course, placed, exemptions, semesterId) {
+function prerequisitesMet(course, placed, exemptions, semesterId, courseMap) {
   const satisfied = new Set([
     ...placed.filter(p => p.semesterId < semesterId).map(p => p.courseId),
     ...exemptions,
   ])
-  return course.prerequisites.every(id => satisfied.has(id))
+  // Only enforce prerequisites that are actually offered this year. A prereq
+  // not in the catalogue (e.g. 76639) can't be placed or exempted here, so it
+  // must not permanently flag its dependents (e.g. 67200) as critical.
+  return course.prerequisites
+    .filter(id => courseMap.has(id))
+    .every(id => satisfied.has(id))
 }
 
 export function scoreCourse(
@@ -72,7 +77,7 @@ export function scoreCourse(
   const bestOptionId = pickBestOption(course, placed, semesterId, courseMap)
   const bestCollisions = countCollisionsForOption(course, bestOptionId, placed, semesterId, courseMap)
   const examSep = minExamSeparation(course, placed, semesterId, courseMap)
-  const prereqMet = prerequisitesMet(course, placed, exemptions, semesterId)
+  const prereqMet = prerequisitesMet(course, placed, exemptions, semesterId, courseMap)
 
   const collisionBreached = bestCollisions > filters.maxCollisions
   const examBreached = examSep < filters.minExamSeparationDays && examSep < 999

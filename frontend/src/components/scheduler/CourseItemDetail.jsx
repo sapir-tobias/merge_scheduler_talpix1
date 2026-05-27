@@ -16,7 +16,7 @@ function formatExamDate(dateStr) {
   return isNaN(d.getTime()) ? 'No exam' : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
-export default function CourseItemDetail({ course, scoreInfo, prereqNames }) {
+export default function CourseItemDetail({ course, scoreInfo, prereqInfo }) {
   return (
     <div className={styles.detail}>
       <p className={styles.description}>{course.description}</p>
@@ -82,16 +82,16 @@ export default function CourseItemDetail({ course, scoreInfo, prereqNames }) {
         )}
       </div>
 
-      {prereqNames.length > 0 && (
+      {prereqInfo.length > 0 && (
         <div>
           <p className={styles.sectionLabel}>Prerequisites</p>
           <div className={styles.prereqRow}>
-            {prereqNames.map(name => (
-              <span key={name} className={cn(
+            {prereqInfo.map((p, i) => (
+              <span key={i} className={cn(
                 styles.prereqTag,
                 scoreInfo.prerequisitesMet ? styles.prereqMet : styles.prereqUnmet
               )}>
-                {name}
+                {p.name}{p.offered ? '' : ' (not offered)'}
               </span>
             ))}
           </div>

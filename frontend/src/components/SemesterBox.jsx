@@ -22,7 +22,9 @@ function prereqsMet(courseId, semId, allPlaced, exemptions, courseMap) {
     ...allPlaced.filter(p => p.semesterId < semId).map(p => p.courseId),
     ...exemptions,
   ])
-  return course.prerequisites.every(id => satisfied.has(id))
+  // Only enforce prerequisites offered in the catalogue (a non-offered prereq
+  // can't be satisfied here, so it must not block its dependents).
+  return course.prerequisites.filter(id => courseMap.has(id)).every(id => satisfied.has(id))
 }
 
 export default function SemesterBox({ semesterId, showCalendar, onDragOver, onDrop }) {

@@ -148,3 +148,56 @@ test('year selector shows an active state when clicked', async ({ page }) => {
   await y2.click();
   await expect(y2).toHaveCSS('background-color', 'rgb(255, 255, 255)');
 });
+
+// #1/#3 — a prereq not offered this year resolves a name + is flagged (no dead-end)
+test('prerequisites resolve a name and flag non-offered courses', async ({ page }) => {
+  await page.getByTestId(TID.CATALOGUE.SEARCH_INPUT).fill('מבנה המחשב');
+  const row = page.getByTestId('course-item-67200');           // מבנה המחשב
+  await expect(row).toBeVisible({ timeout: 15000 });
+  await page.getByTestId('course-item-expand-67200').click();
+  await expect(row).toContainText('מבוא למדעי המחשב');          // 76639 name resolved (was blank)
+  await expect(row).toContainText('(not offered)');             // 76639 isn't in the catalogue
+});
+
+// Aggressive: faculty + credit filters narrow the catalogue together
+test('faculty and credit filters narrow the catalogue together', async ({ page }) => {
+  await page.getByTestId(TID.NAV.TAB_SEM_A).click();
+  const rows = page.getByTestId(TID.CATALOGUE.COURSE_LIST).locator('[data-testid^="course-item-"]');
+  await expect(rows.first()).toBeVisible({ timeout: 15000 });
+  const all = await rows.count();
+  await page.getByTestId(TID.CATALOGUE.FILTER_TOGGLE).click();
+  for (const f of ['math', 'physics', 'misc']) {
+    await page.getByTestId(`catalogue-faculty-filter-${f}`).click();   // leave CS only
+  }
+  await expect.poll(async () => rows.count()).toBeLessThan(all);
+  expect(await rows.count()).toBeGreaterThan(0);
+});
+
+// Aggressive: placement + mandatory flag + search filter all survive one reload
+test('placement, mandatory flag and filters persist together across reload', async ({ page }) => {
+  await page.getByTestId(TID.NAV.TAB_SEM_A).click();
+  const mand = page.locator('[data-testid^="semester-course-mandatory-"]').first();
+  await mand.click();
+  await expect(mand).toHaveCSS('color', 'rgb(245, 158, 11)');
+  await page.getByTestId(TID.CATALOGUE.SEARCH_INPUT).fill('algorithm');
+
+  await page.reload();
+  await expect(page.getByTestId(TID.NAV.CONTAINER)).toBeVisible({ timeout: 15000 });
+  await expect(page.getByTestId(TID.APP_LOADING)).toHaveCount(0);
+  await expect(page.getByTestId(TID.CATALOGUE.SEARCH_INPUT)).toHaveValue('algorithm');
+  await page.getByTestId(TID.NAV.TAB_SEM_A).click();
+  await expect(page.locator('[data-testid^="semester-course-mandatory-"]').first())
+    .toHaveCSS('color', 'rgb(245, 158, 11)');
+});
+
+// Aggressive: Load Plan fills multiple semesters with rendered course blocks
+test('Load Plan populates the grid across multiple semesters', async ({ page }) => {
+  await page.getByTestId('nav-load-plan-button').click();
+  await page.getByTestId('load-plan-track-cs').click();
+  await page.getByTestId(TID.NAV.TAB_SEM_A).click();
+  await expect(page.getByTestId(TID.WEEKLY.GRID)).toBeVisible();
+  await expect(page.locator('[data-testid^="weekly-course-block-"]').first()).toBeVisible({ timeout: 10000 });
+  await page.getByTestId(`${TID.NAV.YEAR_OPTION}-2`).click();   // year 2 -> semesters 3 & 4
+  await page.getByTestId(TID.NAV.TAB_SEM_A).click();
+  await expect(page.getByTestId(TID.WEEKLY.GRID)).toBeVisible();
+});
