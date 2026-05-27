@@ -75,7 +75,7 @@ The view layer is identical to a real Talpix view, so porting = delete the shim 
   @authentication_classes([TalpiotJWTAuthentication])
   @permission_classes([IsAuthenticated])
   @restrict_roles(['Cadet','Sagab','Sagaz','Kamat'])
-  def list_courses(): return JsonResponse({...}, status=200)
+  def list_courses(request): return JsonResponse({...}, status=200)
   ```
   Returns `JsonResponse` (Starlette JSONResponse under the hood). Logging is scoped (`logging.getLogger(__name__)`) and every line is a JSON string for Grafana LogQL.
 - **Routes** (`urls_scheduler.py`, all `response_model=None`):

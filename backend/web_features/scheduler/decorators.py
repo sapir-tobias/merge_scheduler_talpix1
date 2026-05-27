@@ -16,10 +16,12 @@ feature ports to Django/DRF by deleting this shim and importing the real
 """
 from __future__ import annotations
 
+import inspect
 from functools import wraps
 from typing import Any, Callable, Iterable, List
 
 from fastapi.responses import JSONResponse
+from starlette.requests import Request  # re-exported so views annotate `request: Request`
 
 
 class SessionAuthentication:
@@ -77,9 +79,16 @@ def restrict_roles(roles: Iterable[str]) -> Callable:
     allowed: List[str] = list(roles)
 
     def decorator(func: Callable) -> Callable:
-        @wraps(func)
-        def wrapper(*args: Any, **kwargs: Any) -> Any:
-            return func(*args, **kwargs)
+        # Preserve the wrapped view's sync/async nature so FastAPI awaits async
+        # views (e.g. ones reading ``await request.json()``) correctly.
+        if inspect.iscoroutinefunction(func):
+            @wraps(func)
+            async def wrapper(*args: Any, **kwargs: Any) -> Any:
+                return await func(*args, **kwargs)
+        else:
+            @wraps(func)
+            def wrapper(*args: Any, **kwargs: Any) -> Any:
+                return func(*args, **kwargs)
 
         wrapper._restricted_roles = allowed
         return wrapper

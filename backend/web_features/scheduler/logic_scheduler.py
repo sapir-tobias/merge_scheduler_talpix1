@@ -1,25 +1,27 @@
 """Scheduler view controllers (Talpix DRF style).
 
-Each endpoint carries the exact Talpix decorator stack — ``@api_view`` ->
-``@authentication_classes`` -> ``@permission_classes`` -> ``@restrict_roles`` —
-talks only to the ``repository`` abstraction (never to the filesystem
-directly), projects documents through ``serializers`` and returns a
-``JsonResponse``.
+Each endpoint takes ``request`` as its first argument and carries the exact
+Talpix decorator stack — ``@api_view`` -> ``@authentication_classes`` ->
+``@permission_classes`` -> ``@restrict_roles`` — talks only to the
+``repository`` abstraction (never to the filesystem directly), projects
+documents through ``serializers`` and returns a ``JsonResponse``.
 
 Logging is scoped to this module (``logging.getLogger(__name__)``) and every
-record is a JSON string, so a Grafana LogQL pipeline can parse fields straight
-out of the message (``| json | event="scheduler.list_courses"``).
+record is a JSON string, mirroring Talpix's structured logging so a Grafana
+LogQL pipeline can parse fields straight out of the message
+(``| json | event="scheduler.list_courses"``).
 """
 from __future__ import annotations
 
 import json
 import logging
-from typing import Any, Dict
+from typing import Any
 
 from . import repository, serializers
 from .decorators import (
     IsAuthenticated,
     JsonResponse,
+    Request,
     TalpiotJWTAuthentication,
     api_view,
     authentication_classes,
@@ -42,7 +44,7 @@ def _log(event: str, **fields: Any) -> None:
 @authentication_classes([TalpiotJWTAuthentication])
 @permission_classes([IsAuthenticated])
 @restrict_roles(SCHEDULER_ROLES)
-def list_courses():
+def list_courses(request: Request):
     """GET /api/scheduler/courses — the full course catalogue."""
     courses = [serializers.serialize_course(c) for c in repository.all_courses()]
     _log("scheduler.list_courses", count=len(courses))
@@ -53,7 +55,7 @@ def list_courses():
 @authentication_classes([TalpiotJWTAuthentication])
 @permission_classes([IsAuthenticated])
 @restrict_roles(SCHEDULER_ROLES)
-def get_course(course_id: str):
+def get_course(request: Request, course_id: str):
     """GET /api/scheduler/courses/{course_id} — one course by course_number."""
     course = repository.get_course(course_id)
     if course is None:
@@ -67,7 +69,7 @@ def get_course(course_id: str):
 @authentication_classes([TalpiotJWTAuthentication])
 @permission_classes([IsAuthenticated])
 @restrict_roles(SCHEDULER_ROLES)
-def get_initial_placed():
+def get_initial_placed(request: Request):
     """GET /api/scheduler/initial-placed — the canonical starter placement."""
     placed = [serializers.serialize_placed(p) for p in repository.all_placed()]
     _log("scheduler.get_initial_placed", count=len(placed))
@@ -78,7 +80,7 @@ def get_initial_placed():
 @authentication_classes([TalpiotJWTAuthentication])
 @permission_classes([IsAuthenticated])
 @restrict_roles(SCHEDULER_ROLES)
-def list_plans():
+def list_plans(request: Request):
     """GET /api/scheduler/plans — the available default-track ids."""
     tracks = repository.list_track_ids()
     _log("scheduler.list_plans", tracks=tracks)
@@ -89,7 +91,7 @@ def list_plans():
 @authentication_classes([TalpiotJWTAuthentication])
 @permission_classes([IsAuthenticated])
 @restrict_roles(SCHEDULER_ROLES)
-def get_plan(track_id: str):
+def get_plan(request: Request, track_id: str):
     """GET /api/scheduler/plans/{track_id} — one default 6-semester track."""
     plan = repository.get_plan(track_id)
     if plan is None:
@@ -104,13 +106,20 @@ def get_plan(track_id: str):
 @authentication_classes([TalpiotJWTAuthentication])
 @permission_classes([IsAuthenticated])
 @restrict_roles(SCHEDULER_ROLES)
-def save_placement(body: Dict[str, Any]):
+async def save_placement(request: Request):
     """POST /api/scheduler/initial-placed — persist a placement set.
 
     Expects ``{"placed": [{courseId, semesterId, lectureOptionId, ...}]}`` in
-    the frontend wire shape and stores it back in the document (real-key) shape.
+    the frontend wire shape (Talpix would read it as ``request.data``); stored
+    back in the document (real-key) shape.
     """
-    wire = body.get("placed")
+    try:
+        body = await request.json()
+    except Exception:
+        _log("scheduler.save_placement.bad_request", reason="invalid_json")
+        return JsonResponse({"detail": "Invalid JSON body"}, status=400)
+
+    wire = body.get("placed") if isinstance(body, dict) else None
     if not isinstance(wire, list):
         _log("scheduler.save_placement.bad_request")
         return JsonResponse({"detail": "Expected 'placed' to be a list"}, status=400)
