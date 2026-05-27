@@ -69,7 +69,7 @@ export default function SemesterBox({ semesterId, showCalendar, onDragOver, onDr
   if (showCalendar) {
     placed.forEach(p => {
       const course = courseMap.get(p.courseId)
-      if (!course) return
+      if (!course || !course.examDate) return  // skip courses with no final
       const existing = examMap.get(course.examDate) ?? []
       examMap.set(course.examDate, [...existing, course.name])
     })

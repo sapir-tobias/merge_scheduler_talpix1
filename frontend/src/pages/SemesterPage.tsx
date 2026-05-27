@@ -29,7 +29,7 @@ export default function SemesterPage({ semesterId }: Props) {
     const map = new Map<string, ExamCourse[]>()
     for (const p of state.placed.filter(pl => pl.semesterId === semesterId)) {
       const course = courseMap.get(p.courseId)
-      if (!course) continue
+      if (!course || !course.examDate) continue  // skip courses with no final
       const existing = map.get(course.examDate) ?? []
       map.set(course.examDate, [...existing, { name: course.name, faculty: course.faculty }])
     }

@@ -69,7 +69,14 @@ def test_exam_date_prefers_moed_1():
             {"moed": 1, "start": "2026-01-28T09:00:00"},
         ],
     }
-    assert serializers.serialize_course(course)["examDate"] == "2026-01-28T09:00:00"
+    # date-only projection (calendar expects YYYY-MM-DD, no time component)
+    assert serializers.serialize_course(course)["examDate"] == "2026-01-28"
+
+
+def test_exam_date_empty_when_no_exam():
+    # Many real courses have no final; examDate must be "" (not an invalid date).
+    course = {"course_number": "1", "name_he": "x", "groups": [], "test_dates": [], "exam_dates": []}
+    assert serializers.serialize_course(course)["examDate"] == ""
 
 
 def test_serialize_placed_and_plan_entry():

@@ -59,8 +59,13 @@ function shiftDate(dateStr: string, days: number): string {
   return d.toISOString().split('T')[0]
 }
 
-function buildSnakeMap(examMap: Map<string, ExamCourse[]>): Map<string, SnakeDayInfo> {
+const DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/
+
+function buildSnakeMap(rawExamMap: Map<string, ExamCourse[]>): Map<string, SnakeDayInfo> {
   const map = new Map<string, SnakeDayInfo>()
+  // Drop any non-date keys (e.g. courses with no final) so the date math below
+  // never feeds an invalid value to shiftDate().
+  const examMap = new Map([...rawExamMap].filter(([d]) => DATE_ONLY.test(d)))
   if (examMap.size === 0) return map
 
   const sortedDates = [...examMap.keys()].sort()
@@ -119,15 +124,22 @@ export default function MonthCalendar({ markedDays, onToggleDay, examMap, closeE
   const scrollRef = useRef<HTMLDivElement>(null)
   const monthRefs = useRef<Map<string, HTMLDivElement>>(new Map())
 
-  const snakeMap = useMemo(() => buildSnakeMap(examMap ?? new Map()), [examMap])
+  // Only date-only ('YYYY-MM-DD') keys are usable; courses with no final (or a
+  // raw datetime) are dropped so none of the date math below can throw.
+  const validExamMap = useMemo(
+    () => new Map([...(examMap ?? new Map())].filter(([d]) => DATE_ONLY.test(d))),
+    [examMap],
+  )
+
+  const snakeMap = useMemo(() => buildSnakeMap(validExamMap), [validExamMap])
 
   // Month range: start from earlier of today or month containing first snake day
   const months = useMemo(() => {
     let fromYear = today.getFullYear()
     let fromMonth = today.getMonth()
 
-    if (examMap && examMap.size > 0) {
-      const firstExam = [...examMap.keys()].sort()[0]
+    if (validExamMap.size > 0) {
+      const firstExam = [...validExamMap.keys()].sort()[0]
       // Snake starts 7 days before first exam
       const snakeStart = shiftDate(firstExam, -7)
       const snakeDate = new Date(snakeStart + 'T12:00:00')
@@ -141,17 +153,17 @@ export default function MonthCalendar({ markedDays, onToggleDay, examMap, closeE
       const d = new Date(fromYear, fromMonth + i, 1)
       return { year: d.getFullYear(), month: d.getMonth() }
     })
-  }, [examMap])
+  }, [validExamMap])
 
   const examDatesKey = useMemo(
-    () => [...(examMap?.keys() ?? [])].sort().join(','),
-    [examMap]
+    () => [...validExamMap.keys()].sort().join(','),
+    [validExamMap]
   )
 
   // Auto-scroll to the month containing the first snake day
   useEffect(() => {
-    if (!examMap || examMap.size === 0) return
-    const firstExam = [...examMap.keys()].sort()[0]
+    if (validExamMap.size === 0) return
+    const firstExam = [...validExamMap.keys()].sort()[0]
     const snakeStart = shiftDate(firstExam, -7)
     const d = new Date(snakeStart + 'T12:00:00')
     const key = `${d.getFullYear()}-${d.getMonth()}`

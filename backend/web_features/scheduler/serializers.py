@@ -95,15 +95,24 @@ def _options(course: Dict[str, Any]) -> tuple[List[Dict[str, Any]], List[Dict[st
 
 
 def _exam_date(course: Dict[str, Any]) -> str:
-    """Prefer the moed-1 sitting; fall back to first test/exam date."""
+    """First exam date as 'YYYY-MM-DD' (moed-1 preferred), or '' if no exam.
+
+    The frontend calendar expects a date-only string, so the time component of
+    the ISO datetime is dropped. Courses with no exam yield '' — callers must
+    tolerate that, since many real courses have no final.
+    """
     test_dates = course.get("test_dates") or []
+    raw = ""
     for td in test_dates:
         if td.get("moed") == 1 and td.get("start"):
-            return td["start"]
-    if test_dates and test_dates[0].get("start"):
-        return test_dates[0]["start"]
-    exam_dates = course.get("exam_dates") or []
-    return exam_dates[0] if exam_dates else ""
+            raw = td["start"]
+            break
+    if not raw and test_dates and test_dates[0].get("start"):
+        raw = test_dates[0]["start"]
+    if not raw:
+        exam_dates = course.get("exam_dates") or []
+        raw = exam_dates[0] if exam_dates else ""
+    return raw.split("T")[0] if raw else ""
 
 
 def serialize_course(course: Dict[str, Any]) -> Dict[str, Any]:

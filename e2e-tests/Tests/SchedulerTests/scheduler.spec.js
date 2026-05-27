@@ -32,6 +32,8 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('semester view renders the weekly grid, calendar and catalogue', async ({ page }) => {
+  // The app boots on the Degree Plan tab; the weekly grid lives on a semester view.
+  await page.getByTestId(TID.NAV.TAB_SEM_A).click();
   await expect(page.getByTestId(TID.WEEKLY.GRID)).toBeVisible();
   await expect(page.getByTestId(TID.MONTH_CALENDAR.CONTAINER)).toBeVisible();
   await expect(page.getByTestId(TID.CATALOGUE.CONTAINER)).toBeVisible();
