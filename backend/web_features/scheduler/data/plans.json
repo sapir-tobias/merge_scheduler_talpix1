@@ -1,422 +1,440 @@
 {
   "cs": [
     {
-      "courseId": "cs-intro",
-      "semesterId": 1,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "67010",
+      "semester_id": 1,
+      "lecture_option_id": "4-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "math-calculus1",
-      "semesterId": 1,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "67101",
+      "semester_id": 1,
+      "lecture_option_id": "1-03",
+      "recitation_option_id": "2-07"
     },
     {
-      "courseId": "math-linear",
-      "semesterId": 1,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "67109",
+      "semester_id": 1,
+      "lecture_option_id": "1-02",
+      "recitation_option_id": "2-01"
     },
     {
-      "courseId": "math-discrete",
-      "semesterId": 1,
-      "lectureOptionId": "a"
+      "course_number": "67120",
+      "semester_id": 1,
+      "lecture_option_id": "4-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "cs-data-structures",
-      "semesterId": 2,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "67121",
+      "semester_id": 2,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "math-calculus2",
-      "semesterId": 2,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "67200",
+      "semester_id": 2,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-02"
     },
     {
-      "courseId": "phys-mechanics",
-      "semesterId": 2,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "67315",
+      "semester_id": 2,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-10"
     },
     {
-      "courseId": "misc-econ",
-      "semesterId": 2,
-      "lectureOptionId": "a"
+      "course_number": "67392",
+      "semester_id": 2,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "cs-algorithms",
-      "semesterId": 3,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "67398",
+      "semester_id": 3,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "cs-os",
-      "semesterId": 3,
-      "lectureOptionId": "b",
-      "recitationOptionId": "r1"
+      "course_number": "67465",
+      "semester_id": 3,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-01"
     },
     {
-      "courseId": "math-probability",
-      "semesterId": 3,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "67468",
+      "semester_id": 3,
+      "lecture_option_id": "3-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "cs-se",
-      "semesterId": 3,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "67504",
+      "semester_id": 3,
+      "lecture_option_id": "1-02",
+      "recitation_option_id": "2-01"
     },
     {
-      "courseId": "cs-networks",
-      "semesterId": 4,
-      "lectureOptionId": "a"
+      "course_number": "67506",
+      "semester_id": 4,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-02"
     },
     {
-      "courseId": "cs-arch",
-      "semesterId": 4,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "67508",
+      "semester_id": 4,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-01"
     },
     {
-      "courseId": "cs-toc",
-      "semesterId": 4,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "67512",
+      "semester_id": 4,
+      "lecture_option_id": "4-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "cs-pl",
-      "semesterId": 4,
-      "lectureOptionId": "a"
+      "course_number": "67515",
+      "semester_id": 4,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "elec-db",
-      "semesterId": 5,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "67519",
+      "semester_id": 5,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "elec-ml",
-      "semesterId": 5,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "67521",
+      "semester_id": 5,
+      "lecture_option_id": "1-03",
+      "recitation_option_id": "2-14"
     },
     {
-      "courseId": "cs-compilers",
-      "semesterId": 5,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "67528",
+      "semester_id": 5,
+      "lecture_option_id": "3-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "cs-ai",
-      "semesterId": 5,
-      "lectureOptionId": "a"
+      "course_number": "67531",
+      "semester_id": 5,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "cs-dist",
-      "semesterId": 6,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "67539",
+      "semester_id": 6,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "elec-graphics",
-      "semesterId": 6,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "67542",
+      "semester_id": 6,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "misc-or",
-      "semesterId": 6,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "67546",
+      "semester_id": 6,
+      "lecture_option_id": "7-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "misc-scicomp",
-      "semesterId": 6,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "67547",
+      "semester_id": 6,
+      "lecture_option_id": "7-02",
+      "recitation_option_id": null
     }
   ],
   "math": [
     {
-      "courseId": "math-calculus1",
-      "semesterId": 1,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80031",
+      "semester_id": 1,
+      "lecture_option_id": "14-48",
+      "recitation_option_id": null
     },
     {
-      "courseId": "math-linear",
-      "semesterId": 1,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80032",
+      "semester_id": 1,
+      "lecture_option_id": "14-39",
+      "recitation_option_id": null
     },
     {
-      "courseId": "math-discrete",
-      "semesterId": 1,
-      "lectureOptionId": "a"
+      "course_number": "80034",
+      "semester_id": 1,
+      "lecture_option_id": "14-25",
+      "recitation_option_id": null
     },
     {
-      "courseId": "cs-intro",
-      "semesterId": 1,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80035",
+      "semester_id": 1,
+      "lecture_option_id": "14-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "math-calculus2",
-      "semesterId": 2,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80053",
+      "semester_id": 2,
+      "lecture_option_id": "14-10",
+      "recitation_option_id": null
     },
     {
-      "courseId": "math-probability",
-      "semesterId": 2,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80077",
+      "semester_id": 2,
+      "lecture_option_id": "14-20",
+      "recitation_option_id": null
     },
     {
-      "courseId": "cs-data-structures",
-      "semesterId": 2,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80100",
+      "semester_id": 2,
+      "lecture_option_id": "14-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "phys-mechanics",
-      "semesterId": 2,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80109",
+      "semester_id": 2,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-02"
     },
     {
-      "courseId": "math-analysis",
-      "semesterId": 3,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80111",
+      "semester_id": 3,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "math-ode",
-      "semesterId": 3,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80112",
+      "semester_id": 3,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-02"
     },
     {
-      "courseId": "cs-algorithms",
-      "semesterId": 3,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80114",
+      "semester_id": 3,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-04"
     },
     {
-      "courseId": "misc-econ",
-      "semesterId": 3,
-      "lectureOptionId": "a"
+      "course_number": "80116",
+      "semester_id": 3,
+      "lecture_option_id": "1-02",
+      "recitation_option_id": null
     },
     {
-      "courseId": "math-algebra",
-      "semesterId": 4,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80125",
+      "semester_id": 4,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-06"
     },
     {
-      "courseId": "math-numerical",
-      "semesterId": 4,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80127",
+      "semester_id": 4,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-04"
     },
     {
-      "courseId": "phys-electro",
-      "semesterId": 4,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80131",
+      "semester_id": 4,
+      "lecture_option_id": "1-03",
+      "recitation_option_id": "2-01"
     },
     {
-      "courseId": "cs-os",
-      "semesterId": 4,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80132",
+      "semester_id": 4,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-05"
     },
     {
-      "courseId": "phys-quantum",
-      "semesterId": 5,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80134",
+      "semester_id": 5,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-05"
     },
     {
-      "courseId": "elec-ml",
-      "semesterId": 5,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80135",
+      "semester_id": 5,
+      "lecture_option_id": "1-03",
+      "recitation_option_id": "2-03"
     },
     {
-      "courseId": "misc-or",
-      "semesterId": 5,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80153",
+      "semester_id": 5,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-02"
     },
     {
-      "courseId": "cs-networks",
-      "semesterId": 5,
-      "lectureOptionId": "a"
+      "course_number": "80154",
+      "semester_id": 5,
+      "lecture_option_id": "1-02",
+      "recitation_option_id": "2-02"
     },
     {
-      "courseId": "phys-stat",
-      "semesterId": 6,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80155",
+      "semester_id": 6,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-01"
     },
     {
-      "courseId": "misc-bioinfo",
-      "semesterId": 6,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80157",
+      "semester_id": 6,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-05"
     },
     {
-      "courseId": "misc-game",
-      "semesterId": 6,
-      "lectureOptionId": "a"
+      "course_number": "80158",
+      "semester_id": 6,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-01"
     },
     {
-      "courseId": "misc-scicomp",
-      "semesterId": 6,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "80177",
+      "semester_id": 6,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-01"
     }
   ],
   "physics": [
     {
-      "courseId": "math-calculus1",
-      "semesterId": 1,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77082",
+      "semester_id": 1,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-01"
     },
     {
-      "courseId": "math-linear",
-      "semesterId": 1,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77101",
+      "semester_id": 1,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-08"
     },
     {
-      "courseId": "cs-intro",
-      "semesterId": 1,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77102",
+      "semester_id": 1,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-05"
     },
     {
-      "courseId": "math-discrete",
-      "semesterId": 1,
-      "lectureOptionId": "a"
+      "course_number": "77110",
+      "semester_id": 1,
+      "lecture_option_id": "7-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "math-calculus2",
-      "semesterId": 2,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77111",
+      "semester_id": 2,
+      "lecture_option_id": "8-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "phys-mechanics",
-      "semesterId": 2,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77114",
+      "semester_id": 2,
+      "lecture_option_id": "7-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "cs-data-structures",
-      "semesterId": 2,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77119",
+      "semester_id": 2,
+      "lecture_option_id": "4-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "phys-electro",
-      "semesterId": 3,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77130",
+      "semester_id": 2,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-03"
     },
     {
-      "courseId": "math-probability",
-      "semesterId": 3,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77131",
+      "semester_id": 3,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-02"
     },
     {
-      "courseId": "math-ode",
-      "semesterId": 3,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77133",
+      "semester_id": 3,
+      "lecture_option_id": "1-02",
+      "recitation_option_id": "2-09"
     },
     {
-      "courseId": "cs-algorithms",
-      "semesterId": 3,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77134",
+      "semester_id": 3,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-01"
     },
     {
-      "courseId": "phys-quantum",
-      "semesterId": 4,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77152",
+      "semester_id": 3,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-03"
     },
     {
-      "courseId": "phys-thermo",
-      "semesterId": 4,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77154",
+      "semester_id": 4,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-01"
     },
     {
-      "courseId": "math-analysis",
-      "semesterId": 4,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77174",
+      "semester_id": 4,
+      "lecture_option_id": "8-03",
+      "recitation_option_id": null
     },
     {
-      "courseId": "misc-econ",
-      "semesterId": 4,
-      "lectureOptionId": "a"
+      "course_number": "77220",
+      "semester_id": 4,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "phys-stat",
-      "semesterId": 5,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77303",
+      "semester_id": 4,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-02"
     },
     {
-      "courseId": "phys-optics",
-      "semesterId": 5,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77305",
+      "semester_id": 5,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-04"
     },
     {
-      "courseId": "elec-ml",
-      "semesterId": 5,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77307",
+      "semester_id": 5,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-03"
     },
     {
-      "courseId": "math-numerical",
-      "semesterId": 5,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77313",
+      "semester_id": 5,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-03"
     },
     {
-      "courseId": "cs-os",
-      "semesterId": 6,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77315",
+      "semester_id": 5,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-01"
     },
     {
-      "courseId": "cs-networks",
-      "semesterId": 6,
-      "lectureOptionId": "a"
+      "course_number": "77318",
+      "semester_id": 6,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": "2-03"
     },
     {
-      "courseId": "misc-or",
-      "semesterId": 6,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77320",
+      "semester_id": 6,
+      "lecture_option_id": "1-01",
+      "recitation_option_id": null
     },
     {
-      "courseId": "misc-bioinfo",
-      "semesterId": 6,
-      "lectureOptionId": "a",
-      "recitationOptionId": "r1"
+      "course_number": "77322",
+      "semester_id": 6,
+      "lecture_option_id": "8-01",
+      "recitation_option_id": null
+    },
+    {
+      "course_number": "77335",
+      "semester_id": 6,
+      "lecture_option_id": "7-03",
+      "recitation_option_id": null
     }
   ]
 }

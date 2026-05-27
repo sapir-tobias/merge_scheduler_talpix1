@@ -1,2 +1,12 @@
+# ── Runtime (local FastAPI mock) ─────────────────────────────
 fastapi>=0.110.0
 uvicorn[standard]>=0.27.0
+
+# ── Production drop-in schema (apps/TalpiotAPIs/Scheduler/models.py) ──
+# Only needed when the feature is wired to the live Mongo cluster; the JSON
+# repository keeps localhost running without it.
+mongoengine>=0.27.0
+
+# ── Tests ────────────────────────────────────────────────────
+pytest>=8.0.0
+httpx>=0.27.0

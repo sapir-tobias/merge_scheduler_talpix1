@@ -1,112 +1,107 @@
 [
   {
-    "courseId": "math-calculus1",
-    "semesterId": 1,
-    "lectureOptionId": "a",
-    "recitationOptionId": "r1",
+    "course_number": "67010",
+    "semester_id": 1,
+    "lecture_option_id": "4-01",
+    "recitation_option_id": null,
     "locked": false
   },
   {
-    "courseId": "math-linear",
-    "semesterId": 1,
-    "lectureOptionId": "b",
-    "recitationOptionId": "r1",
+    "course_number": "67101",
+    "semester_id": 1,
+    "lecture_option_id": "1-03",
+    "recitation_option_id": "2-07",
     "locked": false
   },
   {
-    "courseId": "cs-intro",
-    "semesterId": 1,
-    "lectureOptionId": "a",
-    "recitationOptionId": "r1",
+    "course_number": "67109",
+    "semester_id": 1,
+    "lecture_option_id": "1-02",
+    "recitation_option_id": "2-01",
     "locked": false
   },
   {
-    "courseId": "math-discrete",
-    "semesterId": 1,
-    "lectureOptionId": "a",
+    "course_number": "67120",
+    "semester_id": 2,
+    "lecture_option_id": "4-01",
+    "recitation_option_id": null,
     "locked": false
   },
   {
-    "courseId": "math-calculus2",
-    "semesterId": 2,
-    "lectureOptionId": "a",
-    "recitationOptionId": "r1",
+    "course_number": "67121",
+    "semester_id": 2,
+    "lecture_option_id": "1-01",
+    "recitation_option_id": null,
     "locked": false
   },
   {
-    "courseId": "cs-data-structures",
-    "semesterId": 2,
-    "lectureOptionId": "a",
-    "recitationOptionId": "r1",
+    "course_number": "67200",
+    "semester_id": 2,
+    "lecture_option_id": "1-01",
+    "recitation_option_id": "2-02",
     "locked": false
   },
   {
-    "courseId": "phys-mechanics",
-    "semesterId": 2,
-    "lectureOptionId": "a",
-    "recitationOptionId": "r1",
+    "course_number": "67315",
+    "semester_id": 3,
+    "lecture_option_id": "1-01",
+    "recitation_option_id": "2-10",
     "locked": false
   },
   {
-    "courseId": "math-probability",
-    "semesterId": 2,
-    "lectureOptionId": "a",
-    "recitationOptionId": "r1",
+    "course_number": "67392",
+    "semester_id": 3,
+    "lecture_option_id": "1-01",
+    "recitation_option_id": null,
     "locked": false
   },
   {
-    "courseId": "cs-algorithms",
-    "semesterId": 3,
-    "lectureOptionId": "a",
-    "recitationOptionId": "r1",
+    "course_number": "67398",
+    "semester_id": 3,
+    "lecture_option_id": "1-01",
+    "recitation_option_id": null,
     "locked": false
   },
   {
-    "courseId": "cs-os",
-    "semesterId": 3,
-    "lectureOptionId": "b",
-    "recitationOptionId": "r1",
+    "course_number": "67465",
+    "semester_id": 4,
+    "lecture_option_id": "1-01",
+    "recitation_option_id": "2-01",
     "locked": false
   },
   {
-    "courseId": "phys-electro",
-    "semesterId": 3,
-    "lectureOptionId": "a",
-    "recitationOptionId": "r1",
+    "course_number": "67468",
+    "semester_id": 4,
+    "lecture_option_id": "3-01",
+    "recitation_option_id": null,
     "locked": false
   },
   {
-    "courseId": "cs-networks",
-    "semesterId": 4,
-    "lectureOptionId": "a",
+    "course_number": "67504",
+    "semester_id": 4,
+    "lecture_option_id": "1-02",
+    "recitation_option_id": "2-01",
     "locked": false
   },
   {
-    "courseId": "elec-db",
-    "semesterId": 4,
-    "lectureOptionId": "a",
-    "recitationOptionId": "r1",
+    "course_number": "67506",
+    "semester_id": 5,
+    "lecture_option_id": "1-01",
+    "recitation_option_id": "2-02",
     "locked": false
   },
   {
-    "courseId": "elec-ml",
-    "semesterId": 4,
-    "lectureOptionId": "a",
-    "recitationOptionId": "r1",
+    "course_number": "67508",
+    "semester_id": 5,
+    "lecture_option_id": "1-01",
+    "recitation_option_id": "2-01",
     "locked": false
   },
   {
-    "courseId": "phys-quantum",
-    "semesterId": 5,
-    "lectureOptionId": "a",
-    "recitationOptionId": "r1",
-    "locked": false
-  },
-  {
-    "courseId": "elec-graphics",
-    "semesterId": 5,
-    "lectureOptionId": "a",
-    "recitationOptionId": "r1",
+    "course_number": "67512",
+    "semester_id": 5,
+    "lecture_option_id": "4-01",
+    "recitation_option_id": null,
     "locked": false
   }
 ]

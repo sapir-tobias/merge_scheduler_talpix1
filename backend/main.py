@@ -1,14 +1,21 @@
 """FastAPI entry point for the mock Talpix backend.
 
 Mirrors Talpix's modular layout: features live under web_features/<name>/
-and each one exposes an APIRouter via urls.py that this module mounts.
+and each one exposes an APIRouter via urls_scheduler.py that this module mounts.
 """
 from __future__ import annotations
+
+import logging
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from web_features.scheduler.urls import router as scheduler_router
+from web_features.scheduler.urls_scheduler import router as scheduler_router
+
+# Scoped JSON log lines (Grafana LogQL friendly). Real Talpix configures this
+# centrally in settings; here we keep a minimal stream handler so the
+# feature's `logger.info(json...)` calls are visible during local dev.
+logging.basicConfig(level=logging.INFO, format="%(name)s %(message)s")
 
 app = FastAPI(title="Talpix Mock Backend (Scheduler)")
 

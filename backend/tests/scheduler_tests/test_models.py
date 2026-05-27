@@ -1,0 +1,28 @@
+"""Production MongoEngine schema tests (skipped if mongoengine is absent).
+
+Asserts the drop-in documents key on the real ``course_number`` and bind to the
+expected collections — no DB connection required, just class introspection.
+"""
+from __future__ import annotations
+
+import pytest
+
+pytest.importorskip("mongoengine")
+
+from apps.TalpiotAPIs.Scheduler.models import Course, PlacedCourse, PlanTrack  # noqa: E402
+
+
+def test_course_collection_and_primary_key():
+    assert Course._meta["collection"] == "courses"
+    assert Course._fields["course_number"].primary_key is True
+
+
+def test_course_has_real_schema_fields():
+    for field in ("name_he", "faculty_code", "credits", "groups", "test_dates", "prerequisites"):
+        assert field in Course._fields
+
+
+def test_other_documents_bind_collections():
+    assert PlacedCourse._meta["collection"] == "scheduler_placed"
+    assert PlanTrack._meta["collection"] == "scheduler_plans"
+    assert PlanTrack._fields["track_id"].primary_key is True

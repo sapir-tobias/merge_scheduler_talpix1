@@ -21,6 +21,12 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+.pytest_cache/
+
+# Playwright (e2e)
+test-results/
+playwright-report/
+playwright/.cache/
 
 # Editor directories and files
 .vscode/*
