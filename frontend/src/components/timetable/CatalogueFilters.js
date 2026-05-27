@@ -1,5 +1,5 @@
-import { cn } from '../../utils/utils'
-import { FACULTIES } from '../../constants'
+import { cn } from './utils'
+import { FACULTIES } from './constants'
 import { TEST_IDS } from '../../testIds'
 import styles from './Catalogue.module.css'
 

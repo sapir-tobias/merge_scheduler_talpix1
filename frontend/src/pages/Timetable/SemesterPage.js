@@ -3,8 +3,8 @@ import WeeklySchedule from '../../components/timetable/WeeklySchedule'
 import MonthCalendar from '../../components/timetable/MonthCalendar'
 import Catalogue from '../../components/timetable/Catalogue'
 import SemesterCourseList from '../../components/timetable/SemesterCourseList'
-import { useDegree } from '../../stores/DegreeContext'
-import { useCoursesStore } from '../../stores/CoursesStore'
+import { useDegree } from '../../components/timetable/DegreeContext'
+import { useCoursesStore } from '../../components/timetable/CoursesStore'
 import styles from './SemesterPage.module.css'
 
 export default function SemesterPage({ semesterId }) {

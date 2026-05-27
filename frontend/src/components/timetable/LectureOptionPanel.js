@@ -1,5 +1,5 @@
-import { cn } from '../../utils/utils'
-import { formatTime, DAY_LABEL } from '../../utils/weeklyLayout'
+import { cn } from './utils'
+import { formatTime, DAY_LABEL } from './weeklyLayout'
 
 export default function LectureOptionPanel({
   panel,

@@ -1,7 +1,7 @@
 import { useRef, useEffect, useMemo } from 'react'
-import { cn } from '../../utils/utils'
+import { cn } from './utils'
 import { TEST_IDS } from '../../testIds'
-import { DATE_ONLY, shiftDate, buildSnakeMap, toDateStr } from '../../utils/snakeMap'
+import { DATE_ONLY, shiftDate, buildSnakeMap, toDateStr } from './snakeMap'
 import MonthGrid from './MonthGrid'
 import styles from './MonthCalendar.module.css'
 

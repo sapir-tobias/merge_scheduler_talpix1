@@ -1,5 +1,5 @@
-import { cn } from '../../utils/utils'
-import { DAYS_LIST } from '../../constants'
+import { cn } from './utils'
+import { DAYS_LIST } from './constants'
 import { TEST_IDS } from '../../testIds'
 import styles from '../../pages/Timetable/SchedulerPage.module.css'
 

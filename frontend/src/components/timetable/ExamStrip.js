@@ -1,6 +1,6 @@
-import { useDegree } from '../../stores/DegreeContext'
-import { useCoursesStore } from '../../stores/CoursesStore'
-import { cn } from '../../utils/utils'
+import { useDegree } from './DegreeContext'
+import { useCoursesStore } from './CoursesStore'
+import { cn } from './utils'
 import styles from './ExamStrip.module.css'
 
 const FACULTY_COLORS = {

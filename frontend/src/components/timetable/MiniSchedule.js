@@ -1,4 +1,4 @@
-import { DAYS, buildSlots } from '../../utils/previewConfigs'
+import { DAYS, buildSlots } from './previewConfigs'
 import styles from './SchedulePreviewPanel.module.css'
 
 const PREVIEW_START = 8

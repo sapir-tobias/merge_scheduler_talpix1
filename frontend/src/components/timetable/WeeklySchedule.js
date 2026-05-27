@@ -1,8 +1,8 @@
 import { useRef, useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { cn } from '../../utils/utils'
-import { useDegree } from '../../stores/DegreeContext'
-import { useCoursesStore } from '../../stores/CoursesStore'
+import { cn } from './utils'
+import { useDegree } from './DegreeContext'
+import { useCoursesStore } from './CoursesStore'
 import { TEST_IDS } from '../../testIds'
 import styles from './WeeklySchedule.module.css'
 import {
@@ -13,8 +13,8 @@ import {
   buildCourseBlocks,
   computeCollisionZones,
   computeBlockerCollisionZones,
-} from '../../utils/weeklyLayout'
-import { useBlockerDrag } from '../../hooks/useBlockerDrag'
+} from './weeklyLayout'
+import { useBlockerDrag } from './useBlockerDrag'
 import ScheduleGrid from './ScheduleGrid'
 import LectureOptionPanel from './LectureOptionPanel'
 

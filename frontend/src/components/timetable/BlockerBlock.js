@@ -1,6 +1,6 @@
-import { cn } from '../../utils/utils'
+import { cn } from './utils'
 import { LuX } from 'react-icons/lu'
-import { DAYS, blockStyle } from '../../utils/weeklyLayout'
+import { DAYS, blockStyle } from './weeklyLayout'
 
 export default function BlockerBlock({
   blocker,

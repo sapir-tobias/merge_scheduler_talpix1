@@ -32,25 +32,23 @@ scripts/run.ps1                   — verification gate (tsc --noEmit + pytest)
 
 ## Frontend File Map
 ```
-src/                         — pure JavaScript (.js); layout mirrors Talpix (no lib/; uses utils/, hooks/)
-  App.js                     — providers (CoursesProvider → DegreeProvider) + router; maps allPages → routes with role gating
-  urls.js                    — Category/Page registry (Talpix-style); schedulerPages roles = ['Cadet','Sagab','Sagaz','Kamat']
-  main.js, index.css         — entry + global design tokens
-  constants.js               — faculty/credit(0–20)/term/day/track tokens (no hardcoded values in views)
-  testIds.js                 — central data-testid constants (shared with Playwright)
-  stores/
-    DegreeContext.js         — global plan state (useReducer) + localStorage persistence; all actions
-    CoursesStore.js          — fetches catalogue + initial-placed from the API; exposes courseMap, fetchPlan
+src/                         — pure JavaScript (.js). ALL feature code is co-located under
+                               components/timetable/ (Talpix pattern, cf. components/food, components/shift);
+                               global hooks/ holds only the shared Talpix hooks.
+  App.js, main.js, index.css — local shell + entry + design tokens (not migrated; Talpix owns index.js/Main.js)
+  urls.js                    — Category/Page registry (Talpix-style); roles = ['Cadet','Sagab','Sagaz','Kamat'] (merge block into Talpix urls.js)
+  testIds.js                 — central data-testid constants (merge into Talpix testIds.js; shared with Playwright)
   hooks/
-    useAPIFetch.js, useAPIAction.js          — Talpix-standard GET / mutating hooks
-    useBlockerDrag.js, useDismissOnOutsideClick.js  — scheduler interaction hooks
-  utils/
-    utils.js (cn), scoring.js, weeklyLayout.js, snakeMap.js, previewConfigs.js, planIO.js
+    useAPIFetch.js, useAPIAction.js          — local copies of Talpix's shared hooks (use Talpix's on merge)
   pages/Timetable/
     SchedulerPage.js         — nav-bar shell (tabs, year selector, Block, Load Plan, Import/Export) + active view
     SemesterPage.js          — per-semester view (WeeklySchedule + MonthCalendar + SemesterCourseList + Catalogue)
     DegreePlanPage.js        — 3-year overview (ExemptionsBox + SemesterBox grid + Catalogue)
-  components/timetable/      — all feature components, each < 200 lines (Talpix-style namespaced folder)
+  components/timetable/      — the whole feature, co-located (every file < 200 lines):
+    DegreeContext.js, CoursesStore.js               — feature React contexts (cf. components/food/FoodWeekContext.js)
+    useBlockerDrag.js, useDismissOnOutsideClick.js  — feature hooks (cf. components/food/useBreakfasts.js)
+    scoring.js, weeklyLayout.js, snakeMap.js, previewConfigs.js, planIO.js, utils.js(cn) — feature helpers
+    constants.js                                    — feature tokens (cf. pages/Elements/CadetPage/constants.js)
     WeeklySchedule.js + ScheduleGrid/CourseBlock/BlockerBlock/LectureOptionPanel  — 5-day grid, blocks, blocker drag/resize/draw
     MonthCalendar.js + MonthGrid                                                  — snake visualization (study days + exam heads)
     Catalogue.js + CatalogueFilters + CourseItem + CourseItemDetail               — course browser w/ scoring/search/filters

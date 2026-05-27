@@ -1,5 +1,5 @@
-import { cn } from '../../utils/utils'
-import { DAY_LABEL } from '../../constants'
+import { cn } from './utils'
+import { DAY_LABEL } from './constants'
 import styles from './CourseItem.module.css'
 
 function formatTime(h) {

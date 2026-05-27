@@ -1,6 +1,6 @@
 import { createPortal } from 'react-dom'
 import { LuX, LuChevronDown, LuCircleCheck, LuTriangleAlert, LuCircleAlert, LuFlag } from 'react-icons/lu'
-import { cn } from '../../utils/utils'
+import { cn } from './utils'
 import Tooltip from './Tooltip'
 import styles from './SemesterCourseList.module.css'
 

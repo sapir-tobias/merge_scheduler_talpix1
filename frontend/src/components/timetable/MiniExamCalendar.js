@@ -1,4 +1,4 @@
-import { cn } from '../../utils/utils'
+import { cn } from './utils'
 import Tooltip from './Tooltip'
 import styles from './MiniExamCalendar.module.css'
 

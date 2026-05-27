@@ -1,5 +1,5 @@
 import { LuCheck } from 'react-icons/lu'
-import { cn } from '../../utils/utils'
+import { cn } from './utils'
 import MiniSchedule, { PREVIEW_W } from './MiniSchedule'
 import styles from './SchedulePreviewPanel.module.css'
 

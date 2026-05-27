@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { LuDownload, LuUpload } from 'react-icons/lu'
 import Tooltip from './Tooltip'
 import { TEST_IDS } from '../../testIds'
-import { exportPlan, importPlanFile } from '../../utils/planIO'
+import { exportPlan, importPlanFile } from './planIO'
 
 /** Import / Export plan controls (JSON), backed by a hidden file input. */
 export default function SchedulerIOButtons({ state, dispatch, styles }) {

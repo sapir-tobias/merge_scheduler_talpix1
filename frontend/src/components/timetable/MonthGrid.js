@@ -1,6 +1,6 @@
-import { cn } from '../../utils/utils'
+import { cn } from './utils'
 import Tooltip from './Tooltip'
-import { toDateStr, shiftDate, isBodyDay, connectsRight, buildCells } from '../../utils/snakeMap'
+import { toDateStr, shiftDate, isBodyDay, connectsRight, buildCells } from './snakeMap'
 import styles from './MonthCalendar.module.css'
 
 const MONTH_NAMES = [

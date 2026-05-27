@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
-import { DAYS, START_HOUR, END_HOUR, HOUR_HEIGHT } from '../utils/weeklyLayout'
+import { DAYS, START_HOUR, END_HOUR, HOUR_HEIGHT } from './weeklyLayout'
 
 /**
  * Blocker draw / move / resize machinery for the weekly grid.

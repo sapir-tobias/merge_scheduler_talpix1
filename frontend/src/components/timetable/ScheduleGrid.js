@@ -1,4 +1,4 @@
-import { cn } from '../../utils/utils'
+import { cn } from './utils'
 import {
   DAYS,
   START_HOUR,
@@ -7,7 +7,7 @@ import {
   formatHour,
   blockStyle,
   COLLISION_STRIPE,
-} from '../../utils/weeklyLayout'
+} from './weeklyLayout'
 import { LectureBlock, RecitationBlock } from './CourseBlock'
 import BlockerBlock from './BlockerBlock'
 

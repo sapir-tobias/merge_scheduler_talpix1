@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { DegreeProvider } from './stores/DegreeContext'
-import { CoursesProvider, useCoursesStore } from './stores/CoursesStore'
+import { DegreeProvider } from './components/timetable/DegreeContext'
+import { CoursesProvider, useCoursesStore } from './components/timetable/CoursesStore'
 import { allPages } from './urls'
 import { TEST_IDS } from './testIds'
 

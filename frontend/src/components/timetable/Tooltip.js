@@ -1,6 +1,6 @@
 import { useState, useRef, useLayoutEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { cn } from '../../utils/utils'
+import { cn } from './utils'
 import styles from './Tooltip.module.css'
 
 const GAP = 8    // gap between element edge and tooltip

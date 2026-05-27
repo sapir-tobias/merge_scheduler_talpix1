@@ -1,4 +1,4 @@
-import { cn } from '../../utils/utils'
+import { cn } from './utils'
 import { LuX, LuGripVertical, LuTriangleAlert, LuCircleAlert, LuCircleCheck, LuChevronDown } from 'react-icons/lu'
 import Tooltip from './Tooltip'
 

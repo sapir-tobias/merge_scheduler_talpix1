@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { LuTriangleAlert, LuOctagonAlert, LuChevronDown, LuChevronUp, LuPlus, LuCheck, LuArrowRight, LuGripVertical } from 'react-icons/lu'
-import { cn } from '../../utils/utils'
+import { cn } from './utils'
 import Tooltip from './Tooltip'
-import { useCoursesStore } from '../../stores/CoursesStore'
+import { useCoursesStore } from './CoursesStore'
 import { TEST_IDS } from '../../testIds'
-import { FACULTY_LABEL, TERM_LABEL } from '../../constants'
+import { FACULTY_LABEL, TERM_LABEL } from './constants'
 import CourseItemDetail from './CourseItemDetail'
 import styles from './CourseItem.module.css'
 

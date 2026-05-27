@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo } from 'react'
-import { useAPIFetch } from '../hooks/useAPIFetch'
+import { useAPIFetch } from '../../hooks/useAPIFetch'
 
 const CoursesContext = createContext(null)
 

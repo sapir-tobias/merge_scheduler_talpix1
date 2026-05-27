@@ -1,5 +1,5 @@
-import { cn } from '../../utils/utils'
-import { TRACK_IDS, TRACK_LABEL, TRACK_DESC, TRACK_DOT_COLOR } from '../../constants'
+import { cn } from './utils'
+import { TRACK_IDS, TRACK_LABEL, TRACK_DESC, TRACK_DOT_COLOR } from './constants'
 import { TEST_IDS } from '../../testIds'
 import styles from '../../pages/Timetable/SchedulerPage.module.css'
 

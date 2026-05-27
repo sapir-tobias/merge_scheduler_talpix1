@@ -135,20 +135,16 @@ urlpatterns = [
 Then mount it in Talpix's root URL conf: `path("api/scheduler/", include("web_features.scheduler.urls"))`.
 
 ### Frontend (`Project B` → `../new_talpix/talpix/services/frontend/src/`)
-Frontend is **pure JavaScript** (`.js`, JSX-in-`.js` like Talpix's CRA), every file <200 lines, CSS-Module + design-token styling, and only Talpix-present libraries (`react-icons`, `bootstrap`). The folder split already mirrors Talpix (`components/`, `pages/`, `hooks/`, `utils/`, `stores/` — no `lib/`). Most of it is now a literal copy-in.
+Frontend is **pure JavaScript** (`.js`, JSX-in-`.js` like Talpix's CRA), every file <200 lines, CSS-Module + design-token styling, only Talpix-present libraries (`react-icons`, `bootstrap`). **All feature code is co-located under `components/timetable/`** exactly like Talpix's own feature folders (`components/food`, `components/shift`), and global `hooks/` holds only the shared hooks. So the two feature folders are a **literal copy-in** — no per-file relocation:
 | From (Project B) | To (Talpix) | Notes |
 |---|---|---|
-| `components/timetable/*.js` (+ `*.module.css`) — all 25 feature components | `components/timetable/` | drop in as-is (already namespaced, like Talpix's `components/` groupings). |
-| `pages/Timetable/{SchedulerPage,SemesterPage,DegreePlanPage}.js` (+ css) | `pages/Timetable/` | drop in as-is (matches `pages/Talpix/`, `pages/groups/`). |
-| `utils/*.js` (scoring, utils[cn], weeklyLayout, snakeMap, previewConfigs, planIO) | `utils/` | drop in as-is. |
-| `hooks/{useBlockerDrag,useDismissOnOutsideClick}.js` | `hooks/` | scheduler interaction hooks, as-is. |
-| `constants.js` | `src/constants.js` | Talpix already has a `src/constants.js` — **merge** the timetable tokens in. |
-| `stores/{DegreeContext,CoursesStore}.js` | `stores/` | as-is (DegreeContext persists to localStorage). |
+| `components/timetable/` — the entire folder (25 components + `DegreeContext.js`, `CoursesStore.js`, `useBlockerDrag.js`, `useDismissOnOutsideClick.js`, `scoring.js`, `weeklyLayout.js`, `snakeMap.js`, `previewConfigs.js`, `planIO.js`, `utils.js`, `constants.js`) | `components/timetable/` | **copy the whole folder as-is.** Contexts/hooks/helpers/constants are co-located, matching `components/food/{FoodWeekContext,useBreakfasts,…}.js`. |
+| `pages/Timetable/{SchedulerPage,SemesterPage,DegreePlanPage}.js` (+ css) | `pages/Timetable/` | **copy as-is** (matches `pages/Talpix/`, `pages/groups/`). |
+| `testIds.js` | **merge** scheduler keys into Talpix's existing root `testIds.js` | add the `NAV`/`CATALOGUE`/`WEEKLY`/… sub-objects; don't overwrite. |
+| `urls.js` scheduler block | **merge** into Talpix's root `urls.js` (below) | import path: `./pages/Timetable/SchedulerPage`. |
 | `index.css` `--color-*` / `--faculty-*` tokens | merge missing tokens into Talpix `styles/theme.css` | don't overwrite Talpix theme. |
-| `testIds.js` | **merge** scheduler keys into Talpix's existing `testIds.js` | add the `NAV`/`CATALOGUE`/`WEEKLY`/… sub-objects; don't overwrite. |
-| `urls.js` scheduler block | **merge** into Talpix's `urls.js` (below) | import path: `./pages/Timetable/SchedulerPage`. |
-| `hooks/{useAPIFetch,useAPIAction}.js` | — | Talpix **already has** these (different signatures). Keep timetable-scoped or rewire `CoursesStore` (see caveat). |
-| `App.js`, `main.js`, full `urls.js`, `vite.config.js`, `index.html`, `jsconfig`-less | — | not migrated — Talpix owns the shell/router/build (CRA, not Vite). |
+| `hooks/{useAPIFetch,useAPIAction}.js` | — | **drop ours** — Talpix already ships these in `hooks/`. Rewire `CoursesStore`'s fetch to Talpix's hook signature (see caveat). |
+| `App.js`, `main.js`, full `urls.js`, `vite.config.js`, `index.html` | — | not migrated — Talpix owns the shell/router/build (CRA, not Vite). |
 | `e2e-tests/Tests/SchedulerTests/scheduler.spec.js` | Talpix `e2e-tests/Tests/SchedulerTests/` | as-is (15 specs). |
 
 **Register the Scheduler in Talpix `services/frontend/src/urls.js`:**

@@ -1,6 +1,6 @@
-import { cn } from '../../utils/utils'
+import { cn } from './utils'
 import { LuLock, LuLockOpen, LuX } from 'react-icons/lu'
-import { blockStyle } from '../../utils/weeklyLayout'
+import { blockStyle } from './weeklyLayout'
 
 export function LectureBlock({
   block,
