@@ -1,7 +1,9 @@
 import { useRef, useEffect, useMemo } from 'react'
 import { cn } from '../lib/utils'
 import Tooltip from './Tooltip'
+import { TEST_IDS } from '../testIds'
 import type { Faculty } from '../types'
+import styles from './MonthCalendar.module.css'
 
 const MONTH_NAMES = [
   'January','February','March','April','May','June',
@@ -162,19 +164,19 @@ export default function MonthCalendar({ markedDays, onToggleDay, examMap, closeE
   const isMarked = (y: number, m: number, d: number) => markedDays.has(toDateStr(y, m, d))
 
   return (
-    <div className="w-[268px] shrink-0 border-l border-stone-200 flex flex-col overflow-hidden bg-white">
+    <div className={styles.container} data-testid={TEST_IDS.MONTH_CALENDAR.CONTAINER}>
 
       {/* Fixed weekday header */}
-      <div className="h-11 shrink-0 border-b border-stone-200 grid grid-cols-7 px-2">
+      <div className={styles.weekHeader}>
         {WEEK_LABELS.map((l, i) => (
-          <div key={i} className="flex items-center justify-center">
-            <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-stone-400">{l}</span>
+          <div key={i} className={styles.weekCell}>
+            <span className={styles.weekLabel}>{l}</span>
           </div>
         ))}
       </div>
 
       {/* Scrollable month blocks */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto">
+      <div ref={scrollRef} className={styles.scrollArea}>
         {months.map(({ year, month }, mi) => {
           const cells = buildCells(year, month)
           const monthKey = `${year}-${month}`
@@ -186,17 +188,17 @@ export default function MonthCalendar({ markedDays, onToggleDay, examMap, closeE
                 if (el) monthRefs.current.set(monthKey, el)
                 else monthRefs.current.delete(monthKey)
               }}
-              className={cn(mi > 0 && 'border-t border-stone-200')}
+              className={cn(mi > 0 && styles.monthDivider)}
             >
-              <div className="px-3 pt-3 pb-1.5">
-                <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-stone-500">
+              <div className={styles.monthTitleRow}>
+                <span className={styles.monthTitle}>
                   {MONTH_NAMES[month]}&nbsp;{year}
                 </span>
               </div>
 
-              <div className="grid grid-cols-7 px-2 pb-3 gap-y-0.5">
+              <div className={styles.dayGrid}>
                 {cells.map((day, i) => {
-                  if (day === null) return <div key={`e-${mi}-${i}`} className="h-8" />
+                  if (day === null) return <div key={`e-${mi}-${i}`} className={styles.emptyCell} />
 
                   const dateStr = toDateStr(year, month, day)
                   const snake = snakeMap.get(dateStr)
@@ -241,17 +243,18 @@ export default function MonthCalendar({ markedDays, onToggleDay, examMap, closeE
 
                   const btn = (
                     <button
+                      data-testid={`${TEST_IDS.MONTH_CALENDAR.DAY}-${dateStr}`}
                       onClick={() => onToggleDay(dateStr)}
-                      className="relative w-full h-8 flex items-center justify-center select-none"
+                      className={styles.dayButton}
                     >
                       {/* Snake body bar */}
                       {showBodyBar && (
                         <div
                           className={cn(
-                            'absolute top-1/2 -translate-y-1/2 h-[14px]',
-                            bodyLeftCap && !bodyRightCap && 'rounded-l-full',
-                            !bodyLeftCap && bodyRightCap && 'rounded-r-full',
-                            bodyLeftCap && bodyRightCap && 'rounded-full',
+                            styles.bar,
+                            bodyLeftCap && !bodyRightCap && styles.roundedLeft,
+                            !bodyLeftCap && bodyRightCap && styles.roundedRight,
+                            bodyLeftCap && bodyRightCap && styles.roundedFull,
                           )}
                           style={{
                             left: bodyLeftEdge,
@@ -264,7 +267,7 @@ export default function MonthCalendar({ markedDays, onToggleDay, examMap, closeE
                       {/* Head bar: left side only, covering the full circle width */}
                       {showHeadBar && (
                         <div
-                          className="absolute top-1/2 -translate-y-1/2 h-[14px]"
+                          className={styles.bar}
                           style={{
                             left: '0',
                             right: 'calc(50% - 16px)',
@@ -276,16 +279,16 @@ export default function MonthCalendar({ markedDays, onToggleDay, examMap, closeE
                       {/* Day circle */}
                       <div
                         className={cn(
-                          'relative z-10 w-8 h-8 flex flex-col items-center justify-center rounded-full text-[12px] leading-none transition-colors',
+                          styles.circle,
                           todayDay
-                            ? 'text-white font-semibold'
+                            ? styles.circleToday
                             : isSingleHead
-                              ? 'text-white font-semibold'
+                              ? styles.circleSingleHead
                               : isMultiHead
-                                ? 'font-semibold hover:bg-stone-100'
+                                ? styles.circleMultiHead
                                 : marked
-                                  ? 'text-stone-900 font-semibold hover:bg-stone-100'
-                                  : 'text-stone-600 hover:bg-stone-100'
+                                  ? styles.circleMarked
+                                  : styles.circleDefault
                         )}
                         style={{
                           backgroundColor: todayDay
@@ -298,16 +301,16 @@ export default function MonthCalendar({ markedDays, onToggleDay, examMap, closeE
                         }}
                       >
                         <span className={cn(
-                          (marked || isMultiHead) && !isSingleHead && !todayDay && '-translate-y-px'
+                          (marked || isMultiHead) && !isSingleHead && !todayDay && styles.dayNumberShift
                         )}>
                           {day}
                         </span>
 
                         {/* Dots for marked days / multi-exam heads */}
                         {(marked || isMultiHead) && !todayDay && !isSingleHead && (
-                          <div className="absolute bottom-1 flex gap-0.5 left-1/2 -translate-x-1/2">
-                            {marked && <span className="w-[4px] h-[4px] rounded-full bg-amber-400" />}
-                            {isMultiHead && <span className="w-[4px] h-[4px] rounded-full bg-red-400" />}
+                          <div className={styles.dots}>
+                            {marked && <span className={styles.dotMarked} />}
+                            {isMultiHead && <span className={styles.dotMulti} />}
                           </div>
                         )}
                       </div>
@@ -315,11 +318,11 @@ export default function MonthCalendar({ markedDays, onToggleDay, examMap, closeE
                   )
 
                   return tooltipText ? (
-                    <Tooltip key={`${mi}-${day}`} text={tooltipText} side="top" className="h-8 flex items-center">
+                    <Tooltip key={`${mi}-${day}`} text={tooltipText} side="top" className={styles.dayTooltip}>
                       {btn}
                     </Tooltip>
                   ) : (
-                    <div key={`${mi}-${day}`} className="h-8 flex items-center">
+                    <div key={`${mi}-${day}`} className={styles.dayWrap}>
                       {btn}
                     </div>
                   )
@@ -329,7 +332,7 @@ export default function MonthCalendar({ markedDays, onToggleDay, examMap, closeE
           )
         })}
 
-        <div className="h-4" />
+        <div className={styles.bottomSpacer} />
       </div>
     </div>
   )

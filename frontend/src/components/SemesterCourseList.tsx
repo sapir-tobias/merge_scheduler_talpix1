@@ -8,18 +8,20 @@ import { cn } from '../lib/utils'
 import { scoreCourse } from '../lib/scoring'
 import Tooltip from './Tooltip'
 import SchedulePreviewPanel from './SchedulePreviewPanel'
+import { TEST_IDS } from '../testIds'
+import styles from './SemesterCourseList.module.css'
 
 const FACULTY_DOT: Record<Faculty, string> = {
-  cs:      'bg-blue-400',
-  math:    'bg-violet-400',
-  physics: 'bg-amber-400',
-  misc:    'bg-stone-400',
+  cs:      styles.dotCs,
+  math:    styles.dotMath,
+  physics: styles.dotPhysics,
+  misc:    styles.dotMisc,
 }
 const FACULTY_OPT_ACTIVE: Record<Faculty, string> = {
-  cs:      'bg-blue-200 text-blue-800 border-blue-300',
-  math:    'bg-violet-200 text-violet-800 border-violet-300',
-  physics: 'bg-amber-200 text-amber-800 border-amber-300',
-  misc:    'bg-stone-200 text-stone-700 border-stone-300',
+  cs:      styles.optActiveCs,
+  math:    styles.optActiveMath,
+  physics: styles.optActivePhysics,
+  misc:    styles.optActiveMisc,
 }
 
 function formatSlots(slots: { day: string; startHour: number; endHour: number }[]) {
@@ -52,8 +54,8 @@ export default function SemesterCourseList({ semesterId }: Props) {
 
   if (placed.length === 0) {
     return (
-      <div className="shrink-0 h-10 border-t border-stone-200 flex items-center px-4 bg-stone-50/40">
-        <p className="text-[11px] text-stone-300">No courses scheduled — add from the catalogue</p>
+      <div className={styles.empty}>
+        <p className={styles.emptyText}>No courses scheduled — add from the catalogue</p>
       </div>
     )
   }
@@ -94,10 +96,10 @@ export default function SemesterCourseList({ semesterId }: Props) {
 
   return (
     <>
-      <div className="shrink-0 border-t border-stone-200 bg-white flex items-stretch overflow-hidden">
+      <div className={styles.bar} data-testid={TEST_IDS.SEMESTER_COURSE_LIST.BAR}>
         {/* Scrollable course chips — fixed height, no expansion inside */}
-        <div className="flex-1 overflow-x-auto">
-          <div className="flex min-w-max divide-x divide-stone-100">
+        <div className={styles.chipScroll}>
+          <div className={styles.chipRow}>
             {placed.map(p => {
               const course = courseMap.get(p.courseId)
               if (!course) return null
@@ -115,45 +117,44 @@ export default function SemesterCourseList({ semesterId }: Props) {
               })()
 
               return (
-                <div key={p.courseId} className="flex items-center gap-2.5 px-3 py-2 group min-w-0">
-                  <span className={cn('w-1.5 h-1.5 rounded-full shrink-0', FACULTY_DOT[course.faculty])} />
+                <div key={p.courseId} data-testid={`${TEST_IDS.SEMESTER_COURSE_LIST.CHIP}-${p.courseId}`} className={styles.chip}>
+                  <span className={cn(styles.dot, FACULTY_DOT[course.faculty])} />
                   <Tooltip text={scoreTooltip} side="top">
                     {score.critical
-                      ? <AlertCircle size={10} className="text-red-500 shrink-0 cursor-default" />
+                      ? <AlertCircle size={10} className={cn(styles.statusIcon, styles.statusCritical)} />
                       : score.warning
-                        ? <AlertTriangle size={10} className="text-amber-500 shrink-0 cursor-default" />
-                        : <CheckCircle2 size={10} className="text-emerald-500 shrink-0 cursor-default" />
+                        ? <AlertTriangle size={10} className={cn(styles.statusIcon, styles.statusWarning)} />
+                        : <CheckCircle2 size={10} className={cn(styles.statusIcon, styles.statusOk)} />
                     }
                   </Tooltip>
 
-                  <div className="min-w-0">
-                    <p className="text-[11px] font-medium text-stone-800 whitespace-nowrap">{course.name}</p>
-                    <p className="text-[9px] text-stone-400">{course.code}</p>
+                  <div className={styles.chipText}>
+                    <p className={styles.courseName}>{course.name}</p>
+                    <p className={styles.courseCode}>{course.code}</p>
                   </div>
 
-                  <span className="text-[10px] text-stone-400 whitespace-nowrap shrink-0">
+                  <span className={styles.examDate}>
                     {formatDate(course.examDate)}
                   </span>
 
                   {canExpand && (
                     <button
                       data-course-panel
+                      data-testid={`${TEST_IDS.SEMESTER_COURSE_LIST.EXPAND_BUTTON}-${p.courseId}`}
                       onClick={e => {
                         const rect = e.currentTarget.getBoundingClientRect()
                         setExpandedPanel(isExpanded ? null : { courseId: p.courseId, rect })
                       }}
-                      className={cn(
-                        'shrink-0 p-0.5 rounded transition-colors',
-                        isExpanded ? 'text-stone-700 bg-stone-100' : 'text-stone-400 hover:text-stone-600'
-                      )}
+                      className={cn(styles.expandBtn, isExpanded && styles.expandBtnActive)}
                     >
-                      <ChevronDown size={11} className={cn('transition-transform', isExpanded ? 'rotate-0' : 'rotate-180')} />
+                      <ChevronDown size={11} className={cn(styles.chevron, !isExpanded && styles.chevronCollapsed)} />
                     </button>
                   )}
 
                   <button
+                    data-testid={`${TEST_IDS.SEMESTER_COURSE_LIST.REMOVE_BUTTON}-${p.courseId}`}
                     onClick={() => dispatch({ type: 'REMOVE_COURSE', courseId: p.courseId, semesterId })}
-                    className="text-stone-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100 shrink-0"
+                    className={styles.removeBtn}
                   >
                     <X size={11} />
                   </button>
@@ -165,21 +166,22 @@ export default function SemesterCourseList({ semesterId }: Props) {
 
         {/* Combinations button */}
         {totalCombos > 1 && (
-          <Tooltip text={`${totalCombos} lecture schedule combinations`} side="top" className="shrink-0 flex">
+          <Tooltip text={`${totalCombos} lecture schedule combinations`} side="top" className={styles.combosTooltip}>
             <button
+              data-testid={TEST_IDS.SEMESTER_COURSE_LIST.COMBINATIONS_BUTTON}
               onClick={() => setShowPreview(true)}
               className={cn(
-                'border-l border-stone-200 px-3 flex items-center gap-1.5 transition-colors',
+                styles.combosBtn,
                 showPreview
-                  ? 'bg-stone-900 text-white'
+                  ? styles.combosBtnActive
                   : hasCollisions
-                    ? 'bg-amber-100 text-amber-800 hover:bg-amber-200'
-                    : 'text-stone-500 hover:text-stone-800 hover:bg-stone-50'
+                    ? styles.combosBtnCollisions
+                    : undefined
               )}
             >
               <LayoutGrid size={12} />
-              <span className="text-[11px] font-medium whitespace-nowrap">
-                Combinations <span className="text-[10px] opacity-60">({totalCombos})</span>
+              <span className={styles.combosLabel}>
+                Combinations <span className={styles.combosCount}>({totalCombos})</span>
               </span>
             </button>
           </Tooltip>
@@ -190,7 +192,7 @@ export default function SemesterCourseList({ semesterId }: Props) {
       {expandedPanel && panelCourse && panelPlaced && createPortal(
         <div
           data-course-panel
-          className="fixed z-50 bg-white rounded-xl shadow-2xl border border-stone-200 p-3"
+          className={styles.panel}
           style={{
             bottom: window.innerHeight - expandedPanel.rect.top + 8,
             left: Math.min(expandedPanel.rect.left, window.innerWidth - 260),
@@ -199,26 +201,24 @@ export default function SemesterCourseList({ semesterId }: Props) {
             overflowY: 'auto',
           }}
         >
-          <p className="text-[10px] font-bold text-stone-700 mb-2.5 px-0.5">{panelCourse.name}</p>
+          <p className={styles.panelTitle}>{panelCourse.name}</p>
 
           {panelCourse.lectureOptions.length > 0 && (
-            <div className="mb-2.5">
-              <p className="text-[8px] font-bold uppercase tracking-wide text-stone-400 mb-1.5 px-0.5">Lecture</p>
-              <div className="flex gap-1 flex-wrap">
+            <div className={styles.optGroup}>
+              <p className={styles.optGroupLabel}>Lecture</p>
+              <div className={styles.optList}>
                 {panelCourse.lectureOptions.map(opt => (
                   <Tooltip key={opt.id} text={formatSlots(opt.slots)} side="top">
                     <button
                       onClick={() => dispatch({ type: 'SET_LECTURE_OPTION', courseId: expandedPanel.courseId, semesterId, optionId: opt.id })}
                       className={cn(
-                        'flex flex-col items-start text-left px-2 py-1.5 rounded-lg border transition-colors',
-                        panelPlaced.lectureOptionId === opt.id
-                          ? FACULTY_OPT_ACTIVE[panelCourse.faculty]
-                          : 'border-stone-200 text-stone-500 hover:border-stone-300 hover:bg-stone-50'
+                        styles.optBtn,
+                        panelPlaced.lectureOptionId === opt.id && FACULTY_OPT_ACTIVE[panelCourse.faculty]
                       )}
                     >
-                      <span className="text-[10px] font-bold leading-none mb-1">{opt.id.toUpperCase()}</span>
+                      <span className={styles.optId}>{opt.id.toUpperCase()}</span>
                       {opt.slots.map((s, i) => (
-                        <span key={i} className="text-[8px] leading-tight whitespace-nowrap opacity-80">
+                        <span key={i} className={styles.optSlot}>
                           {s.day[0].toUpperCase()}{s.day.slice(1, 3)} {s.startHour}–{s.endHour}
                         </span>
                       ))}
@@ -231,22 +231,20 @@ export default function SemesterCourseList({ semesterId }: Props) {
 
           {panelCourse.recitationOptions && panelCourse.recitationOptions.length > 0 && (
             <div>
-              <p className="text-[8px] font-bold uppercase tracking-wide text-stone-400 mb-1.5 px-0.5">Recitation</p>
-              <div className="flex gap-1 flex-wrap">
+              <p className={styles.optGroupLabel}>Recitation</p>
+              <div className={styles.optList}>
                 {panelCourse.recitationOptions.map(opt => (
                   <Tooltip key={opt.id} text={formatSlots(opt.slots)} side="top">
                     <button
                       onClick={() => dispatch({ type: 'SET_RECITATION_OPTION', courseId: expandedPanel.courseId, semesterId, optionId: opt.id })}
                       className={cn(
-                        'flex flex-col items-start text-left px-2 py-1.5 rounded-lg border transition-colors',
-                        panelPlaced.recitationOptionId === opt.id
-                          ? FACULTY_OPT_ACTIVE[panelCourse.faculty]
-                          : 'border-stone-200 text-stone-500 hover:border-stone-300 hover:bg-stone-50'
+                        styles.optBtn,
+                        panelPlaced.recitationOptionId === opt.id && FACULTY_OPT_ACTIVE[panelCourse.faculty]
                       )}
                     >
-                      <span className="text-[10px] font-bold leading-none mb-1">{opt.id.toUpperCase()}</span>
+                      <span className={styles.optId}>{opt.id.toUpperCase()}</span>
                       {opt.slots.map((s, i) => (
-                        <span key={i} className="text-[8px] leading-tight whitespace-nowrap opacity-80">
+                        <span key={i} className={styles.optSlot}>
                           {s.day[0].toUpperCase()}{s.day.slice(1, 3)} {s.startHour}–{s.endHour}
                         </span>
                       ))}

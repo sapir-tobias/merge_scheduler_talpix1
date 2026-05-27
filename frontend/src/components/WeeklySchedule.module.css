@@ -1,0 +1,464 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+  overflow: hidden;
+  background: #fff;
+  min-width: 0;
+}
+
+/* ── Header ─────────────────────────────────────── */
+.header {
+  display: flex;
+  flex-shrink: 0;
+  height: 2.75rem;
+  border-bottom: 1px solid #e7e5e4;
+}
+
+.timeGutter {
+  width: 3.5rem;
+  flex-shrink: 0;
+}
+
+.dayHeader {
+  flex: 1 1 0%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid #e7e5e4;
+}
+.dayHeaderToday {
+  background: rgba(245, 245, 244, 0.6);
+}
+
+.dayLabel {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #a8a29e;
+}
+.dayLabelToday {
+  color: #44403c;
+}
+
+/* ── Scrollable grid ────────────────────────────── */
+.grid {
+  flex: 1 1 0%;
+  overflow-y: auto;
+  position: relative;
+  user-select: none;
+}
+
+.gridInner {
+  position: relative;
+}
+
+/* ── Hour rows ──────────────────────────────────── */
+.hourRow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  pointer-events: none;
+}
+
+.hourGutter {
+  width: 3.5rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding-right: 0.625rem;
+  padding-top: 0.25rem;
+  user-select: none;
+}
+
+.hourLabel {
+  font-size: 10px;
+  line-height: 1;
+  color: #a8a29e;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.hourCell {
+  flex: 1 1 0%;
+  border-top: 1px solid #f5f5f4;
+  border-left: 1px solid #f5f5f4;
+}
+.hourCellFirst {
+  border-left-color: #e7e5e4;
+}
+.hourCellToday {
+  background: rgba(250, 250, 249, 0.8);
+}
+
+/* ── Blockers ───────────────────────────────────── */
+.blocker {
+  position: absolute;
+  border-radius: 0.5rem;
+  z-index: 10;
+  overflow: hidden;
+}
+.blockerDragging {
+  opacity: 0.7;
+}
+
+.blockerSheen {
+  position: absolute;
+  inset: 0;
+  border-radius: 0.5rem;
+  pointer-events: none;
+}
+
+.blockerInput {
+  font-size: 9px;
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+  padding-top: 0.25rem;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+}
+.blockerInput:focus {
+  outline: none;
+}
+
+.blockerLabel {
+  font-size: 9px;
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+  padding-top: 0.25rem;
+  line-height: 1;
+  user-select: none;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+  cursor: text;
+  margin: 0;
+}
+
+.blockerRemove {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.blocker:hover .blockerRemove {
+  opacity: 1;
+}
+
+.blockerResize {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0.75rem;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  padding-top: 0.25rem;
+}
+
+.blockerResizeHandle {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  width: 1.25rem;
+  height: 2px;
+  border-radius: 9999px;
+}
+.blocker:hover .blockerResizeHandle {
+  opacity: 1;
+}
+
+/* ── Course blocks (lectures) ───────────────────── */
+.courseBlock {
+  position: absolute;
+  border-radius: 0.5rem;
+  border: 1px solid;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  overflow: visible;
+  cursor: pointer;
+  z-index: 20;
+  transition: box-shadow 0.15s ease;
+}
+.courseBlock:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.courseBlockHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.25rem;
+}
+
+.courseBlockText {
+  min-width: 0;
+  flex: 1 1 0%;
+}
+
+.courseName {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.courseCode {
+  font-size: 10px;
+  opacity: 0.6;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.courseActions {
+  display: flex;
+  gap: 0.125rem;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  flex-shrink: 0;
+}
+.courseBlock:hover .courseActions {
+  opacity: 1;
+}
+
+.actionBtn {
+  padding: 0.125rem;
+  border-radius: 0.25rem;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.removeBtn {
+  padding: 0.125rem;
+  border-radius: 0.25rem;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: #a8a29e;
+  transition: color 0.15s ease;
+}
+.removeBtn:hover {
+  color: #ef4444;
+}
+
+/* ── Recitation blocks ──────────────────────────── */
+.recitationBlock {
+  position: absolute;
+  border-radius: 0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  cursor: pointer;
+  z-index: 20;
+  transition: box-shadow 0.15s ease;
+}
+.recitationBlock:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.recitationLabel {
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0.8;
+  margin: 0;
+}
+.recitationTag {
+  opacity: 0.6;
+  margin-right: 0.125rem;
+}
+
+/* ── Collision overlays ─────────────────────────── */
+.collisionZone {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 0.375rem;
+  z-index: 25;
+  overflow: hidden;
+}
+
+/* ── Faculty color maps ─────────────────────────── */
+.facultyCs {
+  background: #dbeafe;
+  border-color: #93c5fd;
+  color: #1e3a8a;
+}
+.facultyMath {
+  background: #ede9fe;
+  border-color: #c4b5fd;
+  color: #4c1d95;
+}
+.facultyPhysics {
+  background: #fef3c7;
+  border-color: #fcd34d;
+  color: #78350f;
+}
+.facultyMisc {
+  background: #f5f5f4;
+  border-color: #d6d3d1;
+  color: #1c1917;
+}
+
+.btnCs {
+  color: #60a5fa;
+}
+.btnCs:hover {
+  color: #1d4ed8;
+}
+.btnMath {
+  color: #a78bfa;
+}
+.btnMath:hover {
+  color: #6d28d9;
+}
+.btnPhysics {
+  color: #fbbf24;
+}
+.btnPhysics:hover {
+  color: #b45309;
+}
+.btnMisc {
+  color: #a8a29e;
+}
+.btnMisc:hover {
+  color: #57534e;
+}
+
+/* ── Option panel (portal) ──────────────────────── */
+.optionPanel {
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border: 1px solid #e7e5e4;
+  padding: 0.5rem;
+  width: 14rem;
+  z-index: 50;
+}
+
+.panelTitle {
+  font-size: 11px;
+  font-weight: 600;
+  color: #292524;
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f5f5f4;
+  margin: 0;
+}
+
+.panelSectionLabel {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  color: #a8a29e;
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.25rem;
+  margin: 0;
+}
+
+.optionBtn {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+  border-radius: 0.5rem;
+  text-align: left;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  margin-bottom: 0.125rem;
+  border: 0;
+  cursor: pointer;
+  background: transparent;
+  color: #44403c;
+}
+.optionBtn:hover {
+  background: #f5f5f4;
+}
+.optionBtnActiveLect {
+  background: #1c1917;
+  color: #fff;
+}
+.optionBtnActiveLect:hover {
+  background: #1c1917;
+}
+.optionBtnActiveRec {
+  background: #292524;
+  color: #fff;
+}
+.optionBtnActiveRec:hover {
+  background: #292524;
+}
+
+.optionRadio {
+  margin-top: 0.125rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 9999px;
+  border: 2px solid #a8a29e;
+  flex-shrink: 0;
+}
+.optionRadioActive {
+  border-color: #fff;
+  background: #fff;
+}
+
+.optionSlot {
+  font-size: 10px;
+  line-height: 1.625;
+  color: #78716c;
+  margin: 0;
+}
+.optionSlotActive {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.panelFooter {
+  border-top: 1px solid #f5f5f4;
+  margin-top: 0.25rem;
+  padding-top: 0.25rem;
+}
+
+.panelRemoveBtn {
+  width: 100%;
+  text-align: left;
+  font-size: 10px;
+  color: #ef4444;
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.panelRemoveBtn:hover {
+  color: #b91c1c;
+  background: #fef2f2;
+}

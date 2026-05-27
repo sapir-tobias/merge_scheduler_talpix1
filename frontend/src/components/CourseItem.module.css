@@ -1,0 +1,244 @@
+.root {
+  border-bottom: 1px solid #f5f5f4;
+}
+.root:last-child {
+  border-bottom: 0;
+}
+
+.critical {
+  background: rgba(254, 242, 242, 0.4);
+}
+
+.draggable {
+  cursor: grab;
+}
+.draggable:active {
+  cursor: grabbing;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.grip {
+  color: #d6d3d1;
+  flex-shrink: 0;
+  margin-left: -0.25rem;
+}
+
+.badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  flex-shrink: 0;
+}
+.badgeCs {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+.badgeMath {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+.badgePhysics {
+  background: #fef3c7;
+  color: #b45309;
+}
+.badgeMisc {
+  background: #f5f5f4;
+  color: #57534e;
+}
+
+.info {
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.name {
+  font-size: 12px;
+  font-weight: 500;
+  color: #292524;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.meta {
+  font-size: 10px;
+  color: #a8a29e;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.shrink0 {
+  flex-shrink: 0;
+}
+
+.iconCritical {
+  color: #ef4444;
+}
+
+.iconWarning {
+  color: #f59e0b;
+}
+
+.expandBtn {
+  color: #a8a29e;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 0.125rem;
+  transition: color 0.15s ease;
+}
+.expandBtn:hover {
+  color: #57534e;
+}
+
+.addBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 0.375rem;
+  border: 0;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.addBtnHere {
+  background: #f5f5f4;
+  color: #a8a29e;
+  cursor: default;
+}
+.addBtnMove {
+  background: #fef3c7;
+  color: #b45309;
+}
+.addBtnMove:hover {
+  background: #fde68a;
+}
+.addBtnNew {
+  background: #1c1917;
+  color: #fff;
+}
+.addBtnNew:hover {
+  background: #44403c;
+}
+
+.detail {
+  padding: 0 0.75rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.description {
+  font-size: 11px;
+  color: #78716c;
+  line-height: 1.625;
+  margin: 0;
+}
+
+.sectionLabel {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  color: #a8a29e;
+  margin: 0 0 0.25rem;
+}
+
+.optionRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.optionId {
+  font-size: 9px;
+  font-weight: 700;
+  color: #a8a29e;
+  align-self: center;
+}
+
+.lectureSlot {
+  font-size: 10px;
+  background: #f5f5f4;
+  color: #57534e;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.375rem;
+}
+
+.recitationSlot {
+  font-size: 10px;
+  background: #fafaf9;
+  border: 1px solid #e7e5e4;
+  color: #57534e;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.375rem;
+}
+
+.labOnly {
+  font-size: 10px;
+  color: #a8a29e;
+  font-style: italic;
+  margin: 0;
+}
+
+.statRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.statValue {
+  font-size: 11px;
+  color: #44403c;
+  margin: 0;
+}
+
+.statValueCritical {
+  font-size: 11px;
+  color: #dc2626;
+  margin: 0;
+}
+
+.statValueWarning {
+  font-size: 11px;
+  color: #b45309;
+  margin: 0;
+}
+
+.prereqRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.prereqTag {
+  font-size: 10px;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.375rem;
+}
+.prereqMet {
+  background: #dcfce7;
+  color: #15803d;
+}
+.prereqUnmet {
+  background: #fee2e2;
+  color: #b91c1c;
+}

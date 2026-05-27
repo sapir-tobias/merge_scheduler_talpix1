@@ -6,6 +6,8 @@ import type { Faculty, SemesterId } from '../types'
 import { Search, SlidersHorizontal } from 'lucide-react'
 import { useState } from 'react'
 import { cn } from '../lib/utils'
+import { TEST_IDS } from '../testIds'
+import styles from './Catalogue.module.css'
 
 const FACULTIES: { id: Faculty; label: string }[] = [
   { id: 'cs', label: 'CS' },
@@ -95,25 +97,25 @@ export default function Catalogue({ semesterId: propSemId, showSemesterSelector,
 
   return (
     <div
-      className="w-64 shrink-0 border-l border-stone-200 flex flex-col overflow-hidden bg-white"
+      data-testid={TEST_IDS.CATALOGUE.CONTAINER}
+      className={styles.container}
       onDragOver={dropRemove ? (e => e.preventDefault()) : undefined}
       onDrop={dropRemove ? handleDropRemove : undefined}
     >
 
       {/* Semester selector (degree plan mode) */}
       {showSemesterSelector && !noScoring && (
-        <div className="shrink-0 border-b border-stone-100 px-3 py-2">
-          <p className="text-[9px] font-bold uppercase tracking-wide text-stone-400 mb-1.5">Add to semester</p>
-          <div className="flex gap-1">
+        <div className={styles.semesterSelect}>
+          <p className={styles.semesterSelectLabel}>Add to semester</p>
+          <div className={styles.semesterBtnRow}>
             {SEMESTER_IDS.map(id => (
               <button
                 key={id}
+                data-testid={`${TEST_IDS.CATALOGUE.SEMESTER_SELECT}-${id}`}
                 onClick={() => setTargetSemId(id)}
                 className={cn(
-                  'flex-1 text-[10px] font-semibold py-1 rounded-md transition-colors',
-                  targetSemId === id
-                    ? 'bg-stone-900 text-white'
-                    : 'bg-stone-100 text-stone-500 hover:bg-stone-200'
+                  styles.semesterBtn,
+                  targetSemId === id && styles.semesterBtnActive
                 )}
               >
                 {id}
@@ -124,22 +126,24 @@ export default function Catalogue({ semesterId: propSemId, showSemesterSelector,
       )}
 
       {/* Search header */}
-      <div className="h-11 shrink-0 border-b border-stone-200 flex items-center gap-1.5 px-3">
-        <div className="flex items-center gap-1.5 flex-1 bg-stone-50 border border-stone-200 rounded-lg px-2.5 h-[28px]">
-          <Search size={11} className="text-stone-400 shrink-0" />
+      <div className={styles.searchHeader}>
+        <div className={styles.searchBox}>
+          <Search size={11} className={styles.searchIcon} />
           <input
             type="text"
+            data-testid={TEST_IDS.CATALOGUE.SEARCH_INPUT}
             value={filters.searchQuery}
             onChange={e => setFilter('searchQuery', e.target.value)}
             placeholder="Search courses…"
-            className="flex-1 min-w-0 text-[11px] bg-transparent border-0 focus:outline-none text-stone-700 placeholder:text-stone-400"
+            className={styles.searchInput}
           />
         </div>
         <button
+          data-testid={TEST_IDS.CATALOGUE.FILTER_TOGGLE}
           onClick={() => setFiltersOpen(o => !o)}
           className={cn(
-            'shrink-0 p-1.5 rounded-lg transition-colors',
-            filtersOpen ? 'bg-stone-900 text-white' : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+            styles.filterToggle,
+            filtersOpen && styles.filterToggleActive
           )}
         >
           <SlidersHorizontal size={13} />
@@ -148,19 +152,18 @@ export default function Catalogue({ semesterId: propSemId, showSemesterSelector,
 
       {/* Filter panel */}
       {filtersOpen && (
-        <div className="shrink-0 border-b border-stone-200 px-3 py-3 space-y-3 bg-stone-50/60">
+        <div className={styles.filterPanel}>
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-wide text-stone-400 mb-1.5">Faculty</p>
-            <div className="flex flex-wrap gap-1">
+            <p className={styles.sectionLabel}>Faculty</p>
+            <div className={styles.facultyRow}>
               {FACULTIES.map(f => (
                 <button
                   key={f.id}
+                  data-testid={`${TEST_IDS.CATALOGUE.FACULTY_FILTER}-${f.id}`}
                   onClick={() => toggleFaculty(f.id)}
                   className={cn(
-                    'text-[10px] px-2 py-1 rounded-md font-medium transition-colors',
-                    filters.faculties.has(f.id)
-                      ? 'bg-stone-900 text-white'
-                      : 'bg-white border border-stone-200 text-stone-500 hover:border-stone-400'
+                    styles.facultyBtn,
+                    filters.faculties.has(f.id) && styles.facultyBtnActive
                   )}
                 >
                   {f.label}
@@ -170,59 +173,64 @@ export default function Catalogue({ semesterId: propSemId, showSemesterSelector,
           </div>
 
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-wide text-stone-400 mb-1.5">
+            <p className={styles.sectionLabel}>
               Credits {filters.minCredits}–{filters.maxCredits}
             </p>
-            <div className="flex gap-2">
-              <div className="flex-1">
-                <p className="text-[9px] text-stone-400 mb-0.5">Min</p>
+            <div className={styles.creditsRow}>
+              <div className={styles.creditsCol}>
+                <p className={styles.creditsColLabel}>Min</p>
                 <input type="range" min={1} max={6} value={filters.minCredits}
+                  data-testid={TEST_IDS.CATALOGUE.CREDITS_MIN}
                   onChange={e => setFilter('minCredits', +e.target.value)}
-                  className="w-full h-1 accent-stone-800" />
+                  className={styles.range} />
               </div>
-              <div className="flex-1">
-                <p className="text-[9px] text-stone-400 mb-0.5">Max</p>
+              <div className={styles.creditsCol}>
+                <p className={styles.creditsColLabel}>Max</p>
                 <input type="range" min={1} max={6} value={filters.maxCredits}
+                  data-testid={TEST_IDS.CATALOGUE.CREDITS_MAX}
                   onChange={e => setFilter('maxCredits', +e.target.value)}
-                  className="w-full h-1 accent-stone-800" />
+                  className={styles.range} />
               </div>
             </div>
           </div>
 
           {!noScoring && (
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-wide text-stone-400 mb-1.5">
+              <p className={styles.sectionLabel}>
                 Max collisions: {filters.maxCollisions}
               </p>
               <input type="range" min={0} max={5} value={filters.maxCollisions}
+                data-testid={TEST_IDS.CATALOGUE.MAX_COLLISIONS}
                 onChange={e => setFilter('maxCollisions', +e.target.value)}
-                className="w-full h-1 accent-stone-800" />
+                className={styles.range} />
             </div>
           )}
 
           {!noScoring && (
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-wide text-stone-400 mb-1.5">
+              <p className={styles.sectionLabel}>
                 Min exam gap: {filters.minExamSeparationDays}d
               </p>
               <input type="range" min={0} max={14} value={filters.minExamSeparationDays}
+                data-testid={TEST_IDS.CATALOGUE.MIN_EXAM_GAP}
                 onChange={e => setFilter('minExamSeparationDays', +e.target.value)}
-                className="w-full h-1 accent-stone-800" />
+                className={styles.range} />
             </div>
           )}
 
-          <div className="flex items-center justify-between">
-            <p className="text-[10px] font-bold uppercase tracking-wide text-stone-400">Ignore prereqs</p>
+          <div className={styles.toggleRow}>
+            <p className={styles.toggleLabel}>Ignore prereqs</p>
             <button
+              data-testid={TEST_IDS.CATALOGUE.IGNORE_PREREQS_TOGGLE}
               onClick={() => setFilter('ignorePrerequisites', !filters.ignorePrerequisites)}
               className={cn(
-                'relative w-8 h-4 rounded-full transition-colors',
-                filters.ignorePrerequisites ? 'bg-stone-900' : 'bg-stone-300'
+                styles.toggleTrack,
+                filters.ignorePrerequisites && styles.toggleTrackOn
               )}
             >
               <span className={cn(
-                'absolute top-0.5 w-3 h-3 bg-white rounded-full transition-all shadow-sm',
-                filters.ignorePrerequisites ? 'left-[18px]' : 'left-0.5'
+                styles.toggleKnob,
+                filters.ignorePrerequisites && styles.toggleKnobOn
               )} />
             </button>
           </div>
@@ -230,19 +238,19 @@ export default function Catalogue({ semesterId: propSemId, showSemesterSelector,
       )}
 
       {/* Section label */}
-      <div className="px-3 pt-2.5 pb-1.5 shrink-0 flex items-center justify-between">
-        <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">
+      <div className={styles.listHeader}>
+        <span className={styles.listCount}>
           {scored.length} {noScoring ? 'courses' : 'available'}
         </span>
-        {!noScoring && <span className="text-[10px] text-stone-400">Best fit ↑</span>}
+        {!noScoring && <span className={styles.listHint}>Best fit ↑</span>}
       </div>
-      <div className="mx-3 border-t border-stone-100 shrink-0" />
+      <div className={styles.divider} />
 
       {/* Course list */}
-      <div className="flex-1 overflow-y-auto">
+      <div className={styles.courseList} data-testid={TEST_IDS.CATALOGUE.COURSE_LIST}>
         {scored.length === 0 ? (
-          <div className="flex items-center justify-center h-full">
-            <p className="text-[11px] text-stone-300 text-center px-4 leading-relaxed">
+          <div className={styles.emptyState}>
+            <p className={styles.emptyText}>
               No courses match your filters
             </p>
           </div>

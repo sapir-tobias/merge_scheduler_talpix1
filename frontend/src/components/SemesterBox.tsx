@@ -7,12 +7,14 @@ import { cn } from '../lib/utils'
 import { X, GripVertical, AlertTriangle, AlertCircle, CheckCircle2, ChevronDown } from 'lucide-react'
 import MiniExamCalendar from './MiniExamCalendar'
 import Tooltip from './Tooltip'
+import { TEST_IDS } from '../testIds'
+import styles from './SemesterBox.module.css'
 
 const FACULTY_PILL: Record<Faculty, string> = {
-  cs:      'bg-blue-100 text-blue-700',
-  math:    'bg-violet-100 text-violet-700',
-  physics: 'bg-amber-100 text-amber-700',
-  misc:    'bg-stone-100 text-stone-600',
+  cs:      styles.pillCs,
+  math:    styles.pillMath,
+  physics: styles.pillPhysics,
+  misc:    styles.pillMisc,
 }
 
 function prereqsMet(courseId: string, semId: SemesterId, allPlaced: ReturnType<typeof useDegree>['state']['placed'], exemptions: string[], courseMap: Map<string, Course>) {
@@ -127,34 +129,34 @@ export default function SemesterBox({ semesterId, showCalendar, onDragOver, onDr
             {/* Chip row */}
             <div
               draggable
+              data-testid={`${TEST_IDS.SEMESTER_BOX.COURSE_CHIP}-${p.courseId}`}
               onDragStart={e => {
                 e.dataTransfer.setData('courseId', p.courseId)
                 e.dataTransfer.setData('fromSem', String(semesterId))
                 e.dataTransfer.setData('source', 'semester')
               }}
-              className={cn(
-                'flex items-center gap-1.5 px-2 py-1.5 bg-stone-50 hover:bg-stone-100 transition-colors group cursor-grab active:cursor-grabbing',
-                isExpanded ? 'rounded-t-lg' : 'rounded-lg'
-              )}
+              className={cn(styles.chip, isExpanded && styles.chipExpanded)}
             >
-              <GripVertical size={10} className="text-stone-300 shrink-0" />
-              <span className={cn('text-[9px] font-bold px-1 py-0.5 rounded shrink-0', FACULTY_PILL[course.faculty])}>
+              <GripVertical size={10} className={styles.grip} />
+              <span className={cn(styles.pill, FACULTY_PILL[course.faculty])}>
                 {course.code}
               </span>
               <span
-                className="flex-1 text-[11px] text-stone-700 truncate cursor-pointer select-none"
+                className={styles.chipName}
                 onClick={e => { e.stopPropagation(); setExpandedCourseId(isExpanded ? null : p.courseId) }}
               >
                 {course.name}
               </span>
               <ChevronDown
                 size={10}
-                className={cn('shrink-0 text-stone-300 cursor-pointer transition-transform hover:text-stone-500', isExpanded && 'rotate-180')}
+                data-testid={`${TEST_IDS.SEMESTER_BOX.EXPAND_BUTTON}-${p.courseId}`}
+                className={cn(styles.chevron, isExpanded && styles.chevronExpanded)}
                 onClick={e => { e.stopPropagation(); setExpandedCourseId(isExpanded ? null : p.courseId) }}
               />
               <button
+                data-testid={`${TEST_IDS.SEMESTER_BOX.REMOVE_BUTTON}-${p.courseId}`}
                 onClick={() => dispatch({ type: 'REMOVE_COURSE', courseId: p.courseId, semesterId })}
-                className="opacity-0 group-hover:opacity-100 text-stone-400 hover:text-red-500 transition-all shrink-0"
+                className={styles.removeBtn}
               >
                 <X size={10} />
               </button>
@@ -162,37 +164,32 @@ export default function SemesterBox({ semesterId, showCalendar, onDragOver, onDr
 
             {/* Expansion panel */}
             {isExpanded && (
-              <div className="rounded-b-lg border border-t-0 border-stone-200 bg-white px-2.5 py-2 space-y-2">
-                <p className="text-[10px] text-stone-500">
-                  <span className="font-semibold text-stone-700">{course.credits}</span> credit{course.credits !== 1 ? 's' : ''}
+              <div className={styles.expansion}>
+                <p className={styles.creditsLine}>
+                  <span className={styles.creditsValue}>{course.credits}</span> credit{course.credits !== 1 ? 's' : ''}
                 </p>
                 {course.prerequisites.length > 0 ? (
                   <div>
-                    <p className="text-[8px] font-bold uppercase tracking-wide text-stone-400 mb-1">Prerequisites</p>
-                    <div className="space-y-0.5">
+                    <p className={styles.prereqLabel}>Prerequisites</p>
+                    <div className={styles.prereqList}>
                       {course.prerequisites.map(reqId => {
                         const reqCourse = courseMap.get(reqId)
                         const isMet = satisfied.has(reqId)
                         return (
                           <div
                             key={reqId}
-                            className={cn(
-                              'flex items-center justify-between text-[9px] px-1.5 py-1 rounded-md transition-colors',
-                              isMet
-                                ? 'bg-emerald-50 text-emerald-700'
-                                : 'bg-red-50 text-red-700 hover:bg-red-100 cursor-pointer'
-                            )}
+                            className={cn(styles.prereqItem, isMet ? styles.prereqMet : styles.prereqUnmet)}
                             onClick={isMet ? undefined : () => handleAddPrereq(reqId)}
                           >
-                            <span className="truncate">{reqCourse?.name ?? reqId}</span>
-                            {!isMet && <span className="text-[8px] ml-1.5 opacity-50 shrink-0">+ add</span>}
+                            <span className={styles.prereqName}>{reqCourse?.name ?? reqId}</span>
+                            {!isMet && <span className={styles.prereqAdd}>+ add</span>}
                           </div>
                         )
                       })}
                     </div>
                   </div>
                 ) : (
-                  <p className="text-[9px] text-stone-400">No prerequisites</p>
+                  <p className={styles.noPrereq}>No prerequisites</p>
                 )}
               </div>
             )}
@@ -200,57 +197,55 @@ export default function SemesterBox({ semesterId, showCalendar, onDragOver, onDr
         )
       })}
       {placed.length === 0 && (
-        <p className="text-[10px] text-stone-300 text-center py-3">Drop courses here</p>
+        <p className={styles.emptyDrop}>Drop courses here</p>
       )}
     </>
   )
 
   return (
     <div
-      className={cn(
-        'flex flex-col h-full rounded-xl border bg-white transition-colors overflow-hidden',
-        dragOver ? 'border-stone-400 ring-2 ring-stone-200' : 'border-stone-200'
-      )}
+      data-testid={`${TEST_IDS.SEMESTER_BOX.CONTAINER}-${semesterId}`}
+      className={cn(styles.box, dragOver && styles.boxDragOver)}
       onDragOver={e => { e.preventDefault(); setDragOver(true); onDragOver(e, semesterId) }}
       onDragLeave={() => setDragOver(false)}
       onDrop={e => { setDragOver(false); onDrop(e, semesterId) }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-2.5 border-b border-stone-100 shrink-0">
-        <div className="flex items-center gap-1.5">
+      <div className={styles.header}>
+        <div className={styles.headerLeft}>
           {placed.length > 0 && (
             <Tooltip text={semIssues.length > 0 ? semIssues.join(' · ') : 'No issues'} side="top">
               {semStatus === 'critical'
-                ? <AlertCircle size={11} className="text-red-500 cursor-default shrink-0" />
+                ? <AlertCircle size={11} className={cn(styles.statusIcon, styles.statusCritical)} />
                 : semStatus === 'warning'
-                  ? <AlertTriangle size={11} className="text-amber-500 cursor-default shrink-0" />
-                  : <CheckCircle2 size={11} className="text-emerald-500 cursor-default shrink-0" />
+                  ? <AlertTriangle size={11} className={cn(styles.statusIcon, styles.statusWarning)} />
+                  : <CheckCircle2 size={11} className={cn(styles.statusIcon, styles.statusOk)} />
               }
             </Tooltip>
           )}
-          <span className="text-[12px] font-bold uppercase tracking-wide text-stone-600">
+          <span className={styles.title}>
             Semester {semesterId}
           </span>
         </div>
-        <span className="text-[11px] text-stone-400 tabular-nums">{totalCredits} cr</span>
+        <span className={styles.credits}>{totalCredits} cr</span>
       </div>
 
       {showCalendar ? (
         /* Side-by-side: course list left, exam calendar right */
-        <div className="flex flex-1 min-h-0">
-          <div className="overflow-y-auto p-2 space-y-1 border-r border-stone-100" style={{ width: '42%', flexShrink: 0 }}>
+        <div className={styles.bodySplit}>
+          <div className={styles.bodyList} style={{ width: '42%', flexShrink: 0 }}>
             {courseList}
           </div>
-          <div className="flex-1 min-w-0 overflow-y-auto">
+          <div className={styles.calendarPane}>
             {examMap.size > 0
               ? <MiniExamCalendar examMap={examMap} />
-              : <p className="text-[9px] text-stone-300 text-center pt-4 px-2">Exam calendar appears once courses are added</p>
+              : <p className={styles.calendarEmpty}>Exam calendar appears once courses are added</p>
             }
           </div>
         </div>
       ) : (
         /* Course list takes full area */
-        <div className="flex-1 min-h-0 overflow-y-auto p-2 space-y-1">
+        <div className={styles.bodyFull}>
           {courseList}
         </div>
       )}

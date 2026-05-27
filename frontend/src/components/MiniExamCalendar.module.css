@@ -1,0 +1,87 @@
+.container {
+  border-top: 1px solid #f5f5f4;
+  padding-top: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.title {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  color: #a8a29e;
+  padding: 0 0.75rem;
+  margin: 0 0 0.5rem;
+}
+
+.weekRow {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  padding: 0 0.5rem;
+  margin-bottom: 0.25rem;
+}
+.weekCell {
+  display: flex;
+  justify-content: center;
+}
+.weekLabel {
+  font-size: 8px;
+  color: #a8a29e;
+  font-weight: 500;
+}
+
+.monthBlock {
+  margin-top: 0;
+}
+.monthBlockSpaced {
+  margin-top: 0.5rem;
+}
+
+.monthLabel {
+  font-size: 9px;
+  color: #a8a29e;
+  font-weight: 600;
+  padding: 0 0.75rem;
+  margin: 0 0 0.125rem;
+}
+
+.daysGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  padding: 0 0.5rem;
+  row-gap: 0.125rem;
+}
+
+.emptyCell {
+  height: 1.25rem;
+}
+
+.circle {
+  height: 1.25rem;
+  width: 1.25rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  font-size: 9px;
+  line-height: 1;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.circlePlain {
+  color: #a8a29e;
+}
+.circleExam {
+  background: #fee2e2;
+  color: #b91c1c;
+  font-weight: 700;
+  cursor: default;
+}
+.circleExam:hover {
+  background: #fecaca;
+}
+
+.tooltipWrap {
+  display: flex;
+  justify-content: center;
+}

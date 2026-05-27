@@ -6,6 +6,7 @@ import SemesterCourseList from '../components/SemesterCourseList'
 import { useDegree } from '../stores/DegreeContext'
 import { useCoursesStore } from '../stores/CoursesStore'
 import type { SemesterId } from '../types'
+import styles from './SemesterPage.module.css'
 
 interface Props { semesterId: SemesterId }
 
@@ -52,10 +53,10 @@ export default function SemesterPage({ semesterId }: Props) {
   }, [examMap, state.filters.minExamSeparationDays])
 
   return (
-    <div className="flex flex-1 overflow-hidden">
+    <div className={styles.container}>
       {/* Centre: schedule + calendar stacked above bottom bar */}
-      <div className="flex flex-col flex-1 overflow-hidden min-w-0">
-        <div className="flex flex-1 min-h-0 overflow-hidden">
+      <div className={styles.center}>
+        <div className={styles.topRow}>
           <WeeklySchedule semesterId={semesterId} />
           <MonthCalendar
             markedDays={markedDays}

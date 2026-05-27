@@ -1,6 +1,7 @@
 import { useState, useRef, useLayoutEffect, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '../lib/utils'
+import styles from './Tooltip.module.css'
 
 interface Props {
   text: string
@@ -42,12 +43,12 @@ export default function Tooltip({ text, children, side = 'top', className }: Pro
   const arrowShift = pos ? pos.anchorCX - cx : 0
 
   return (
-    <div ref={wrapRef} className={cn('relative', className)} onMouseEnter={show} onMouseLeave={hide}>
+    <div ref={wrapRef} className={cn(styles.wrap, className)} onMouseEnter={show} onMouseLeave={hide}>
       {children}
       {pos && createPortal(
         <div
           ref={tipRef}
-          className="fixed pointer-events-none"
+          className={styles.portal}
           style={{
             zIndex: 9999,
             left: cx,
@@ -55,12 +56,12 @@ export default function Tooltip({ text, children, side = 'top', className }: Pro
             transform: side === 'top' ? 'translate(-50%, -100%)' : 'translate(-50%, 0)',
           }}
         >
-          <div className="relative bg-stone-800 text-white text-[10px] font-medium leading-none rounded-md px-2 py-1.5 shadow-lg whitespace-nowrap">
+          <div className={styles.bubble}>
             {text}
             <span
               className={cn(
-                'absolute w-2 h-2 bg-stone-800 rotate-45 -translate-x-1/2',
-                side === 'top' ? 'top-full -translate-y-1/2' : 'bottom-full translate-y-1/2'
+                styles.arrow,
+                side === 'top' ? styles.arrowTop : styles.arrowBottom
               )}
               style={{ left: `calc(50% + ${arrowShift}px)` }}
             />

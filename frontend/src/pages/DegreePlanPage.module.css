@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  flex: 1 1 0;
+  overflow: hidden;
+}
+
+.main {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 1rem 1rem 0.75rem;
+  gap: 0.75rem;
+}
+
+.yearRow {
+  display: flex;
+  gap: 0.75rem;
+  min-height: 0;
+  transition: opacity 0.15s ease;
+}
+.yearRowInactive {
+  opacity: 0.7;
+}
+
+.semCell {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+}
+
+.trash {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0;
+  border-radius: 0.75rem;
+  border: 2px dashed;
+  transition: all 0.15s ease;
+}
+.trashActive {
+  border-color: #ef4444;
+  background: #fee2e2;
+  color: #dc2626;
+  font-weight: 600;
+}
+.trashDragging {
+  border-color: #fca5a5;
+  background: rgba(254, 242, 242, 0.6);
+  color: #f87171;
+}
+.trashIdle {
+  border-color: #e7e5e4;
+  color: #a8a29e;
+}
+
+.trashLabel {
+  font-size: 11px;
+  font-weight: 500;
+}

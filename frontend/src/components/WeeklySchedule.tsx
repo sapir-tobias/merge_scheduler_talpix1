@@ -5,6 +5,8 @@ import { useDegree } from '../stores/DegreeContext'
 import { useCoursesStore } from '../stores/CoursesStore'
 import type { SemesterId, Faculty, DayKey, Blocker } from '../types'
 import { Lock, Unlock, X } from 'lucide-react'
+import { TEST_IDS } from '../testIds'
+import styles from './WeeklySchedule.module.css'
 
 const DAYS: { key: DayKey; label: string }[] = [
   { key: 'sun', label: 'Sun' },
@@ -33,16 +35,16 @@ function formatTime(h: number) {
 }
 
 const FACULTY_COLORS: Record<Faculty, string> = {
-  cs:      'bg-blue-100 border-blue-300 text-blue-900',
-  math:    'bg-violet-100 border-violet-300 text-violet-900',
-  physics: 'bg-amber-100 border-amber-300 text-amber-900',
-  misc:    'bg-stone-100 border-stone-300 text-stone-900',
+  cs:      styles.facultyCs,
+  math:    styles.facultyMath,
+  physics: styles.facultyPhysics,
+  misc:    styles.facultyMisc,
 }
 const FACULTY_BTN: Record<Faculty, string> = {
-  cs:      'text-blue-400 hover:text-blue-700',
-  math:    'text-violet-400 hover:text-violet-700',
-  physics: 'text-amber-400 hover:text-amber-700',
-  misc:    'text-stone-400 hover:text-stone-600',
+  cs:      styles.btnCs,
+  math:    styles.btnMath,
+  physics: styles.btnPhysics,
+  misc:    styles.btnMisc,
 }
 
 interface CourseBlock {
@@ -261,22 +263,22 @@ export default function WeeklySchedule({ semesterId }: Props) {
   }
 
   return (
-    <div className="flex flex-col flex-1 overflow-hidden bg-white min-w-0">
+    <div className={styles.root}>
 
       {/* Header */}
-      <div className="flex shrink-0 h-11 border-b border-stone-200">
-        <div className="w-14 shrink-0" />
+      <div className={styles.header}>
+        <div className={styles.timeGutter} />
         {DAYS.map(day => (
           <div
             key={day.key}
             className={cn(
-              'flex-1 flex items-center justify-center border-l border-stone-200',
-              day.key === todayKey && 'bg-stone-100/60'
+              styles.dayHeader,
+              day.key === todayKey && styles.dayHeaderToday
             )}
           >
             <span className={cn(
-              'text-[10px] font-bold uppercase tracking-[0.12em]',
-              day.key === todayKey ? 'text-stone-700' : 'text-stone-400'
+              styles.dayLabel,
+              day.key === todayKey && styles.dayLabelToday
             )}>
               {day.label}
             </span>
@@ -287,20 +289,21 @@ export default function WeeklySchedule({ semesterId }: Props) {
       {/* Scrollable grid */}
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto relative select-none"
+        data-testid={TEST_IDS.WEEKLY.GRID}
+        className={styles.grid}
         style={{ cursor: dragRender.type !== 'none' ? 'grabbing' : 'default' }}
       >
-        <div className="relative" style={{ height: `${TOTAL_HOURS * HOUR_HEIGHT}px` }}>
+        <div className={styles.gridInner} style={{ height: `${TOTAL_HOURS * HOUR_HEIGHT}px` }}>
 
           {/* Hour grid lines + labels */}
           {hourSlots.map(h => (
             <div
               key={h}
-              className="absolute inset-x-0 flex pointer-events-none"
+              className={styles.hourRow}
               style={{ top: `${((h - START_HOUR) / TOTAL_HOURS) * 100}%` }}
             >
-              <div className="w-14 shrink-0 flex items-start justify-end pr-2.5 pt-1 select-none">
-                <span className="text-[10px] leading-none text-stone-400 tabular-nums font-medium">
+              <div className={styles.hourGutter}>
+                <span className={styles.hourLabel}>
                   {formatHour(h)}
                 </span>
               </div>
@@ -308,10 +311,9 @@ export default function WeeklySchedule({ semesterId }: Props) {
                 <div
                   key={day.key}
                   className={cn(
-                    'flex-1 border-t border-l',
-                    i === 0 ? 'border-l-stone-200' : 'border-l-stone-100',
-                    'border-t-stone-100',
-                    day.key === todayKey ? 'bg-stone-50/80' : ''
+                    styles.hourCell,
+                    i === 0 && styles.hourCellFirst,
+                    day.key === todayKey && styles.hourCellToday
                   )}
                   style={{ height: `${HOUR_HEIGHT}px` }}
                 />
@@ -329,7 +331,8 @@ export default function WeeklySchedule({ semesterId }: Props) {
             return (
               <div
                 key={blocker.id}
-                className={cn('absolute rounded-lg group z-10 overflow-hidden', dragging && 'opacity-70')}
+                data-testid={`${TEST_IDS.WEEKLY.BLOCKER}-${blocker.id}`}
+                className={cn(styles.blocker, dragging && styles.blockerDragging)}
                 style={{
                   ...blockStyle(disp.startHour, disp.endHour, dayIndex),
                   background: 'linear-gradient(to bottom, rgba(220,220,218,0.18) 0%, rgba(168,162,158,0.22) 55%, rgba(100,95,90,0.32) 88%, rgba(60,55,50,0.44) 100%)',
@@ -339,7 +342,7 @@ export default function WeeklySchedule({ semesterId }: Props) {
                 onMouseDown={e => startMoveDrag(e, blocker)}
               >
                 <div
-                  className="absolute inset-0 rounded-lg pointer-events-none"
+                  className={styles.blockerSheen}
                   style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.25), inset 0 0 0 1px rgba(100,95,90,0.15)' }}
                 />
                 {editingBlockerId === blocker.id ? (
@@ -356,12 +359,12 @@ export default function WeeklySchedule({ semesterId }: Props) {
                       if (e.key === 'Enter') e.currentTarget.blur()
                       if (e.key === 'Escape') setEditingBlockerId(null)
                     }}
-                    className="text-[9px] px-1.5 pt-1 w-full bg-transparent border-0 focus:outline-none font-medium tracking-wide"
+                    className={styles.blockerInput}
                     style={{ color: 'rgba(80,75,70,0.9)' }}
                   />
                 ) : (
                   <p
-                    className="text-[9px] px-1.5 pt-1 leading-none select-none font-medium tracking-wide cursor-text"
+                    className={styles.blockerLabel}
                     style={{ color: 'rgba(80,75,70,0.65)' }}
                     onMouseDown={e => e.stopPropagation()}
                     onClick={e => { e.stopPropagation(); setEditingBlockerId(blocker.id) }}
@@ -372,17 +375,17 @@ export default function WeeklySchedule({ semesterId }: Props) {
                 <button
                   onMouseDown={e => e.stopPropagation()}
                   onClick={e => { e.stopPropagation(); dispatch({ type: 'REMOVE_BLOCKER', id: blocker.id }) }}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity absolute top-1 right-1"
+                  className={styles.blockerRemove}
                   style={{ color: 'rgba(80,75,70,0.7)' }}
                 >
                   <X size={9} />
                 </button>
                 <div
-                  className="absolute bottom-0 left-0 right-0 h-3 z-20 flex justify-center pt-1"
+                  className={styles.blockerResize}
                   style={{ cursor: 'ns-resize' }}
                   onMouseDown={e => startResizeDrag(e, blocker)}
                 >
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity w-5 h-[2px] rounded-full" style={{ backgroundColor: 'rgba(80,75,70,0.4)' }} />
+                  <div className={styles.blockerResizeHandle} style={{ backgroundColor: 'rgba(80,75,70,0.4)' }} />
                 </div>
               </div>
             )
@@ -392,9 +395,9 @@ export default function WeeklySchedule({ semesterId }: Props) {
           {allCourseBlocks.filter(b => !b.isRecitation).map(block => (
             <div
               key={block.key}
+              data-testid={`${TEST_IDS.WEEKLY.COURSE_BLOCK}-${block.courseId}`}
               className={cn(
-                'absolute rounded-lg border px-2 py-1 overflow-visible cursor-pointer group z-20',
-                'transition-shadow hover:shadow-md',
+                styles.courseBlock,
                 FACULTY_COLORS[block.faculty]
               )}
               style={{ ...blockStyle(block.startHour, block.endHour, block.dayIndex), opacity: state.filters.faculties.has(block.faculty) ? 1 : 0.18 }}
@@ -404,21 +407,23 @@ export default function WeeklySchedule({ semesterId }: Props) {
                 setPanel({ courseId: block.courseId, rect: e.currentTarget.getBoundingClientRect() })
               }}
             >
-              <div className="flex items-start justify-between gap-1">
-                <div className="min-w-0 flex-1">
-                  <p className="text-[11px] font-semibold leading-tight truncate">{block.label}</p>
-                  <p className="text-[10px] opacity-60 leading-tight">{block.code}</p>
+              <div className={styles.courseBlockHeader}>
+                <div className={styles.courseBlockText}>
+                  <p className={styles.courseName}>{block.label}</p>
+                  <p className={styles.courseCode}>{block.code}</p>
                 </div>
-                <div className="flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                <div className={styles.courseActions}>
                   <button
+                    data-testid={`${TEST_IDS.WEEKLY.LOCK_BUTTON}-${block.courseId}`}
                     onClick={e => { e.stopPropagation(); dispatch({ type: 'TOGGLE_LOCK', courseId: block.courseId, semesterId }) }}
-                    className={cn('p-0.5 rounded', FACULTY_BTN[block.faculty])}
+                    className={cn(styles.actionBtn, FACULTY_BTN[block.faculty])}
                   >
                     {block.locked ? <Lock size={10} /> : <Unlock size={10} />}
                   </button>
                   <button
+                    data-testid={`${TEST_IDS.WEEKLY.REMOVE_BUTTON}-${block.courseId}`}
                     onClick={e => { e.stopPropagation(); dispatch({ type: 'REMOVE_COURSE', courseId: block.courseId, semesterId }) }}
-                    className="p-0.5 rounded text-stone-400 hover:text-red-500"
+                    className={styles.removeBtn}
                   >
                     <X size={10} />
                   </button>
@@ -431,9 +436,9 @@ export default function WeeklySchedule({ semesterId }: Props) {
           {allCourseBlocks.filter(b => b.isRecitation).map(block => (
             <div
               key={block.key}
+              data-testid={`${TEST_IDS.WEEKLY.COURSE_BLOCK}-${block.courseId}`}
               className={cn(
-                'absolute rounded-lg px-2 py-1 cursor-pointer group z-20',
-                'transition-shadow hover:shadow-md',
+                styles.recitationBlock,
                 FACULTY_COLORS[block.faculty]
               )}
               style={{
@@ -448,8 +453,8 @@ export default function WeeklySchedule({ semesterId }: Props) {
                 setPanel({ courseId: block.courseId, rect: e.currentTarget.getBoundingClientRect() })
               }}
             >
-              <p className="text-[10px] font-semibold leading-tight truncate opacity-80">
-                <span className="opacity-60 mr-0.5">Rec</span> {block.label}
+              <p className={styles.recitationLabel}>
+                <span className={styles.recitationTag}>Rec</span> {block.label}
               </p>
             </div>
           ))}
@@ -458,7 +463,7 @@ export default function WeeklySchedule({ semesterId }: Props) {
           {collisionZones.map((zone, i) => (
             <div
               key={`col-${i}`}
-              className="absolute pointer-events-none rounded-md z-[25] overflow-hidden"
+              className={styles.collisionZone}
               style={{ ...blockStyle(zone.startHour, zone.endHour, zone.dayIndex), ...COLLISION_STRIPE }}
             />
           ))}
@@ -467,7 +472,7 @@ export default function WeeklySchedule({ semesterId }: Props) {
           {blockerCollisionZones.map((zone, i) => (
             <div
               key={`bcol-${i}`}
-              className="absolute pointer-events-none rounded-md z-[25] overflow-hidden"
+              className={styles.collisionZone}
               style={{ ...blockStyle(zone.startHour, zone.endHour, zone.dayIndex), ...COLLISION_STRIPE }}
             />
           ))}
@@ -477,7 +482,8 @@ export default function WeeklySchedule({ semesterId }: Props) {
       {/* Option panel portal */}
       {panel && panelCourse && panelPlaced && createPortal(
         <div
-          className="bg-white rounded-xl shadow-2xl border border-stone-200 p-2 w-56 z-50"
+          data-testid={TEST_IDS.WEEKLY.OPTION_PANEL}
+          className={styles.optionPanel}
           style={{
             position: 'fixed',
             top: Math.min(panel.rect.bottom + 6, window.innerHeight - 280),
@@ -485,13 +491,13 @@ export default function WeeklySchedule({ semesterId }: Props) {
           }}
           onClick={e => e.stopPropagation()}
         >
-          <p className="text-[11px] font-semibold text-stone-800 px-1.5 pb-2 border-b border-stone-100">
+          <p className={styles.panelTitle}>
             {panelCourse.name}
           </p>
 
           {panelCourse.lectureOptions.length > 0 && (
             <>
-              <p className="text-[9px] font-bold uppercase tracking-wide text-stone-400 px-1.5 pt-2 pb-1">
+              <p className={styles.panelSectionLabel}>
                 Lecture options
               </p>
               {panelCourse.lectureOptions.map(opt => {
@@ -504,14 +510,14 @@ export default function WeeklySchedule({ semesterId }: Props) {
                       setPanel(null)
                     }}
                     className={cn(
-                      'w-full flex items-start gap-2 px-1.5 py-1.5 rounded-lg text-left transition-colors mb-0.5',
-                      active ? 'bg-stone-900 text-white' : 'hover:bg-stone-100 text-stone-700'
+                      styles.optionBtn,
+                      active && styles.optionBtnActiveLect
                     )}
                   >
-                    <span className={cn('mt-0.5 w-2.5 h-2.5 rounded-full border-2 shrink-0', active ? 'border-white bg-white' : 'border-stone-400')} />
+                    <span className={cn(styles.optionRadio, active && styles.optionRadioActive)} />
                     <div>
                       {opt.slots.map((s, i) => (
-                        <p key={i} className={cn('text-[10px] leading-relaxed', active ? 'text-white/80' : 'text-stone-500')}>
+                        <p key={i} className={cn(styles.optionSlot, active && styles.optionSlotActive)}>
                           {DAY_LABEL[s.day]} {formatTime(s.startHour)}–{formatTime(s.endHour)}
                         </p>
                       ))}
@@ -524,7 +530,7 @@ export default function WeeklySchedule({ semesterId }: Props) {
 
           {panelCourse.recitationOptions && panelCourse.recitationOptions.length > 0 && (
             <>
-              <p className="text-[9px] font-bold uppercase tracking-wide text-stone-400 px-1.5 pt-2 pb-1">
+              <p className={styles.panelSectionLabel}>
                 Recitation options
               </p>
               {panelCourse.recitationOptions.map(opt => {
@@ -537,14 +543,14 @@ export default function WeeklySchedule({ semesterId }: Props) {
                       setPanel(null)
                     }}
                     className={cn(
-                      'w-full flex items-start gap-2 px-1.5 py-1.5 rounded-lg text-left transition-colors mb-0.5',
-                      active ? 'bg-stone-800 text-white' : 'hover:bg-stone-100 text-stone-700'
+                      styles.optionBtn,
+                      active && styles.optionBtnActiveRec
                     )}
                   >
-                    <span className={cn('mt-0.5 w-2.5 h-2.5 rounded-full border-2 shrink-0', active ? 'border-white bg-white' : 'border-stone-400')} />
+                    <span className={cn(styles.optionRadio, active && styles.optionRadioActive)} />
                     <div>
                       {opt.slots.map((s, i) => (
-                        <p key={i} className={cn('text-[10px] leading-relaxed', active ? 'text-white/80' : 'text-stone-500')}>
+                        <p key={i} className={cn(styles.optionSlot, active && styles.optionSlotActive)}>
                           {DAY_LABEL[s.day]} {formatTime(s.startHour)}–{formatTime(s.endHour)}
                         </p>
                       ))}
@@ -555,10 +561,10 @@ export default function WeeklySchedule({ semesterId }: Props) {
             </>
           )}
 
-          <div className="border-t border-stone-100 mt-1 pt-1">
+          <div className={styles.panelFooter}>
             <button
               onClick={() => { dispatch({ type: 'REMOVE_COURSE', courseId: panel.courseId, semesterId }); setPanel(null) }}
-              className="w-full text-left text-[10px] text-red-500 hover:text-red-700 hover:bg-red-50 px-1.5 py-1.5 rounded-lg transition-colors"
+              className={styles.panelRemoveBtn}
             >
               Remove from schedule
             </button>

@@ -1,5 +1,6 @@
 import { cn } from '../lib/utils'
 import Tooltip from './Tooltip'
+import styles from './MiniExamCalendar.module.css'
 
 const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 const WEEK_LABELS = ['S','M','T','W','T','F','S']
@@ -36,16 +37,16 @@ export default function MiniExamCalendar({ examMap }: Props) {
   }
 
   return (
-    <div className="border-t border-stone-100 pt-3 mt-1">
-      <p className="text-[9px] font-bold uppercase tracking-wide text-stone-400 px-3 mb-2">
+    <div className={styles.container}>
+      <p className={styles.title}>
         Exam Period
       </p>
 
       {/* Fixed weekday row */}
-      <div className="grid grid-cols-7 px-2 mb-1">
+      <div className={styles.weekRow}>
         {WEEK_LABELS.map((l, i) => (
-          <div key={i} className="flex justify-center">
-            <span className="text-[8px] text-stone-400 font-medium">{l}</span>
+          <div key={i} className={styles.weekCell}>
+            <span className={styles.weekLabel}>{l}</span>
           </div>
         ))}
       </div>
@@ -53,13 +54,13 @@ export default function MiniExamCalendar({ examMap }: Props) {
       {months.map(({ year, month }, mi) => {
         const cells = buildCells(year, month)
         return (
-          <div key={`${year}-${month}`} className={cn(mi > 0 && 'mt-2')}>
-            <p className="text-[9px] text-stone-400 font-semibold px-3 mb-0.5">
+          <div key={`${year}-${month}`} className={cn(mi > 0 ? styles.monthBlockSpaced : styles.monthBlock)}>
+            <p className={styles.monthLabel}>
               {MONTH_NAMES[month]} {year}
             </p>
-            <div className="grid grid-cols-7 px-2 gap-y-0.5">
+            <div className={styles.daysGrid}>
               {cells.map((day, i) => {
-                if (day === null) return <div key={`e${i}`} className="h-5" />
+                if (day === null) return <div key={`e${i}`} className={styles.emptyCell} />
                 const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
                 const names = examMap.get(dateStr)
                 const hasExam = !!names
@@ -67,17 +68,15 @@ export default function MiniExamCalendar({ examMap }: Props) {
                 const circle = (
                   <div
                     className={cn(
-                      'h-5 w-5 mx-auto flex items-center justify-center rounded-full text-[9px] leading-none transition-colors',
-                      hasExam
-                        ? 'bg-red-100 text-red-700 font-bold cursor-default hover:bg-red-200'
-                        : 'text-stone-400'
+                      styles.circle,
+                      hasExam ? styles.circleExam : styles.circlePlain
                     )}
                   >
                     {day}
                   </div>
                 )
                 return hasExam ? (
-                  <Tooltip key={i} text={names!.join(' · ')} side="top" className="flex justify-center">
+                  <Tooltip key={i} text={names!.join(' · ')} side="top" className={styles.tooltipWrap}>
                     {circle}
                   </Tooltip>
                 ) : (

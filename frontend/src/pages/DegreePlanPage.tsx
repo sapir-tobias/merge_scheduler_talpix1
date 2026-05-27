@@ -8,6 +8,8 @@ import Catalogue from '../components/Catalogue'
 import type { SemesterId, PlanYear } from '../types'
 import { Trash2 } from 'lucide-react'
 import { cn } from '../lib/utils'
+import { TEST_IDS } from '../testIds'
+import styles from './DegreePlanPage.module.css'
 
 const YEAR_PAIRS: [SemesterId, SemesterId][] = [[1, 2], [3, 4], [5, 6]]
 
@@ -64,13 +66,13 @@ export default function DegreePlanPage({ year }: Props) {
   }
 
   return (
-    <div className="flex flex-1 overflow-hidden">
+    <div className={styles.container} data-testid={TEST_IDS.DEGREE_PLAN.CONTAINER}>
 
       {/* Exemptions panel */}
       <ExemptionsBox />
 
       {/* Main area: 3 year rows + trash */}
-      <div className="flex-1 flex flex-col overflow-hidden px-4 pt-4 pb-3 gap-3">
+      <div className={styles.main}>
 
         {YEAR_PAIRS.map(([semA, semB], yi) => {
           const isActive = (yi + 1) === year
@@ -78,13 +80,13 @@ export default function DegreePlanPage({ year }: Props) {
             <div
               key={yi}
               className={cn(
-                'flex gap-3 min-h-0 transition-opacity',
-                !isActive && 'opacity-70'
+                styles.yearRow,
+                !isActive && styles.yearRowInactive
               )}
               style={{ flex: isActive ? '2 1 0' : '1 1 0' }}
             >
               {[semA, semB].map(id => (
-                <div key={id} className="flex-1 min-w-0 min-h-0">
+                <div key={id} className={styles.semCell}>
                   <SemesterBox
                     semesterId={id}
                     showCalendar={isActive}
@@ -99,20 +101,21 @@ export default function DegreePlanPage({ year }: Props) {
 
         {/* Trash zone */}
         <div
+          data-testid={TEST_IDS.DEGREE_PLAN.TRASH_ZONE}
           className={cn(
-            'shrink-0 flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 border-dashed transition-all',
+            styles.trash,
             trashOver
-              ? 'border-red-500 bg-red-100 text-red-600 font-semibold'
+              ? styles.trashActive
               : isDragging
-                ? 'border-red-300 bg-red-50/60 text-red-400'
-                : 'border-stone-200 text-stone-400'
+                ? styles.trashDragging
+                : styles.trashIdle
           )}
           onDragOver={e => { e.preventDefault(); setTrashOver(true) }}
           onDragLeave={() => setTrashOver(false)}
           onDrop={handleTrashDrop}
         >
           <Trash2 size={13} />
-          <span className="text-[11px] font-medium">Drop here to remove</span>
+          <span className={styles.trashLabel}>Drop here to remove</span>
         </div>
       </div>
 

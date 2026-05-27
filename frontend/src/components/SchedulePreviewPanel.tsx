@@ -5,6 +5,8 @@ import { cn } from '../lib/utils'
 import { useDegree } from '../stores/DegreeContext'
 import { useCoursesStore } from '../stores/CoursesStore'
 import type { Course, PlacedCourse, SemesterId, Faculty, DayKey, Blocker } from '../types'
+import { TEST_IDS } from '../testIds'
+import styles from './SchedulePreviewPanel.module.css'
 
 type CourseMap = Map<string, Course>
 
@@ -147,12 +149,12 @@ function MiniSchedule({ choices, collisions, blockers, courseMap }: { choices: C
   }
 
   return (
-    <div className="relative" style={{ width: PREVIEW_W, height: PREVIEW_H, backgroundColor: '#fafaf9', borderRadius: 6, overflow: 'hidden' }}>
+    <div className={styles.miniRoot} style={{ width: PREVIEW_W, height: PREVIEW_H, backgroundColor: '#fafaf9', borderRadius: 6, overflow: 'hidden' }}>
       {/* Grid lines */}
       {Array.from({ length: PREVIEW_TOTAL }, (_, i) => (
         <div
           key={i}
-          className="absolute inset-x-0 border-t border-stone-100"
+          className={styles.gridLine}
           style={{ top: i * HOUR_H }}
         />
       ))}
@@ -160,7 +162,7 @@ function MiniSchedule({ choices, collisions, blockers, courseMap }: { choices: C
       {DAYS.map((_, di) => di > 0 && (
         <div
           key={di}
-          className="absolute top-0 bottom-0 border-l border-stone-100"
+          className={styles.colSeparator}
           style={{ left: di * COL_W }}
         />
       ))}
@@ -175,7 +177,7 @@ function MiniSchedule({ choices, collisions, blockers, courseMap }: { choices: C
         return (
           <div
             key={`blocker-${i}`}
-            className="absolute pointer-events-none"
+            className={styles.blockerBand}
             style={{
               top: (bStart - PREVIEW_START) * HOUR_H,
               height: (bEnd - bStart) * HOUR_H,
@@ -193,7 +195,7 @@ function MiniSchedule({ choices, collisions, blockers, courseMap }: { choices: C
       {slots.map((slot, si) => (
         <div
           key={si}
-          className="absolute rounded-sm"
+          className={styles.courseSlot}
           style={{
             top: (slot.startHour - PREVIEW_START) * HOUR_H + 1,
             height: (slot.endHour - slot.startHour) * HOUR_H - 2,
@@ -209,7 +211,7 @@ function MiniSchedule({ choices, collisions, blockers, courseMap }: { choices: C
       {colZones.map((z, i) => (
         <div
           key={i}
-          className="absolute pointer-events-none"
+          className={styles.collisionZone}
           style={{
             top: (z.startHour - PREVIEW_START) * HOUR_H,
             height: (z.endHour - z.startHour) * HOUR_H,
@@ -225,7 +227,7 @@ function MiniSchedule({ choices, collisions, blockers, courseMap }: { choices: C
       {blockerColZones.map((z, i) => (
         <div
           key={`bc-${i}`}
-          className="absolute pointer-events-none"
+          className={styles.collisionZone}
           style={{
             top: (z.startHour - PREVIEW_START) * HOUR_H,
             height: (z.endHour - z.startHour) * HOUR_H,
@@ -239,7 +241,7 @@ function MiniSchedule({ choices, collisions, blockers, courseMap }: { choices: C
 
       {/* Collision badge */}
       {collisions > 0 && (
-        <div className="absolute top-1 right-1 bg-red-600 text-white text-[8px] font-bold px-1 py-0.5 rounded-full leading-none">
+        <div className={styles.collisionBadge}>
           {collisions} clash{collisions > 1 ? 'es' : ''}
         </div>
       )}
@@ -280,45 +282,47 @@ export default function SchedulePreviewPanel({ semesterId, placed, onClose }: Pr
   const currentChoices = placed.map(p => `${p.courseId}:${p.lectureOptionId}:${p.recitationOptionId ?? ''}`).sort().join(',')
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-end justify-start pointer-events-none">
+    <div className={styles.overlay}>
       {/* Backdrop for close */}
-      <div className="absolute inset-0 pointer-events-auto" onClick={onClose} />
+      <div className={styles.backdrop} onClick={onClose} />
 
       {/* Panel — anchored above the bottom bar */}
       <div
-        className="relative pointer-events-auto mb-[48px] ml-0 bg-white border border-stone-200 rounded-2xl shadow-2xl overflow-hidden"
+        data-testid={TEST_IDS.PREVIEW.PANEL}
+        className={styles.panel}
         style={{ width: 'calc(100vw - 256px - 1px)' }}  // full width minus catalogue
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3 border-b border-stone-100">
+        <div className={styles.header}>
           <div>
-            <p className="text-[13px] font-semibold text-stone-800">Schedule Combinations</p>
-            <p className="text-[11px] text-stone-400 mt-0.5">
+            <p className={styles.headerTitle}>Schedule Combinations</p>
+            <p className={styles.headerSubtitle}>
               {configs.length} combination{configs.length !== 1 ? 's' : ''} · sorted by collisions
             </p>
           </div>
-          <button onClick={onClose} className="text-stone-400 hover:text-stone-700 transition-colors p-1">
+          <button onClick={onClose} data-testid={TEST_IDS.PREVIEW.CLOSE_BUTTON} className={styles.closeBtn}>
             <X size={16} />
           </button>
         </div>
 
         {/* Previews */}
-        <div className="px-5 py-4 flex items-stretch gap-5">
+        <div className={styles.previews}>
           {/* Prev button */}
           <button
             onClick={() => canPrev && setPage(p => p - 1)}
             disabled={!canPrev}
+            data-testid={TEST_IDS.PREVIEW.PREV_BUTTON}
             className={cn(
-              'flex items-center justify-center w-8 rounded-lg transition-colors shrink-0 self-center',
-              canPrev ? 'text-stone-600 hover:bg-stone-100' : 'text-stone-200 cursor-default'
+              styles.navArrow,
+              canPrev ? styles.navArrowEnabled : styles.navArrowDisabled
             )}
           >
             <ChevronLeft size={20} />
           </button>
 
           {/* Preview cards */}
-          <div className="flex gap-5 flex-1 justify-center">
+          <div className={styles.cards}>
             {visible.map((config, idx) => {
               const configKey = config.choices.map(c => `${c.courseId}:${c.optionId}:${c.recitationOptionId ?? ''}`).sort().join(',')
               const isActive = configKey === currentChoices
@@ -327,32 +331,33 @@ export default function SchedulePreviewPanel({ semesterId, placed, onClose }: Pr
               return (
                 <div
                   key={idx}
-                  className="relative flex flex-col items-center gap-2 cursor-pointer"
+                  data-testid={`${TEST_IDS.PREVIEW.CARD}-${idx}`}
+                  className={styles.card}
                   onMouseEnter={() => setHoveredIdx(idx)}
                   onMouseLeave={() => setHoveredIdx(null)}
                   onClick={() => applyConfig(config)}
                 >
                   {/* Active indicator */}
                   {isActive && (
-                    <div className="absolute -top-1 -right-1 z-10 bg-stone-900 text-white rounded-full w-4 h-4 flex items-center justify-center">
+                    <div className={styles.activeIndicator}>
                       <Check size={9} />
                     </div>
                   )}
 
                   {/* Mini schedule with hover blur + apply overlay */}
                   <div className={cn(
-                    'relative rounded-xl overflow-hidden transition-all',
-                    isActive ? 'ring-2 ring-stone-800 ring-offset-2' : 'ring-1 ring-stone-200',
-                    isHovered && !isActive && 'ring-stone-400',
+                    styles.miniWrap,
+                    isActive ? styles.miniWrapActive : styles.miniWrapInactive,
+                    isHovered && !isActive && styles.miniWrapHovered,
                   )}>
-                    <div className={cn('transition-all duration-150', isHovered && 'blur-[2px] scale-[0.98]')}>
+                    <div className={cn(styles.miniInner, isHovered && styles.miniInnerHovered)}>
                       <MiniSchedule choices={config.choices} collisions={config.collisions} blockers={semBlockers} courseMap={courseMap} />
                     </div>
 
                     {/* Apply overlay on hover */}
                     {isHovered && (
-                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/60">
-                        <div className="bg-stone-900 text-white text-[11px] font-semibold px-4 py-1.5 rounded-full shadow-lg">
+                      <div className={styles.applyOverlay}>
+                        <div className={styles.applyPill}>
                           {isActive ? 'Current' : 'Apply'}
                         </div>
                       </div>
@@ -360,14 +365,14 @@ export default function SchedulePreviewPanel({ semesterId, placed, onClose }: Pr
                   </div>
 
                   {/* Collision count label */}
-                  <div className="flex items-center gap-1.5">
+                  <div className={styles.collisionLabel}>
                     {config.collisions === 0 ? (
-                      <span className="text-[10px] text-emerald-600 font-medium">No collisions</span>
+                      <span className={styles.noCollisions}>No collisions</span>
                     ) : (
-                      <span className="text-[10px] text-red-600 font-medium">{config.collisions} collision{config.collisions > 1 ? 's' : ''}</span>
+                      <span className={styles.hasCollisions}>{config.collisions} collision{config.collisions > 1 ? 's' : ''}</span>
                     )}
                     {/* Option labels per course */}
-                    <span className="text-[10px] text-stone-400">
+                    <span className={styles.optionLabels}>
                       {config.choices.map(c => {
                         const code = courseMap.get(c.courseId)?.code ?? ''
                         const l = c.optionId ? c.optionId.toUpperCase() : ''
@@ -390,9 +395,10 @@ export default function SchedulePreviewPanel({ semesterId, placed, onClose }: Pr
           <button
             onClick={() => canNext && setPage(p => p + 1)}
             disabled={!canNext}
+            data-testid={TEST_IDS.PREVIEW.NEXT_BUTTON}
             className={cn(
-              'flex items-center justify-center w-8 rounded-lg transition-colors shrink-0 self-center',
-              canNext ? 'text-stone-600 hover:bg-stone-100' : 'text-stone-200 cursor-default'
+              styles.navArrow,
+              canNext ? styles.navArrowEnabled : styles.navArrowDisabled
             )}
           >
             <ChevronRight size={20} />
@@ -401,14 +407,15 @@ export default function SchedulePreviewPanel({ semesterId, placed, onClose }: Pr
 
         {/* Page indicator */}
         {totalPages > 1 && (
-          <div className="flex justify-center gap-1 pb-3">
+          <div className={styles.pageDots}>
             {Array.from({ length: totalPages }).map((_, i) => (
               <button
                 key={i}
                 onClick={() => setPage(i)}
+                data-testid={`${TEST_IDS.PREVIEW.PAGE_DOT}-${i}`}
                 className={cn(
-                  'w-1.5 h-1.5 rounded-full transition-colors',
-                  i === page ? 'bg-stone-700' : 'bg-stone-300'
+                  styles.pageDot,
+                  i === page ? styles.pageDotActive : styles.pageDotInactive
                 )}
               />
             ))}
