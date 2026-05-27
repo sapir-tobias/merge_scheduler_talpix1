@@ -27,6 +27,7 @@ export const TEST_IDS = {
     BLOCK_BUTTON: 'nav-block-button',
     LOAD_PLAN_BUTTON: 'nav-load-plan-button',
     IMPORT_BUTTON: 'nav-import-button',
+    IMPORT_INPUT: 'nav-import-input',
     EXPORT_BUTTON: 'nav-export-button',
   },
 

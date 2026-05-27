@@ -7,11 +7,15 @@ WIRE_KEYS = {
     "id",
     "code",
     "name",
+    "nameEn",
     "faculty",
     "credits",
+    "term",
     "lectureOptions",
     "recitationOptions",
     "examDate",
+    "hasExam",
+    "mandatoryAttendance",
     "prerequisites",
     "description",
 }
@@ -25,6 +29,34 @@ def test_serialize_course_shape_matches_frontend_contract():
     assert wire["faculty"] in {"cs", "math", "physics", "misc"}
     assert isinstance(wire["credits"], (int, float))
     assert isinstance(wire["lectureOptions"], list)
+    assert wire["term"] in {"a", "b", "either", "yearly", "summer", ""}
+    assert isinstance(wire["hasExam"], bool)
+    assert isinstance(wire["mandatoryAttendance"], bool)
+
+
+def test_term_mapping():
+    assert serializers._term({"semester": "סמסטר א"}) == "a"
+    assert serializers._term({"semester": "סמסטר ב"}) == "b"
+    assert serializers._term({"semester": "סמסטר א או ב"}) == "either"
+    assert serializers._term({"semester": "שנתי"}) == "yearly"
+    assert serializers._term({"semester": "סמסטר קיץ"}) == "summer"
+    assert serializers._term({}) == ""
+
+
+def test_mandatory_attendance_derived_from_course_type():
+    assert serializers._mandatory_attendance({"course_type": "מעבדה"}) is True
+    assert serializers._mandatory_attendance({"course_type": "סמינריון"}) is True
+    assert serializers._mandatory_attendance({"course_type": "שעור ומעבדה מפוצל"}) is True
+    assert serializers._mandatory_attendance({"course_type": "שעור"}) is False
+    assert serializers._mandatory_attendance({}) is False
+
+
+def test_has_exam_requires_date():
+    with_exam = {"course_number": "1", "name_he": "x", "groups": [],
+                 "has_exam": True, "test_dates": [{"moed": 1, "start": "2026-01-28T09:00:00"}]}
+    no_date = {"course_number": "2", "name_he": "y", "groups": [], "has_exam": True, "test_dates": []}
+    assert serializers.serialize_course(with_exam)["hasExam"] is True
+    assert serializers.serialize_course(no_date)["hasExam"] is False
 
 
 def test_faculty_mapping():

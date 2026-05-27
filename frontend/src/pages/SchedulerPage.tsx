@@ -67,6 +67,9 @@ export default function SchedulerPage() {
   const [loadPlanOpen, setLoadPlanOpen] = useState(false)
   const loadPlanBtnRef = useRef<HTMLButtonElement>(null)
 
+  // Hidden file input backing the Import button
+  const importInputRef = useRef<HTMLInputElement>(null)
+
   const activeSems: [SemesterId, SemesterId] =
     year === 1 ? [1, 2] : year === 2 ? [3, 4] : [5, 6]
 
@@ -91,6 +94,40 @@ export default function SchedulerPage() {
       .map(e => ({ ...e, locked: false }))
     dispatch({ type: 'LOAD_PLAN', placed })
     setLoadPlanOpen(false)
+  }
+
+  // Export the full plan (placement + exemptions + blockers) as a JSON file.
+  function handleExport() {
+    const payload = JSON.stringify(
+      { placed: state.placed, exemptions: state.exemptions, blockers: state.blockers },
+      null,
+      2,
+    )
+    const url = URL.createObjectURL(new Blob([payload], { type: 'application/json' }))
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'degree-plan.json'
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  // Restore a previously exported plan from a JSON file.
+  function handleImportFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(String(reader.result))
+        dispatch({ type: 'LOAD_PLAN', placed: Array.isArray(parsed.placed) ? parsed.placed : [] })
+        for (const id of parsed.exemptions ?? []) dispatch({ type: 'ADD_EXEMPTION', courseId: id })
+        for (const b of parsed.blockers ?? []) dispatch({ type: 'ADD_BLOCKER', payload: b })
+      } catch {
+        // ignore malformed files — nothing to restore
+      }
+    }
+    reader.readAsText(file)
+    e.target.value = ''  // allow re-importing the same file
   }
 
   // Dismiss blocker popover on outside click
@@ -298,14 +335,30 @@ export default function SchedulerPage() {
 
         {/* Import / Export */}
         <div className={styles.ioGroup}>
-          <Tooltip text="Import from XLSX" side="bottom">
-            <button className={styles.navBtn} data-testid={TEST_IDS.NAV.IMPORT_BUTTON}>
+          <input
+            ref={importInputRef}
+            type="file"
+            accept="application/json,.json"
+            onChange={handleImportFile}
+            style={{ display: 'none' }}
+            data-testid={TEST_IDS.NAV.IMPORT_INPUT}
+          />
+          <Tooltip text="Import plan (JSON)" side="bottom">
+            <button
+              className={styles.navBtn}
+              data-testid={TEST_IDS.NAV.IMPORT_BUTTON}
+              onClick={() => importInputRef.current?.click()}
+            >
               <Upload size={13} />
               Import
             </button>
           </Tooltip>
-          <Tooltip text="Export to XLSX" side="bottom">
-            <button className={styles.navBtn} data-testid={TEST_IDS.NAV.EXPORT_BUTTON}>
+          <Tooltip text="Export plan (JSON)" side="bottom">
+            <button
+              className={styles.navBtn}
+              data-testid={TEST_IDS.NAV.EXPORT_BUTTON}
+              onClick={handleExport}
+            >
               <Download size={13} />
               Export
             </button>

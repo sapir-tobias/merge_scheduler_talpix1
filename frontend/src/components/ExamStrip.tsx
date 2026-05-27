@@ -13,7 +13,7 @@ const FACULTY_COLORS: Record<Faculty, string> = {
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr)
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  return isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
 interface Props { semesterId: SemesterId }
@@ -25,7 +25,7 @@ export default function ExamStrip({ semesterId }: Props) {
 
   const exams = placed
     .map(p => courseMap.get(p.courseId))
-    .filter(Boolean)
+    .filter(c => c && c.examDate)
     .sort((a, b) => a!.examDate.localeCompare(b!.examDate))
 
   if (exams.length === 0) {

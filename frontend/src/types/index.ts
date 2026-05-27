@@ -15,15 +15,21 @@ export interface LectureOption {
   slots: LectureSlot[]
 }
 
+export type CourseTerm = 'a' | 'b' | 'either' | 'yearly' | 'summer' | ''
+
 export interface Course {
   id: string
   code: string
   name: string
+  nameEn?: string
   faculty: Faculty
   credits: number
+  term?: CourseTerm
   lectureOptions: LectureOption[]
   recitationOptions?: LectureOption[]
   examDate: string
+  hasExam?: boolean
+  mandatoryAttendance?: boolean
   prerequisites: string[]
   description: string
 }

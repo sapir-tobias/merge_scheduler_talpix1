@@ -1,9 +1,11 @@
 import { createContext, useContext, useReducer, type ReactNode } from 'react'
 import type { DegreeState, PlacedCourse, SemesterId, CatalogueFilters, Faculty, Blocker } from '../types'
 
+// Credit bounds span the real dataset (0–20 cr); a narrower default would
+// silently hide ~45 of 353 courses (0-credit seminars, 7–20-credit projects).
 const DEFAULT_FILTERS: CatalogueFilters = {
-  minCredits: 1,
-  maxCredits: 6,
+  minCredits: 0,
+  maxCredits: 20,
   maxCollisions: 0,
   minExamSeparationDays: 3,
   ignorePrerequisites: false,

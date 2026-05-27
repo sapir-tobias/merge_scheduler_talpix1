@@ -19,6 +19,9 @@ const FACULTY_LABEL: Record<Faculty, string> = {
 const DAY_LABEL: Record<string, string> = {
   sun: 'Sun', mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu',
 }
+const TERM_LABEL: Record<string, string> = {
+  a: 'Sem A', b: 'Sem B', either: 'A / B', yearly: 'Yearly', summer: 'Summer',
+}
 
 function formatTime(h: number) {
   const hour = Math.floor(h)
@@ -29,7 +32,9 @@ function formatTime(h: number) {
 }
 
 function formatExamDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  if (!dateStr) return 'No exam'
+  const d = new Date(dateStr)
+  return isNaN(d.getTime()) ? 'No exam' : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
 interface Props {
@@ -72,7 +77,11 @@ export default function CourseItem({ course, scoreInfo, added, addedToCurrentSem
 
         <div className={styles.info}>
           <p className={styles.name}>{course.name}</p>
-          <p className={styles.meta}>{course.code} · {course.credits} cr</p>
+          <p className={styles.meta}>
+            {course.code} · {course.credits} cr
+            {course.term && TERM_LABEL[course.term] ? ` · ${TERM_LABEL[course.term]}` : ''}
+            {course.mandatoryAttendance ? ' · נ״ח' : ''}
+          </p>
         </div>
 
         <div className={styles.actions}>
@@ -164,6 +173,12 @@ export default function CourseItem({ course, scoreInfo, added, addedToCurrentSem
               <p className={styles.sectionLabel}>Exam</p>
               <p className={styles.statValue}>{formatExamDate(course.examDate)}</p>
             </div>
+            {course.mandatoryAttendance && (
+              <div>
+                <p className={styles.sectionLabel}>Attendance</p>
+                <p className={styles.statValue}>Required</p>
+              </div>
+            )}
             {scoreInfo.examSeparationMin >= 0 && (
               <div>
                 <p className={styles.sectionLabel}>Gap</p>

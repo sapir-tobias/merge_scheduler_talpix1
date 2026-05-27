@@ -28,6 +28,20 @@ _DAY_MAP = {
 # treated as a lecture-style block for scheduling purposes.
 _RECITATION_TYPES = {"תרגיל"}
 
+# Hebrew semester term -> normalized key the UI can label/filter on.
+_TERM_MAP = {
+    "סמסטר א": "a",
+    "סמסטר ב": "b",
+    "סמסטר א או ב": "either",
+    "שנתי": "yearly",
+    "סמסטר קיץ": "summer",
+}
+
+# Course types that carry mandatory attendance (נוכחות חובה): labs, seminars,
+# workshops and guided sessions. The shnaton payload has no explicit flag, so
+# it is derived from ``course_type`` (single source of truth).
+_ATTENDANCE_TYPES = ("מעבדה", "סמינריון", "סדנה", "הדרכה")
+
 
 def _faculty(course: Dict[str, Any]) -> str:
     """Map (faculty_code, department) -> the frontend faculty palette key."""
@@ -115,19 +129,34 @@ def _exam_date(course: Dict[str, Any]) -> str:
     return raw.split("T")[0] if raw else ""
 
 
+def _term(course: Dict[str, Any]) -> str:
+    """Normalized semester term: 'a' | 'b' | 'either' | 'yearly' | 'summer' | ''."""
+    return _TERM_MAP.get((course.get("semester") or "").strip(), "")
+
+
+def _mandatory_attendance(course: Dict[str, Any]) -> bool:
+    course_type = course.get("course_type") or ""
+    return any(t in course_type for t in _ATTENDANCE_TYPES)
+
+
 def serialize_course(course: Dict[str, Any]) -> Dict[str, Any]:
     """A shnaton course document -> the frontend ``Course`` shape."""
     lectures, recitations = _options(course)
     credits = course.get("credits")
+    exam_date = _exam_date(course)
     return {
         "id": str(course.get("course_number")),
         "code": str(course.get("course_number")),
         "name": course.get("name_he") or course.get("name_en") or "",
+        "nameEn": course.get("name_en") or "",
         "faculty": _faculty(course),
         "credits": credits if isinstance(credits, (int, float)) else 0,
+        "term": _term(course),
         "lectureOptions": lectures,
         "recitationOptions": recitations,
-        "examDate": _exam_date(course),
+        "examDate": exam_date,
+        "hasExam": bool(course.get("has_exam")) and bool(exam_date),
+        "mandatoryAttendance": _mandatory_attendance(course),
         "prerequisites": [
             str(p.get("course_number"))
             for p in (course.get("prerequisites") or [])

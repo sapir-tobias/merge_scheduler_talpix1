@@ -28,7 +28,9 @@ function formatSlots(slots: { day: string; startHour: number; endHour: number }[
   return slots.map(s => `${s.day[0].toUpperCase()}${s.day.slice(1, 3)} ${s.startHour}–${s.endHour}`).join('  ·  ')
 }
 function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  if (!dateStr) return 'No exam'
+  const d = new Date(dateStr)
+  return isNaN(d.getTime()) ? 'No exam' : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
 interface ExpandedPanel { courseId: string; rect: DOMRect }

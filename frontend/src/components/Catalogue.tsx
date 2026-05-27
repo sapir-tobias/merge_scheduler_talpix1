@@ -33,6 +33,10 @@ export default function Catalogue({ semesterId: propSemId, showSemesterSelector,
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [targetSemId, setTargetSemId] = useState<SemesterId>(propSemId ?? 1)
 
+  // Credit slider bound, driven by the real dataset (so high-credit projects
+  // are reachable rather than clamped to a hardcoded max).
+  const creditMax = courses.reduce((m, c) => Math.max(m, Math.ceil(c.credits || 0)), 6)
+
   const semesterId = showSemesterSelector ? targetSemId : (propSemId ?? 1)
 
   const semPlaced = state.placed.filter(p => p.semesterId === semesterId)
@@ -179,14 +183,14 @@ export default function Catalogue({ semesterId: propSemId, showSemesterSelector,
             <div className={styles.creditsRow}>
               <div className={styles.creditsCol}>
                 <p className={styles.creditsColLabel}>Min</p>
-                <input type="range" min={1} max={6} value={filters.minCredits}
+                <input type="range" min={0} max={creditMax} value={filters.minCredits}
                   data-testid={TEST_IDS.CATALOGUE.CREDITS_MIN}
                   onChange={e => setFilter('minCredits', +e.target.value)}
                   className={styles.range} />
               </div>
               <div className={styles.creditsCol}>
                 <p className={styles.creditsColLabel}>Max</p>
-                <input type="range" min={1} max={6} value={filters.maxCredits}
+                <input type="range" min={0} max={creditMax} value={filters.maxCredits}
                   data-testid={TEST_IDS.CATALOGUE.CREDITS_MAX}
                   onChange={e => setFilter('maxCredits', +e.target.value)}
                   className={styles.range} />
