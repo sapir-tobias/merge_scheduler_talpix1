@@ -1,4 +1,4 @@
-import SchedulerPage from './pages/SchedulerPage';
+import SchedulerPage from './pages/Timetable/SchedulerPage';
 
 class Category {
     constructor(name, path, pages) {

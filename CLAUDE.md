@@ -4,8 +4,8 @@
 A degree-planning Scheduler, structured as a **plug-and-play drop-in for the Talpix repo**. Students place courses into semesters, pick lecture/recitation time slots, see weekly schedule grids and exam-period calendars, and block off personal unavailable times. Split into a React frontend and a Talpix-shaped mock backend so it ports into Talpix (`services/frontend` + `services/backend/web_features`) with minimal changes.
 
 ## Stack
-- **Frontend:** React 19 + Vite + TypeScript, react-router-dom v7
-- **Styling:** CSS Modules + Bootstrap 5 / react-bootstrap. **No Tailwind.** Global design tokens (CSS custom properties) live in `src/index.css`; components reference them from co-located `[Component].module.css`. `cn()` from `src/lib/utils.ts` is plain clsx (CSS Modules already produce unique class names).
+- **Frontend:** React + Vite + **pure JavaScript** (`.js`, JSX inside `.js` like Talpix; Vite 7 with the jsx loader), react-router-dom. Only libraries that exist in Talpix are used: `react-icons` (icons, `react-icons/lu`), `bootstrap`. **No clsx / lucide-react / radix / CVA.**
+- **Styling:** CSS Modules. **No Tailwind.** Global design tokens (CSS custom properties) live in `src/index.css`; components reference them from co-located `[Component].module.css`. `cn()` from `src/utils/utils.js` is a dependency-free truthy-join (CSS Modules already produce unique class names).
 - **Backend:** FastAPI mock of a Talpix Django/DRF feature. Views carry the real DRF decorator stack via a shim (`decorators.py`) and talk to a JSON-backed repository that mimics MongoEngine queries.
 - **Run:** `npm run dev` (root) starts both via `concurrently`; Vite proxies `/api` → `http://localhost:8000`.
 
@@ -32,36 +32,32 @@ scripts/run.ps1                   — verification gate (tsc --noEmit + pytest)
 
 ## Frontend File Map
 ```
-src/
-  App.tsx                    — providers (CoursesProvider → DegreeProvider) + router; maps allPages → routes with role gating
+src/                         — pure JavaScript (.js); layout mirrors Talpix (no lib/; uses utils/, hooks/)
+  App.js                     — providers (CoursesProvider → DegreeProvider) + router; maps allPages → routes with role gating
   urls.js                    — Category/Page registry (Talpix-style); schedulerPages roles = ['Cadet','Sagab','Sagaz','Kamat']
-  main.tsx, index.css        — entry + global design tokens
-  testIds.ts                 — central data-testid constants (shared with Playwright)
-  types/index.ts             — all shared types
+  main.js, index.css         — entry + global design tokens
+  constants.js               — faculty/credit(0–20)/term/day/track tokens (no hardcoded values in views)
+  testIds.js                 — central data-testid constants (shared with Playwright)
   stores/
-    DegreeContext.tsx        — global plan state (useReducer), all actions
-    CoursesStore.tsx         — fetches catalogue + initial-placed from the API; exposes courseMap, fetchPlan
+    DegreeContext.js         — global plan state (useReducer) + localStorage persistence; all actions
+    CoursesStore.js          — fetches catalogue + initial-placed from the API; exposes courseMap, fetchPlan
   hooks/
-    useAPIFetch.ts           — GET hook [data, isLoading, refresh] (Talpix-standard)
-    useAPIAction.ts          — POST/PUT/PATCH/DELETE hook [execute, isLoading]
-  lib/{utils.ts, scoring.ts} — cn() helper; filterAndScore(), pickBestOption()
-  pages/
-    SchedulerPage.tsx        — nav-bar shell (tabs, year selector, Block, Load Plan, Import/Export) + active view
-    SemesterPage.tsx         — per-semester view (WeeklySchedule + MonthCalendar + SemesterCourseList + Catalogue)
-    DegreePlanPage.tsx       — 3-year overview (ExemptionsBox + SemesterBox grid + Catalogue)
-  components/
-    WeeklySchedule.tsx       — 5-day grid, course blocks, blocker drag/resize/draw
-    MonthCalendar.tsx        — snake visualization (study days + exam heads by faculty color)
-    ExamStrip.tsx            — linear exam-period strip
-    SemesterCourseList.tsx   — bottom bar: course chips + Combinations button
-    SchedulePreviewPanel.tsx — schedule-combination previews with blocker collision detection
-    SemesterBox.tsx          — compact semester box for degree plan view
-    MiniExamCalendar.tsx     — mini calendar showing exam dates
-    Catalogue.tsx            — right panel course list with scoring/search/filters
-    CourseItem.tsx           — single course row in Catalogue
-    ExemptionsBox.tsx        — left panel for exempted (pre-passed) courses
-    Tooltip.tsx              — shared hover tooltip
-  _archive/                  — dead legacy demo files (not imported; excluded conceptually)
+    useAPIFetch.js, useAPIAction.js          — Talpix-standard GET / mutating hooks
+    useBlockerDrag.js, useDismissOnOutsideClick.js  — scheduler interaction hooks
+  utils/
+    utils.js (cn), scoring.js, weeklyLayout.js, snakeMap.js, previewConfigs.js, planIO.js
+  pages/Timetable/
+    SchedulerPage.js         — nav-bar shell (tabs, year selector, Block, Load Plan, Import/Export) + active view
+    SemesterPage.js          — per-semester view (WeeklySchedule + MonthCalendar + SemesterCourseList + Catalogue)
+    DegreePlanPage.js        — 3-year overview (ExemptionsBox + SemesterBox grid + Catalogue)
+  components/timetable/      — all feature components, each < 200 lines (Talpix-style namespaced folder)
+    WeeklySchedule.js + ScheduleGrid/CourseBlock/BlockerBlock/LectureOptionPanel  — 5-day grid, blocks, blocker drag/resize/draw
+    MonthCalendar.js + MonthGrid                                                  — snake visualization (study days + exam heads)
+    Catalogue.js + CatalogueFilters + CourseItem + CourseItemDetail               — course browser w/ scoring/search/filters
+    SemesterCourseList.js + SemesterCourseChip                                    — bottom bar: chips + Combinations
+    SchedulePreviewPanel.js + PreviewCard + MiniSchedule                          — combination previews + collision detection
+    SemesterBox.js + SemesterBoxBody, MiniExamCalendar, ExemptionsBox, ExamStrip, Tooltip
+    BlockerPopover, LoadPlanPopover, SchedulerIOButtons                           — nav-bar popovers + import/export
 ```
 
 ## Backend Architecture (the drop-in story)
@@ -116,8 +112,9 @@ Faculty-colored bar connects study days leading to each exam. Body starts 7 days
 
 ## Conventions
 - No comments unless the WHY is non-obvious.
-- CSS Modules for styling; Bootstrap utility/components allowed; inline `style` only for dynamic values (positions, percentages).
-- `createPortal(…, document.body)` for overlays/panels.
-- TypeScript strict — no `any`. Faculty palette: cs=blue, math=violet, physics=amber, misc=stone.
+- **Pure JavaScript** (`.js` with JSX inside, Talpix-style); **every file < 200 lines** — split large views into sub-components under `components/timetable/`.
+- **Only libraries that exist in Talpix.** Icons via `react-icons/lu`; class names via the dependency-free `cn()`; no clsx/lucide/radix/CVA. New non-Talpix libs need a why-it's-logic justification first.
+- No hardcoded tokens in views — faculty/credit/term/day/track constants live in `src/constants.js`. Faculty palette: cs=blue, math=violet, physics=amber, misc=stone.
+- CSS Modules for styling; inline `style` only for dynamic values (positions, percentages); `createPortal(…, document.body)` for overlays/panels.
 - Backend: views never touch the filesystem directly — always go through `repository`; project to the wire shape through `serializers`.
-- Keep `data-testid`s in `testIds.ts` and reuse them in components + Playwright.
+- Keep `data-testid`s in `testIds.js` and reuse them in components + Playwright.

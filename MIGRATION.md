@@ -135,26 +135,26 @@ urlpatterns = [
 Then mount it in Talpix's root URL conf: `path("api/scheduler/", include("web_features.scheduler.urls"))`.
 
 ### Frontend (`Project B` → `../new_talpix/talpix/services/frontend/src/`)
-Frontend is now **pure JavaScript** (`.jsx`/`.js`), every file <200 lines, CSS-Module + design-token styling — matching Talpix's environment exactly (the TS↔JS delta is resolved).
+Frontend is **pure JavaScript** (`.js`, JSX-in-`.js` like Talpix's CRA), every file <200 lines, CSS-Module + design-token styling, and only Talpix-present libraries (`react-icons`, `bootstrap`). The folder split already mirrors Talpix (`components/`, `pages/`, `hooks/`, `utils/`, `stores/` — no `lib/`). Most of it is now a literal copy-in.
 | From (Project B) | To (Talpix) | Notes |
 |---|---|---|
-| `pages/{SchedulerPage,SemesterPage,DegreePlanPage}.{jsx,module.css}` | `pages/Scheduler/` | new subfolder, matching `pages/Talpix/`, `pages/groups/`. |
-| `components/{Catalogue,CourseItem,MonthCalendar,SchedulePreviewPanel,SemesterBox,SemesterCourseList,WeeklySchedule,ExemptionsBox,MiniExamCalendar,ExamStrip,Tooltip}.{jsx,module.css}` | `components/scheduler/` | **namespaced** subfolder — avoids clashes with Talpix's flat `components/` (it has its own `Tooltip`). |
-| `components/scheduler/*.jsx` (14 sub-components: ScheduleGrid, CourseBlock, BlockerBlock, BlockerPopover, LoadPlanPopover, SchedulerIOButtons, CatalogueFilters, CourseItemDetail, LectureOptionPanel, MonthGrid, PreviewCard, MiniSchedule, SemesterBoxBody, SemesterCourseChip) | `components/scheduler/` | move as the same nested folder. |
-| `lib/*.js` (scoring, utils, weeklyLayout, snakeMap, previewConfigs, planIO, useBlockerDrag, useDismissOnOutsideClick) | scoped `utils/`/`hooks/` | pure helpers + the two scheduler-local hooks. |
-| `constants.js` | `pages/Scheduler/constants.js` (or shared) | faculty/credit/term/day/track tokens. |
-| `stores/{DegreeContext,CoursesStore}.jsx` | `stores/` | as-is (CoursesStore persists to localStorage). |
+| `components/timetable/*.js` (+ `*.module.css`) — all 25 feature components | `components/timetable/` | drop in as-is (already namespaced, like Talpix's `components/` groupings). |
+| `pages/Timetable/{SchedulerPage,SemesterPage,DegreePlanPage}.js` (+ css) | `pages/Timetable/` | drop in as-is (matches `pages/Talpix/`, `pages/groups/`). |
+| `utils/*.js` (scoring, utils[cn], weeklyLayout, snakeMap, previewConfigs, planIO) | `utils/` | drop in as-is. |
+| `hooks/{useBlockerDrag,useDismissOnOutsideClick}.js` | `hooks/` | scheduler interaction hooks, as-is. |
+| `constants.js` | `src/constants.js` | Talpix already has a `src/constants.js` — **merge** the timetable tokens in. |
+| `stores/{DegreeContext,CoursesStore}.js` | `stores/` | as-is (DegreeContext persists to localStorage). |
 | `index.css` `--color-*` / `--faculty-*` tokens | merge missing tokens into Talpix `styles/theme.css` | don't overwrite Talpix theme. |
 | `testIds.js` | **merge** scheduler keys into Talpix's existing `testIds.js` | add the `NAV`/`CATALOGUE`/`WEEKLY`/… sub-objects; don't overwrite. |
-| `urls.js` scheduler block | **merge** into Talpix's `urls.js` (below) | don't overwrite. |
-| `hooks/{useAPIFetch,useAPIAction}.js` | — | Talpix **already has** these (different signatures). Keep scheduler-scoped or rewire `CoursesStore` (see caveat). |
-| `App.jsx`, `main.jsx`, `urls.js` (whole file), `vite.config.js`, `index.html` | — | not migrated — Talpix owns the shell/router/build. |
+| `urls.js` scheduler block | **merge** into Talpix's `urls.js` (below) | import path: `./pages/Timetable/SchedulerPage`. |
+| `hooks/{useAPIFetch,useAPIAction}.js` | — | Talpix **already has** these (different signatures). Keep timetable-scoped or rewire `CoursesStore` (see caveat). |
+| `App.js`, `main.js`, full `urls.js`, `vite.config.js`, `index.html`, `jsconfig`-less | — | not migrated — Talpix owns the shell/router/build (CRA, not Vite). |
 | `e2e-tests/Tests/SchedulerTests/scheduler.spec.js` | Talpix `e2e-tests/Tests/SchedulerTests/` | as-is (15 specs). |
 
 **Register the Scheduler in Talpix `services/frontend/src/urls.js`:**
 ```js
 // 1) add to the imports block at the top:
-import SchedulerPage from "./pages/Scheduler/SchedulerPage";
+import SchedulerPage from "./pages/Timetable/SchedulerPage";
 
 // 2) declare the category's pages (exact roles):
 const schedulerPages = [
@@ -167,7 +167,7 @@ new Category('מערכת', 'scheduler', schedulerPages),
 This yields the route `/scheduler/planner`, gated by `<Restricted roles={['Cadet','Sagab','Sagaz','Kamat']}>` via Talpix's existing `index.js` router — no router rewrite needed (the page component is router-agnostic).
 
 ### Integration caveats (genuine deltas, not copy-paste)
-1. **Language: resolved.** The frontend is now pure JavaScript (`.jsx`/`.js`, no `tsconfig`/types) — it drops straight into Talpix's CRA JS environment with no transpile step.
+1. **Language + libraries: resolved.** The frontend is pure JavaScript (`.js`, JSX-in-`.js`, no types) and uses only libraries present in Talpix (`react-icons`, `bootstrap`) — it drops straight into Talpix's CRA environment. (Locally it runs on Vite 7 with a jsx loader; Vite is not migrated — Talpix builds with `react-scripts`.)
 2. **Hook signatures differ.** Talpix `useAPIFetch(apiUrl, data, deps, thenFunc)` returns `[data, loading, refresh, clear, setResData]` and pulls `user` from `userContext`; ours is `useAPIFetch(url, defaultData, deps)` → `[data, loading, refresh]`. Either keep the scheduler-scoped hooks or rewire `CoursesStore` (its only consumer) to Talpix's signature.
 3. **Persistence.** `DegreeContext` persists to `localStorage` (`degree-planner-state`). In production this can stay (per-device) or be swapped for the `SavedSchedule` document (`ReferenceField(User)`) via `useAPIAction` — the reducer shape already matches the document fields.
 4. **Endpoint tests** use FastAPI `TestClient` — rewrite to Django `APIClient`. Repository/serializer/model tests port directly.
