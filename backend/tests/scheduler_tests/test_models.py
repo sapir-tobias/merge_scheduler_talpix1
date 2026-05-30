@@ -27,6 +27,21 @@ def test_course_has_real_schema_fields():
         assert field in Course._fields
 
 
+def test_course_covers_every_shnaton_key():
+    """The model schema must be 1:1 with the raw shnaton JSON — any drift
+    means the writer branch silently drops data or the reader misses a field."""
+    import json
+    from pathlib import Path
+    data = json.loads(
+        (Path(__file__).resolve().parents[2] / "web_features/scheduler/data/courses.json")
+        .read_text(encoding="utf-8")
+    )
+    json_keys = set()
+    for course in data:
+        json_keys |= set(course.keys())
+    assert json_keys == set(Course._fields.keys())
+
+
 def test_other_documents_bind_collections():
     assert PlacedCourse._meta["collection"] == "scheduler_placed"
     assert PlanTrack._meta["collection"] == "scheduler_plans"

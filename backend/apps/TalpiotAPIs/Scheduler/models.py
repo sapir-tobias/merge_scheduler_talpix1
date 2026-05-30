@@ -21,6 +21,7 @@ from __future__ import annotations
 from mongoengine import (
     BooleanField,
     DateTimeField,
+    DictField,
     Document,
     EmbeddedDocument,
     EmbeddedDocumentListField,
@@ -75,6 +76,17 @@ class PrerequisiteRef(EmbeddedDocument):
     min_grade = IntField()
 
 
+class AssignmentSummary(EmbeddedDocument):
+    """One row of ``assignments_summary[]`` — the flat assessment overview
+    (``test_dates`` is the exam-only flattening of the same data)."""
+
+    name = StringField()        # "מבחן מסכם", "תרגיל בית"…
+    type = StringField()        # "מבחן", "עבודה"…
+    weight = FloatField()       # percentage
+    period = StringField()      # "סמסטר א'"…
+    is_master = BooleanField(default=False)
+
+
 class Course(Document):
     """Document (collection: ``courses``) — the shnaton course record.
 
@@ -101,12 +113,22 @@ class Course(Document):
     exam_duration_hours = FloatField()
     exam_dates = ListField(StringField())
     remark = StringField()
+    # Full raw assessment payload from the upstream API. Deeply nested
+    # (assignments[].schedules[].rooms[].building.campus) — stored verbatim
+    # as free-form dicts so the JSON ingest is a 1:1 passthrough; the typed
+    # ``test_dates`` + ``assignments_summary`` views are what the app reads.
+    assignments = ListField(DictField())
+    assignments_summary = EmbeddedDocumentListField(AssignmentSummary)
     test_dates = EmbeddedDocumentListField(TestDate)
     syllabus_url_he = StringField()
     syllabus_url_en = StringField()
     moodle_url = StringField()
     groups = EmbeddedDocumentListField(CourseGroup)
     num_groups = IntField(default=0)
+    prerequisites_source = StringField()            # provenance, e.g. "api"
+    # Recursive AND/OR/COURSE DAG: {type, children?, courseCode?, courseName?, minGrade?}.
+    # Free-form dict (MongoEngine has no native recursive embedded type).
+    prerequisites_tree = DictField()
     prerequisites = EmbeddedDocumentListField(PrerequisiteRef)
     required_by = ListField(StringField())
 

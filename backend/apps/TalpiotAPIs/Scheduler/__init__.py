@@ -13,6 +13,7 @@ try:  # pragma: no cover - exercised only in production w/ mongoengine present
         PlacedCourse,
         PlanEntry,
         PlanTrack,
+        AssignmentSummary,
         PrerequisiteRef,
         SavedBlocker,
         SavedSchedule,
