@@ -134,6 +134,36 @@ class Course(Document):
 
     meta = {"collection": "courses"}
 
+    # Fields whose JSON value is a list of dicts that must be wrapped in their
+    # EmbeddedDocument types; everything else accepts the JSON value verbatim.
+    _EMBEDDED_LIST_FIELDS = ("groups", "test_dates", "prerequisites", "assignments_summary")
+
+    @classmethod
+    def from_shnaton_dict(cls, doc):
+        """Build a Course from a raw shnaton JSON dict (the canonical ingest path).
+
+        The writer branch calls ``Course.from_shnaton_dict(doc).save()``. The
+        reader branch never needs this — Mongo round-trips return Course
+        instances directly. Returns an unsaved instance so callers can mutate
+        or attach extra fields before persisting.
+        """
+        scalars = {k: v for k, v in doc.items() if k not in cls._EMBEDDED_LIST_FIELDS}
+        return cls(
+            **scalars,
+            groups=[
+                CourseGroup(
+                    **{k: v for k, v in g.items() if k != "schedule"},
+                    schedule=[ScheduleMeeting(**m) for m in (g.get("schedule") or [])],
+                )
+                for g in (doc.get("groups") or [])
+            ],
+            test_dates=[TestDate(**t) for t in (doc.get("test_dates") or [])],
+            prerequisites=[PrerequisiteRef(**p) for p in (doc.get("prerequisites") or [])],
+            assignments_summary=[
+                AssignmentSummary(**a) for a in (doc.get("assignments_summary") or [])
+            ],
+        )
+
     def __str__(self) -> str:
         return f"{self.course_number} {self.name_he}"
 

@@ -27,6 +27,29 @@ def test_course_has_real_schema_fields():
         assert field in Course._fields
 
 
+def test_from_shnaton_dict_round_trips_a_real_course():
+    """The shared ingest path: a raw shnaton dict in -> a valid Course out
+    (writer branch's one-liner). Validates that every typed list-of-dicts is
+    correctly wrapped into its EmbeddedDocument."""
+    import json
+    from pathlib import Path
+    data = json.loads(
+        (Path(__file__).resolve().parents[2] / "web_features/scheduler/data/courses.json")
+        .read_text(encoding="utf-8")
+    )
+    doc = next(c for c in data if c.get("groups") and c.get("test_dates") and c.get("prerequisites"))
+    course = Course.from_shnaton_dict(doc)
+    course.validate()
+    assert course.course_number == doc["course_number"]
+    assert course.groups[0].group_id == doc["groups"][0]["group_id"]
+    assert course.groups[0].schedule[0].day == doc["groups"][0]["schedule"][0]["day"]
+    assert course.test_dates[0].moed == doc["test_dates"][0]["moed"]
+    assert course.prerequisites[0].course_number == doc["prerequisites"][0]["course_number"]
+    # free-form passthrough fields preserve the raw JSON shape
+    assert course.prerequisites_tree == doc.get("prerequisites_tree")
+    assert course.assignments == doc.get("assignments")
+
+
 def test_course_covers_every_shnaton_key():
     """The model schema must be 1:1 with the raw shnaton JSON — any drift
     means the writer branch silently drops data or the reader misses a field."""
